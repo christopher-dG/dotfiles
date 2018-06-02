@@ -29,7 +29,7 @@ checknet() {
 # Run a bunch of preliminary steps.
 prelim() {
     checknet
-    readvars || (setvars && storevars)
+    [ -f ".vars" ] || (setvars && storevars)
     showvars
     warnvars
     promptgo
@@ -37,16 +37,6 @@ prelim() {
 
 
 ### Configuration variable get/put ###
-
-# Read a configuration from a file if it exists.
-readvars() {
-    if [ -f ".vars" ]; then
-        source ".vars"
-        return 0
-    else
-        return 1
-    fi
-}
 
 # Prompt for configuration options.
 setvars() {
@@ -79,6 +69,7 @@ setvars() {
 
 # Display the current configuration.
 showvars() {
+    source ".vars"
     echo -n "\
 Configuration:
 
@@ -96,7 +87,7 @@ User homedir:   $userhome
 
 # Store the current configuration in a file.
 storevars() {
-    echo -n "\"
+    echo -n "\
 export disk=$disk
 export efi=$efi
 export swap=$swap
@@ -118,7 +109,10 @@ warnvars() {
 
 # Script to run while rooted on the installation media.
 bs_prechroot() {
+    source ".vars"
+
     timedatectl set-ntp true
+
     echo -n "\
 Partition your disk. You probably want:
 sda1: EFI System (1):        +512MiB
@@ -135,6 +129,7 @@ sda3: Linux Filesystem (20)
     mount "$efi" /mnt/boot
 
     announce "Selecting mirrors, this will take a while..."
+    pacman -Sy
     pacman -S --needed --noconfirm reflector
     mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
     reflector -n5 -f5 | tee /etc/pacman.d/mirrorlist
@@ -144,12 +139,13 @@ sda3: Linux Filesystem (20)
 
     genfstab -U /mnt >> /mnt/etc/fstab
 
-    announce "Finished."
-    echo "Run postchroot next"
+    announce "Finished: run postchroot next."
 }
 
 # Script to run while chrooted.
 bs_postchroot() {
+    source ".vars"
+
     pacman -Syuu --noconfirm
 
     ln -sf /usr/share/zoneinfo/America/Winnipeg /etc/localtime
@@ -241,35 +237,31 @@ options root=$root rw
     systemctl enable acpid
     systemctl enable NetworkManager
 
-    git clone "https://github.com/christopher-dG/dotfiles" "$userhome"
-    rsync -r overlay/ /
-    [ -f "$userhome/README.md" ] && git -C "$userhome" git update-index --assume-unchanged "$userhome/README.md" && rm -f "$userhome/README.md"
-    [ -f "$userhome/bootstrap.sh" ] && git -C "$userhome" git update-index --assume-unchanged "$userhome/bootstrap.sh" && rm -f "$userhome/bootstrap.sh"
-    [ -d "$userhome/overlay" ] && git -C "$userhome" git update-index --assume-unchanged "$userhome/overlay" && rm -rf "$userhome/overlay"
-    mkdir -p "$userhome/.local/bin" "$userhome/downloads" "$userhome/code"
-    chown -R "$user:$user" "$userhome"
+    cd "$userhome"
+    git clone https://github.com/christopher-dG/dotfiles .
+    [ -d overlay ] && rsync -r overlay/ /
+    [ -f README.md ] && git update-index --assume-unchanged README.md && rm -f README.md
+    [ -f bootstrap.sh ] && git update-index --assume-unchanged bootstrap.sh && rm -f bootstrap.sh
+    [ -d overlay ] && git update-index --assume-unchanged $(git ls-files overlay) && rm -rf overlay
+    mkdir -p .local/bin code downloads
+    git clone https://github.com/syl20bnr/spacemacs .emacs.d --branch develop
+    git clone https://github.com/asdf-vm/asdf.git .asdf --branch v0.5.0
+    chown -R "$user:$user" .
+    cd -
 
-
-    git clone "https://github.com/syl20bnr/spacemacs" "$userhome/.emacs.d" --branch develop
-
-    git clone "https://github.com/asdf-vm/asdf.git" "$userhome/.asdf" --branch v0.5.0
-    source "$userhome/.asdf/asdf.sh"
-    plugins=(elixir erlang golang julia nodejs postgres python ruby rust)
-    for plugin in "${plugins[@]}"; do
-        asdf plugin-add "$plugin"  # Add plugins but don't install any versions.
-    done
-
-    # TODO: Install a different AUR tool.
+    TODO: Install a different AUR tool.
     mkdir pacaur
     cd pacaur
-    curl -o PKGBUILD "https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=cower"
-    su "$user" -c "makepkg PKGBUILD --skippgpcheck --install --needed --noconfirm"
-    curl -o PKGBUILD "https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=pacaur"
-    su "$user" -c "makepkg PKGBUILD --install --needed --noconfirm"
+    chown -R "$user:$user" .
+    curl -o cower_PKGBUILD https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=cower
+    curl -o pacaur_PKGBUILD https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=pacaur
+    su "$user" -c "makepkg cower_PKGBUILD --skippgpcheck --install --needed --noconfirm"
+    su "$user" -c "makepkg pacaur_PKGBUILD --install --needed --noconfirm"
+    cd -
     rm -rf pacaur
-    su "$user" -c "pacaur -S --needed --noconfirm hsetroot libinput-gestures"
+    EDITOR=nano su "$user" -c "pacaur -S --needed --noconfirm --noedit hsetroot libinput-gestures"
 
-    announce "Finished"
+    announce "Finished. Remember to delete .vars!"
 }
 
 ### Entrypoint ###

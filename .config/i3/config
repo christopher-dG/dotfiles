@@ -108,19 +108,21 @@ bindsym $mod+Shift+0 move container to workspace 10
 assign [class=(?i)urxvt] 1
 assign [class=(?i)firefox] 2
 assign [class=(?i)emacs] 3
+assign [class=(?i)spotify] 4
 
 # Focus programs upon opening
 for_window [class=(?i)urxvt] focus
 for_window [class=(?i)firefox] focus
 for_window [class=(?i)emacs] focus
+for_window [class=(?i)spotify] focus
 
 # Volume and brightness
 bindsym XF86AudioPause exec --no-startup-id baton pause
 bindsym XF86AudioPrev exec --no-startup-id baton prev
 bindsym XF86AudioNext exec --no-startup-id baton next
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-mute 1 0 && pactl set-sink-volume 1 -5%
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-mute 1 0 && pactl set-sink-volume 1 +5%
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 1 toggle
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-mute 0 0 && pactl set-sink-volume 0 -5%
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-mute 0 0 && pactl set-sink-volume 0 +5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
 bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
 
