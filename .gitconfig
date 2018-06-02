@@ -1,0 +1,10 @@
+[user]
+	 name = Chris de Graaf
+	email = chrisadegraaf@gmail.com
+# [url "git@github.com:"]
+# 	insteadOf = https://github.com/
+[github]
+	user = christopher-dG
+[alias]
+	assume-unchanged = update-index --assume-unchanged
+	assume-changed = update-index --no-assume-unchanged
