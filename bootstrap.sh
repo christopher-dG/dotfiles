@@ -228,6 +228,7 @@ options root=$root rw
            xorg-xinit \
            xorg-xmodmap \
            yajl \
+           zip \
            zsh
 
     useradd -G docker,input,wheel "$user"

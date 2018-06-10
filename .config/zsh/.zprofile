@@ -7,6 +7,7 @@ if [ "$(which python)" ] || [ "$(which python3)" ]; then
     PYTHON_DIR="$HOME/.config/python"
     export PYTHONSTARTUP="$PYTHON_DIR/pythonrc.py"
     export PYTHONHISTORY="$PYTHON_DIR/history"
+    export PIPENV_HIDE_EMOJIS=1
     touch "$PYTHONHISTORY"
 fi
 
@@ -17,6 +18,11 @@ fi
 
 if [ -d "$HOME/.cargo" ]; then
     export PATH="$PATH:$HOME/.cargo/bin"
+fi
+
+if [ -d "$HOME/.android_sdk" ]; then
+    export ANDROID_HOME="$HOME/.android_sdk"
+    export PATH=$PATH:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools
 fi
 
 if [ -d "$HOME/.asdf" ]; then

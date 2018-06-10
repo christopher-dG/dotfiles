@@ -1,6 +1,7 @@
 import atexit
 import os
 import readline
+import rlcompleter
 import sys
 
 readline.parse_and_bind("tab: complete")
