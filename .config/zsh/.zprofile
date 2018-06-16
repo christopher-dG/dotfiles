@@ -20,6 +20,10 @@ if [ -d "$HOME/.cargo" ]; then
     export PATH="$PATH:$HOME/.cargo/bin"
 fi
 
+if [ -d "$HOME/.hex" ]; then
+    export ERL_AFLAGS="-kernel shell_history_enabled"
+fi
+
 if [ -d "$HOME/.android_sdk" ]; then
     export ANDROID_HOME="$HOME/.android_sdk"
     export PATH=$PATH:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools
