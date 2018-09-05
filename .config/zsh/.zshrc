@@ -38,5 +38,3 @@ alias gs="git status"
 alias ga="git add"
 alias gch="git checkout"
 gcl() { git clone "git@github.com:christopher-dG/$1.git" $2 }
-
-alias digo="ssh -i $HOME/.ssh/do degraafc@167.99.188.73"

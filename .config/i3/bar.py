@@ -15,7 +15,7 @@ import time
 bat_path = "/sys/class/power_supply/BAT0/capacity"
 bat_status_path = "/sys/class/power_supply/BAT0/status"
 ping_re = re.compile("time=(\d+(?:\.\d+)?) ms")
-vol_re = re.compile("Volume: front-left.*?(\d+)%")
+vol_re = re.compile("\[(\d+%)\]")
 
 
 class ResultThread(threading.Thread):
@@ -53,9 +53,9 @@ def clock():
 
 def volume():
     """Get current volume."""
-    out = subprocess.check_output(["pactl", "list", "sinks"]).decode("utf-8")
-    matches = vol_re.findall(out)
-    return "%d%%" % int(float(matches[-1])) if matches else None
+    out = subprocess.check_output(["amixer", "get", "Master"]).decode("utf-8")
+    match = vol_re.search(out)
+    return match.group(1) if match else None
 
 
 def backlight():
@@ -74,9 +74,7 @@ def network():
 def ping():
     """Get ping in ms."""
     try:
-        out = subprocess.check_output(
-            ["ping", "google.ca", "-c1"],
-        ).decode("utf-8")
+        out = subprocess.check_output(["ping", "google.ca", "-c1"]).decode("utf-8")
     except Exception:
         return "Offline"
     match = ping_re.search(out)
@@ -114,10 +112,6 @@ def nowplaying():
     return song
 
 
-def someotherfunction():
-    pass
-
-
 if __name__ == "__main__":  # argv is a list of modules to disable.
     def isenabled(module, program=None):
         if module in sys.argv:
@@ -129,7 +123,7 @@ if __name__ == "__main__":  # argv is a list of modules to disable.
     threads = []
     if isenabled("nowplaying", program="baton"):
         threads.append(ResultThread(nowplaying, "playing", 10))
-    if isenabled("volume", program="pulseaudio"):
+    if isenabled("volume", program="alsamixer"):
         threads.append(ResultThread(volume, "volume", 1))
     if isenabled("backlight", program="xbacklight"):
         threads.append(ResultThread(backlight, "backlight", 1)),
