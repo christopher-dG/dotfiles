@@ -1,38 +1,28 @@
+# General
 export "PATH=$PATH:$HOME/.local/bin"
 export EDITOR="emacs"
 export GIT_EDITOR="nano"
 export LESSHISTFILE="-"
 
-if [ "$(which python)" ] || [ "$(which python3)" ]; then
-    PYTHON_DIR="$HOME/.config/python"
-    export PYTHONSTARTUP="$PYTHON_DIR/pythonrc.py"
-    export PYTHONHISTORY="$PYTHON_DIR/history"
-    export PIPENV_HIDE_EMOJIS=1
-    touch "$PYTHONHISTORY"
-fi
+# Python
+PYTHON_DIR="$HOME/.config/python"
+export PYTHONSTARTUP="$PYTHON_DIR/pythonrc.py"
+export PYTHONHISTORY="$PYTHON_DIR/history"
+export PIPENV_HIDE_EMOJIS=1
+[ -f "$PYTHONHISTORY" ] || touch "$PYTHONHISTORY"
 
-if [ "$(which go)" ]; then
-    export GOPATH="$HOME/.go"
-    export PATH="$PATH:$GOPATH/bin"
-fi
+# Go
+export GOPATH="$HOME/.go"
+export PATH="$PATH:$GOPATH/bin"
 
-if [ -d "$HOME/.cargo" ]; then
-    export PATH="$PATH:$HOME/.cargo/bin"
-fi
+# Rust
+export PATH="$PATH:$HOME/.cargo/bin"
 
-if [ -d "$HOME/.hex" ]; then
-    export ERL_AFLAGS="-kernel shell_history_enabled"
-fi
+# Elixir
+export ERL_AFLAGS="-kernel shell_history_enabled"
 
-if [ -d "$HOME/.android_sdk" ]; then
-    export ANDROID_HOME="$HOME/.android_sdk"
-    export PATH=$PATH:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools
-fi
+# asdf
+[ -d "$HOME/.asdf" ] && source $HOME/.asdf/asdf.sh
 
-if [ -d "$HOME/.asdf" ]; then
-    source $HOME/.asdf/asdf.sh
-fi
-
-if [ -f "$HOME/.config/.privaterc" ]; then
-    source "$HOME/.config/.privaterc"
-fi
+# Private
+[ -f "$HOME/.config/.privaterc" ] && source "$HOME/.config/.privaterc"
