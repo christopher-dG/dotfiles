@@ -19,7 +19,7 @@ export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:$HOME/.cargo/bin"
 
 # Elixir
-export ERL_AFLAGS="-kernel shell_history_enabled"
+export ERL_AFLAGS="-kernel shell_history enabled"
 
 # asdf
 [ -d "$HOME/.asdf" ] && source $HOME/.asdf/asdf.sh

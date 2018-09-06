@@ -15,7 +15,10 @@ import time
 bat_path = "/sys/class/power_supply/BAT0/capacity"
 bat_status_path = "/sys/class/power_supply/BAT0/status"
 ping_re = re.compile("time=(\d+(?:\.\d+)?) ms")
-vol_re = re.compile("\[(\d+%)\]")
+vol_alsa_re = re.compile("\[(\d+%)\]")
+vol_pulse_re = re.compile("front-left:\s*\d*\s*\/\s*(\d+)")
+
+pulse = not subprocess.run(["which", "pulseaudio"]).returncode
 
 
 class ResultThread(threading.Thread):
@@ -52,10 +55,35 @@ def clock():
 
 
 def volume():
-    """Get current volume."""
+    return volume_pulseaudio() if pulse else volume_alsa()
+
+
+def volume_alsa():
+    """Get current volume with alsa."""
     out = subprocess.check_output(["amixer", "get", "Master"]).decode("utf-8")
-    match = vol_re.search(out)
+    match = vol_alsa_re.search(out)
     return match.group(1) if match else None
+
+
+def volume_pulseaudio():
+    """Get current volume with pulseaudio."""
+    out = subprocess.check_output(["pactl", "list", "sinks"]).decode("utf-8")
+    lines = out.split("\n")
+    for i, line in enumerate(lines):
+        if "State: RUNNING" in line or "State: IDLE" in line:
+            break
+    for line in lines[i:]:
+        if "Volume:" in line:
+            match = vol_pulse_re.search(line)
+            if not match:
+                return None
+            vol = match.group(1)
+            break
+        if "Mute:" in line:
+            mute = "yes" in line
+    else:
+        return None
+    return "%s%%%s" % (vol, " (m)" if mute else "")
 
 
 def backlight():
@@ -74,7 +102,7 @@ def network():
 def ping():
     """Get ping in ms."""
     try:
-        out = subprocess.check_output(["ping", "google.ca", "-c1"]).decode("utf-8")
+        out = subprocess.check_output(["ping", "google.ca", "-c1", "-W1"]).decode("utf-8")
     except Exception:
         return "Offline"
     match = ping_re.search(out)
@@ -123,7 +151,7 @@ if __name__ == "__main__":  # argv is a list of modules to disable.
     threads = []
     if isenabled("nowplaying", program="baton"):
         threads.append(ResultThread(nowplaying, "playing", 10))
-    if isenabled("volume", program="alsamixer"):
+    if isenabled("volume"):
         threads.append(ResultThread(volume, "volume", 1))
     if isenabled("backlight", program="xbacklight"):
         threads.append(ResultThread(backlight, "backlight", 1)),

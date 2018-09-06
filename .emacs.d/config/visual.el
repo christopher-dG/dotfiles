@@ -7,6 +7,7 @@
 
 ;; Font.
 (set-frame-font "xos4 terminus")
+(set-face-attribute 'default nil :height 100)
 
 ;;Get rid of bars.
 (menu-bar-mode 0)
