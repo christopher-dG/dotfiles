@@ -63,6 +63,9 @@
 ;; Delete trailing whitespace before saving.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+;; Tabs instead of spaces.
+(setq-default indent-tabs-mode nil)
+
 ;; Don't clutter init.el with customizations.
 (setq custom-file "~/.emacs.d/customize.el")
 

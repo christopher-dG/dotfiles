@@ -3,6 +3,8 @@ export "PATH=$PATH:$HOME/.local/bin"
 export EDITOR="emacs"
 export GIT_EDITOR="nano"
 export LESSHISTFILE="-"
+export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"  # Requires package source-highlight.
+export LESS=' -R '
 
 # Python
 PYTHON_DIR="$HOME/.config/python"

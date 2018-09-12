@@ -8,3 +8,8 @@
 [alias]
 	assume-unchanged = update-index --assume-unchanged
 	assume-changed = update-index --no-assume-unchanged
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
