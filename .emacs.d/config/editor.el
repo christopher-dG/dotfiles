@@ -66,6 +66,9 @@
 ;; Tabs instead of spaces.
 (setq-default indent-tabs-mode nil)
 
+;; Tab width.
+(setq-default c-basic-offset 4)
+
 ;; Don't clutter init.el with customizations.
 (setq custom-file "~/.emacs.d/customize.el")
 
