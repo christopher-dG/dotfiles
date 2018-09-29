@@ -38,12 +38,8 @@
 (use-package magit :ensure t)
 (global-set-key (kbd "C-c g") 'magit-status)
 
-;; Neotree (directory view).
-(use-package neotree
-  :ensure t
-  :custom
-  (neo-theme 'ascii))
-(global-set-key (kbd "C-c t") 'neotree-toggle)
+;; ParEdit (parenthesis matching).
+(use-package paredit :ensure t)
 
 ;; Rather than zapping the given char, zap up to but not including it.
 (global-set-key "\M-z" 'zap-up-to-char)
