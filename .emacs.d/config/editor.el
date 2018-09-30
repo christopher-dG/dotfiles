@@ -13,7 +13,7 @@
 ;; Company (code completion).
 (use-package company
   :ensure t
-  :custom company-minimum-prefix-length 0)
+  :custom company-minimum-prefix-length 1)
 ;; I'm not sure why none of this can go inside the :config section.
 (global-company-mode)
 (define-key company-active-map (kbd "M-n") nil)
