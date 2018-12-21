@@ -22,6 +22,10 @@
 (define-key company-active-map (kbd "C-p") #'company-select-previous)
 (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
 
+;; TabNine (language-agnostic completion).
+(use-package company-tabnine :ensure t)
+(add-to-list 'company-backends #'company-tabnine)
+
 ;; Flycheck (linting).
 (use-package flycheck
   :ensure t
@@ -37,9 +41,7 @@
 ;; Magit (Git integration).
 (use-package magit :ensure t)
 (global-set-key (kbd "C-c g") 'magit-status)
-
-;; ParEdit (parenthesis matching).
-(use-package paredit :ensure t)
+(use-package forge :ensure t)
 
 ;; Rather than zapping the given char, zap up to but not including it.
 (global-set-key "\M-z" 'zap-up-to-char)
@@ -67,6 +69,7 @@
 
 ;; Don't clutter init.el with customizations.
 (setq custom-file "~/.emacs.d/customize.el")
+(load custom-file)
 
 ;; Don't clutter the working directory with backup files.
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")))

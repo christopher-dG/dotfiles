@@ -11,4 +11,7 @@
   (package-install 'use-package))
 (require 'use-package)
 
+(use-package auto-package-update :ensure t)
+(auto-package-update-maybe)
+
 (mapc 'load (directory-files-recursively "~/.emacs.d/config" "\.el$"))
