@@ -21,7 +21,7 @@ unsetopt BANG_HIST
 
 # Prompt.
 setopt PROMPT_SUBST
-PS1="%(?..%B x %b)%(!.(root) .)%F{2}[%f %F{5}%~%f %F{2}] "
+PS1="%(?..%B x %b)%(!.(root) .)(%m) %F{2}[%f %F{5}%~%f %F{2}] "
 RPROMPT='$vcs_info_msg_0_'
 
 # ls aliases and corrections.
@@ -50,4 +50,7 @@ man() {  # Coloured man pages.
     LESS_TERMCAP_ue=$'\e[0m' \
     LESS_TERMCAP_us=$'\e[01;32m' \
     command man "$@"
+}
+home() {
+  ssh -p 8890 "$1@$HOMEIP"
 }
