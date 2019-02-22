@@ -7,3 +7,13 @@ if haskey(ENV, "JULIA_REVISE")
         end
     end
 end
+
+"Parse and return the given expression."
+macro ex(ex)
+    QuoteNode(ex)
+end
+
+"Parse and return the given expressions."
+macro exs(exs...)
+    exs
+end
