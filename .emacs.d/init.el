@@ -3,7 +3,7 @@
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
         ("marmalade" . "https://marmalade-repo.org/packages/")
-	      ("melpa" . "https://melpa.org/packages/")))
+        ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -18,8 +18,8 @@
 
 ;; Add common bin directories to the path.
 (mapc (lambda (f)
-	      (add-to-list 'exec-path f)
-	      (setenv "PATH" (concat (getenv "PATH") ":" f)))
+        (add-to-list 'exec-path f)
+        (setenv "PATH" (concat (getenv "PATH") ":" f)))
       '("/usr/local/bin" "~/.local/bin" "~/.go/bin" "~/.cargo/bin"))
 
 ;; Save backups to temp directory, not the current one.
@@ -56,9 +56,9 @@
 
 ;; delete trailing whitespace before saving, except in Markdown mode.
 (add-hook 'before-save-hook
-	        (lambda ()
-	          (unless (eq major-mode 'markdown-mode)
-	            (delete-trailing-whitespace))))
+          (lambda ()
+            (unless (eq major-mode 'markdown-mode)
+              (delete-trailing-whitespace))))
 
 (defun kill-all-buffers ()
   "Close all open buffers."
@@ -114,11 +114,11 @@
 (defun tabnine-enable ()
   "Enable TabNine completion in this buffer."
   (interactive)
-  (add-to-list 'company-backends #'company-tabnine))
+  (add-to-list 'company-backends 'company-tabnine))
 (defun tabnine-disable ()
   "Disable TabNine completion in this buffer."
   (interactive)
-  (setq company-backends (remove #'company-tabnine company-backends)))
+  (setq company-backends (remove 'company-tabnine company-backends)))
 (use-package company-tabnine
   :config (tabnine-enable)
   :custom company-tabnine-binaries-folder "~/.emacs.d/tabnine")
@@ -136,8 +136,8 @@
 
 (use-package multiple-cursors
   :bind (("C-c m a" . mc/mark-all-like-this)
-	       ("C-c m n" . mc/mark-next-like-this)
-	       ("C-c m e" . mc/edit-lines)))
+         ("C-c m n" . mc/mark-next-like-this)
+         ("C-c m e" . mc/edit-lines)))
 
 ;; Snippets.
 (use-package yasnippet
