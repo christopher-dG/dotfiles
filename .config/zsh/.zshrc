@@ -40,7 +40,7 @@ alias gch="git checkout"
 gcl() { git clone "git@github.com:christopher-dG/$1.git" $2 }
 
 # Misc.
-alias emacs='emacsclient --alternate-editor=""'
+alias emacs='emacsclient -t'
 alias julia='julia --project -q'
 alias rs='redshift -PO'
 man() {  # Coloured man pages.
