@@ -25,7 +25,7 @@
 ;; Add common bin directories to the path, and make it easy to do on the fly.
 (defun add-to-path (&optional path)
   "Add a PATH to the exec path."
-  (let ((path (or path (read-directory-name "Enter a directory: "))))
+  (let ((path (file-truename (or path (read-directory-name "Enter a directory: ")))))
     (add-to-list 'exec-path path)
     (setenv "PATH" (concat (getenv "PATH") ":" path))))
 (mapc 'add-to-path
@@ -234,7 +234,7 @@
 (use-package company-jedi
   :hook python-mode)
 
-p;; Elixir.
+;; Elixir.
 (use-package alchemist)
 (add-hook 'before-save-hook
           (lambda ()
@@ -242,6 +242,7 @@ p;; Elixir.
               (elixir-format))))
 
 ;; Go.
+(setenv "GOPATH" (file-truename "~/.go"))
 (use-package go-mode
   :config
   (setq gofmt-command "goimports")
@@ -268,4 +269,4 @@ p;; Elixir.
 (add-hook 'emacs-lisp-mode 'tabnine-disable)
 
 ;; Run as a server.
-(unless (getenv "EMACS_DISABLE_SERVER") (server-start))
+(server-start)
