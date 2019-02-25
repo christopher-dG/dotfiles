@@ -22,11 +22,13 @@ set $base0F #825757
 
 # Basic bar configuration using the Base16 variables.
 bar {
-    status_command $HOME/.config/i3/bar.py
+    status_command i3blocks -c "$HOME/.config/i3/i3blocks.conf"
+    font pango: Inconsolata 10
+    separator_symbol |
 
     colors {
         background $base00
-        separator  $base01
+        separator  $base04
         statusline $base04
 
         # State             Border  BG      Text
@@ -118,9 +120,9 @@ for_window [class=(?i)emacs] focus
 bindsym XF86AudioPause exec --no-startup-id baton pause
 bindsym XF86AudioPrev exec --no-startup-id baton prev
 bindsym XF86AudioNext exec --no-startup-id baton next
-bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master on && amixer set Master 5%-
-bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master on && amixer set Master 5%+
-bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle
+bindsym XF86AudioLowerVolume exec --no-startup-id blocklet volume 5%-
+bindsym XF86AudioRaiseVolume exec --no-startup-id blocklet volume 5%+
+bindsym XF86AudioMute exec --no-startup-id blocklet volume mute
 bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
 

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+p=$(ping google.ca -c1 -W1)
+
+if [ $? -eq 0 ]; then
+  echo "$p" | grep "time=" | sed -E "s/.*time=(.*)\..*/ping: \1ms/"
+else
+  echo "ping: offline"
+fi

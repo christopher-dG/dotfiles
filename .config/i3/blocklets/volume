@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+which amixer &>/dev/null && which pulseaudio &>/dev/null || exit
+
+get() {
+  s=$(amixer -D pulse | grep 'Front Left: Playback')
+
+  if [[ $s =~ '[off]' ]]; then
+    mut=" (m)"
+  fi
+
+  echo $s | sed -E "s/.*\[(.*)%\].*/volume: \1%$mut/"
+}
+
+change() {
+  if [[ "$1" = "mute" ]]; then
+    amixer -D pulse set Master toggle
+  else
+    amixer -D pulse set Master on > /dev/null
+    amixer -D pulse set Master "$1"
+  fi
+}
+
+[ -z "$1" ] && get || change "$@"

@@ -52,6 +52,20 @@
 (global-display-line-numbers-mode)
 (column-number-mode)
 
+;; Modal editing.
+(use-package god-mode)
+(global-set-key (kbd "<escape>") 'god-mode-local)
+
+;; Don't freeze on C-z when not running in a terminal.
+(global-set-key (kbd "C-z")
+                (lambda ()
+                  (interactive)
+                  (unless (display-graphic-p)
+                    (suspend-frame))))
+
+;; Simpler repeat key.
+(global-set-key (kbd "C-,") 'repeat)
+
 ;; Themes and fonts.
 (use-package base16-theme)
 (defun select-theme (&optional frame)
@@ -142,6 +156,8 @@
 (use-package smartparens
   :config (smartparens-global-mode)
   :delight)
+(global-set-key (kbd "C-c w") 'mark-sexp)
+(global-set-key (kbd "C-c u") 'sp-unwrap-sexp)
 
 ;; Autocompletion.
 (use-package company
@@ -205,8 +221,12 @@
   :bind ("C-x o" . ace-window))
 
 ;; Tab width.
-(defconst js-indent-level 2)
-(defconst c-basic-offset 2)
+(defvar c-basic-offset)
+(defvar sh-basic-offset)
+(defvar js-indent-level)
+(setq c-basic-offset 2)
+(setq sh-basic-offset 2)
+(setq js-indent-level 2)
 
 ;; Fun stuff.
 (use-package hackernews)
@@ -263,7 +283,6 @@
 (add-hook 'rust-mode-hook 'cargo-minor-mode)
 (use-package racer)
 (add-hook 'rust-mode-hook 'racer-mode)
-
 
 ;; Elisp.
 (add-hook 'emacs-lisp-mode 'tabnine-disable)
