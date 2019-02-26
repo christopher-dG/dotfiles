@@ -1,3 +1,9 @@
+;;; init.el --- Emacs configuration.
+;;; Commentary:
+;;; Flycheck is a pain.
+
+;;; Code:
+
 ;; Package init.
 (require 'package)
 (setq package-archives
@@ -194,6 +200,8 @@
 (use-package git-gutter
   :config (global-git-gutter-mode 1)
   :delight)
+(use-package magit-todos
+  :config (magit-todos-mode))
 
 ;; Multiple cursor magic.
 (use-package multiple-cursors
@@ -228,6 +236,15 @@
 (setq sh-basic-offset 2)
 (setq js-indent-level 2)
 
+;; Emacs anywhere popup configuration.
+(defun popup-handler (_app _title _x _y w h)
+  "Handle popups from Emacs Anywhere (resize to W x H)."
+  (markdown-mode)
+  (local-set-key (kbd "C-c C-c") 'delete-frame)
+  ; TODO: Resize does not work.
+  (set-frame-size (selected-frame) (/ w 5) (/ h 5) t))
+(add-hook 'ea-popup-hook 'popup-handler)
+
 ;; Fun stuff.
 (use-package hackernews)
 (global-set-key (kbd "C-c h n") 'hackernews)
@@ -241,10 +258,11 @@
 
 ;; Julia.
 (use-package julia-mode
-  :config (add-hook 'julia-mode-hook 'tabnine-enable))
-(use-package julia-repl
-  :hook julia-mode . 'julia-repl-mode)
-(add-hook 'julia-repl-hook 'julia-repl-use-emacsclient)
+  :config
+  (add-hook 'julia-mode-hook 'tabnine-enable)
+  (add-hook 'julia-mode-hook
+            (lambda () (local-set-key (kbd "C-C j") 'julia-repl))))
+(use-package julia-repl)
 
 ;; Python.
 (use-package elpy
