@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
-which amixer &>/dev/null && which pulseaudio &>/dev/null || exit
+which amixer &>/dev/null || exit
+
+if which pulseaudio &> /dev/null; then
+  d='-D pulse'
+fi
 
 get() {
-  s=$(amixer -D pulse | grep 'Front Left: Playback')
+  s=$(amixer $d get Master | grep 'Mono: Playback')
 
   if [[ $s =~ '[off]' ]]; then
     mut=" (m)"
@@ -14,10 +18,9 @@ get() {
 
 change() {
   if [[ "$1" = "mute" ]]; then
-    amixer -D pulse set Master toggle
+    amixer $d set Master toggle
   else
-    amixer -D pulse set Master on > /dev/null
-    amixer -D pulse set Master "$1"
+    amixer $d set Master $1 unmute
   fi
 }
 

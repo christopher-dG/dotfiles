@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-[ -d /sys/class/power_supply/BAT0/capacity ] || exit
+[ -d /sys/class/power_supply/BAT0 ] || exit
 
 cap=$(cat /sys/class/power_supply/BAT0/capacity)
 if [ $cap -gt 100 ]; then

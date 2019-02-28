@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
 
-[ -d /sys/class/backlight/intel_backlight ] || exit
+which xbacklight &> /dev/null || exit
 
-max=$(cat /sys/class/backlight/intel_backlight/max_brightness)
-act=$(cat /sys/class/backlight/intel_backlight/actual_brightness)
-
-pct=$(echo "scale=0; (100 * $act) / $max" | bc)
-if [ $pct -gt 100 ]; then
-  echo "backlight: 100%"
-else
-  echo "backlight: $pct%"
-fi
+printf "backlight: %.0f%%\n" $(xbacklight -get)

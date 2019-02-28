@@ -60,7 +60,7 @@
 
 ;; Modal editing.
 (use-package god-mode)
-(global-set-key (kbd "<escape>") 'god-mode-local)
+(global-set-key (kbd "<escape>") 'god-local-mode)
 
 ;; Don't freeze on C-z when not running in a terminal.
 (global-set-key (kbd "C-z")
