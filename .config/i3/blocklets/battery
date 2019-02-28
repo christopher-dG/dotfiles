@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+[ -d /sys/class/power_supply/BAT0/capacity ] || exit
+
+cap=$(cat /sys/class/power_supply/BAT0/capacity)
+if [ $cap -gt 100 ]; then
+  cap=100
+fi
+
+stat=$(cat /sys/class/power_supply/BAT0/status)
+
+if [[ $stat = "Full" ]]; then
+  echo "battery: full"
+else
+  if [[ $stat = "Charging" ]]; then
+    c=" (c)"
+  fi
+  echo "battery: $cap%$c"
+fi
