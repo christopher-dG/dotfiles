@@ -7,6 +7,7 @@ export GIT_EDITOR="nano"
 export LESSHISTFILE="-"
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"  # Requires package source-highlight.
 export LESS=' -R '
+command -v bat &> /dev/null && export PAGER="bat"
 
 # Python
 PYTHON_DIR="$HOME/.config/python"

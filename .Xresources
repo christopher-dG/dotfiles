@@ -5,7 +5,7 @@ Xft.hintstyle:  hintfull
 
 urxvt*locale: true
 urxvt*metaSendsEscape: true
-urxvt.font: xft:xos4 terminus:pixelsize=14
+urxvt.font: xft:xos4 terminus:pixelsize=14,xft:Symbola
 urxvt*scrollBar: false
 urxvt*internalBorder: 5
 
