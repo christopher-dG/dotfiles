@@ -37,6 +37,7 @@ alias gp="git push origin"
 alias gs="git status"
 alias ga="git add"
 alias gch="git checkout"
+alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 gcl() { git clone "git@github.com:christopher-dG/$1.git" $2 }
 
 # Misc.
@@ -44,13 +45,13 @@ alias emacs='emacsclient -t'
 alias julia='julia --project -q'
 alias rs='redshift -PO'
 man() {  # Coloured man pages.
-    LESS_TERMCAP_md=$'\e[01;31m' \
-    LESS_TERMCAP_me=$'\e[0m' \
-    LESS_TERMCAP_se=$'\e[0m' \
-    LESS_TERMCAP_so=$'\e[01;44;33m' \
-    LESS_TERMCAP_ue=$'\e[0m' \
-    LESS_TERMCAP_us=$'\e[01;32m' \
-    command man "$@"
+  LESS_TERMCAP_md=$'\e[01;31m' \
+  LESS_TERMCAP_me=$'\e[0m' \
+  LESS_TERMCAP_se=$'\e[0m' \
+  LESS_TERMCAP_so=$'\e[01;44;33m' \
+  LESS_TERMCAP_ue=$'\e[0m' \
+  LESS_TERMCAP_us=$'\e[01;32m' \
+  command man "$@"
 }
 home() {
   ssh -p 8890 "$1@$HOMEIP"
