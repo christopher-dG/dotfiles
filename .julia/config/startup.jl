@@ -9,7 +9,8 @@ if haskey(ENV, "JULIA_REVISE")
 end
 
 "Generate a package."
-macro generate(pkg::String, kwargs...)
+macro generate(pkg::Symbol, kwargs...)
+    pkg = string(pkg)
     kwargs = Dict(ex.args[1] => eval(ex.args[2]) for ex in kwargs)
 
     quote

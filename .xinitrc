@@ -23,9 +23,9 @@ fi
 
 xrdb -merge $HOME/.Xresources  # Load user resources.
 setxkbmap -option terminate:ctrl_alt_bksp  # ctrl-alt-backspace exits X session.
-which dunst 2> /dev/null && dunst &  # Notification manager.
-which libinput-gestures-setup 2> /dev/null && libinput-gestures-setup start  # Touchpad gestures.
-which compton 2> /dev/null && compton -cbi.9  # Window compositor.
+command -v dunst && dunst &  # Notification manager.
+command -v gebaard && gebaard -b  # Touchpad gestures.
+compton -cbi.9
 [ -f $HOME/.Xmodmap ] && xmodmap $HOME/.Xmodmap
 [ -f $HOME/.screenlayout/default.sh ] && $HOME/.screenlayout/default.sh  # Monitor setup.
 

@@ -112,6 +112,7 @@ else
       bluez \
       bluez-utils \
       clang \
+      cloc \
       compton \
       curl \
       dmenu \
@@ -141,8 +142,12 @@ else
       ntp \
       oomox \
       openssh \
+      playerctl \
       powertop \
       python \
+      python-black \
+      python-dbus \
+      python-gobject \
       python-jedi \
       python-pywal \
       python-requests \
@@ -155,17 +160,19 @@ else
       scrot \
       sd \
       source-highlight \
-      spotifyd-bin \
+      spotifyd-dbus-mpris \
       sqlite3 \
       terminus-font \
       thunar \
       tmux \
+      tree \
       ttf-dejavu \
       ttf-inconsolata \
       ttf-symbola \
       ufetch \
       unzip \
       virtualbox \
+      virtualbox-ext-oracle \
       virtualbox-guest-iso \
       wget \
       xdotool \

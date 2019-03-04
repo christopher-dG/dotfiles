@@ -21,6 +21,7 @@
   (setq auto-package-update-delete-old-versions t)
   (setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
+(push "~/.emacs.d" load-path)
 
 ;; Hide some minor modes.
 (use-package delight)
@@ -37,7 +38,7 @@
 (mapc 'add-to-path
       '("/usr/local/bin" "~/.local/bin" "~/.go/bin" "~/.cargo/bin"))
 
-;; Save backups to temp directory, not the current one.
+;; Save backups to a single directory, not the current one.
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
 
 ;; Never use tabs.
@@ -104,10 +105,17 @@
 ;; Require trailing newlines.
 (setq require-final-newline t)
 
-;; delete trailing whitespace before saving, except in Markdown mode.
+;; Delete trailing whitespace before saving, except in Markdown mode,
+;; where we only delete trailing newlines.
 (add-hook 'before-save-hook
           (lambda ()
-            (unless (eq major-mode 'markdown-mode)
+            (if (eq major-mode 'markdown-mode)
+                (progn
+                  (save-excursion
+                    (save-restriction
+                      (widen)
+                      (goto-char (point-max))
+                      (delete-blank-lines))))
               (delete-trailing-whitespace))))
 
 (defun kill-all-buffers ()
@@ -193,7 +201,7 @@
   :config (global-flycheck-mode)
   :delight)
 
-;; Magit + Forge for Git + GitHub.
+;; Git integrations.
 (use-package magit
   :bind ("C-c g" . magit-status))
 (use-package forge)
@@ -248,6 +256,10 @@
 ;; Fun stuff.
 (use-package hackernews)
 (global-set-key (kbd "C-c h n") 'hackernews)
+(require 'youtube)
+(global-set-key (kbd "C-c y t") 'yt/search-and-play)
+(global-set-key (kbd "C-c y p") 'yt/playback-toggle)
+(global-set-key (kbd "C-c y q") 'yt/playback-stop)
 
 ;; Config/markup/misc. languages.
 (use-package markdown-mode)
@@ -297,9 +309,11 @@
   :config (setq rust-format-on-save t))
 (use-package flycheck-rust)
 (add-hook 'flycheck-mode-hook 'flycheck-rust-setup)
-(use-package cargo)
+(use-package cargo
+  :delight cargo-minor-mode)
 (add-hook 'rust-mode-hook 'cargo-minor-mode)
-(use-package racer)
+(use-package racer
+  :delight)
 (add-hook 'rust-mode-hook 'racer-mode)
 
 ;; Elisp.
