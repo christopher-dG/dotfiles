@@ -143,8 +143,6 @@
   :delight '(:eval (concat " p:" (projectile-project-name))))
 
 ;; Visual stuff.
-(use-package emojify
-  :config (global-emojify-mode))
 (use-package powerline
   :config (powerline-default-theme))
 
