@@ -21,7 +21,7 @@
   (setq auto-package-update-delete-old-versions t)
   (setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
-(push "~/.emacs.d" load-path)
+(push "~/.emacs.d/lisp" load-path)
 
 ;; Hide some minor modes.
 (use-package delight)
