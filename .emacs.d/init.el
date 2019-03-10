@@ -32,7 +32,8 @@
 ;; Add common bin directories to the path, and make it easy to do on the fly.
 (defun add-to-path (&optional path)
   "Add a PATH to the exec path."
-  (let ((path (file-truename (or path (read-directory-name "Enter a directory: ")))))
+  (interactive)
+  (let ((path (file-truename (or path (read-directory-name "Enter a directory: " "~/")))))
     (add-to-list 'exec-path path)
     (setenv "PATH" (concat (getenv "PATH") ":" path))))
 (mapc 'add-to-path
