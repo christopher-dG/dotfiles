@@ -21,12 +21,12 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
  unset f
 fi
 
-xrdb -merge $HOME/.Xresources  # Load user resources.
-setxkbmap -option terminate:ctrl_alt_bksp  # ctrl-alt-backspace exits X session.
-command -v dunst && dunst &  # Notification manager.
-command -v gebaard && gebaard -b  # Touchpad gestures.
-compton -cbi.9
+xrdb -merge $HOME/.Xresources
+setxkbmap -option terminate:ctrl_alt_bksp
+command -v dunst && dunst &
+command -v gebaard && gebaard -b
+compton -cbi.95
+wal -i $HOME/.config/i3/bg.jpg
 [ -f $HOME/.Xmodmap ] && xmodmap $HOME/.Xmodmap
-[ -f $HOME/.screenlayout/default.sh ] && $HOME/.screenlayout/default.sh  # Monitor setup.
 
 exec i3

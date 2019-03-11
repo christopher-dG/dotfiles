@@ -1,24 +1,19 @@
-## Base16 Embers
-# Author: Jannik Siebert (https://github.com/janniks)
-#
-# You can use these variables anywhere in the i3 configuration file.
-
-set $base00 #16130F
-set $base01 #2C2620
-set $base02 #433B32
-set $base03 #5A5047
-set $base04 #8A8075
-set $base05 #A39A90
-set $base06 #BEB6AE
-set $base07 #DBD6D1
-set $base08 #826D57
-set $base09 #828257
-set $base0A #6D8257
-set $base0B #57826D
-set $base0C #576D82
-set $base0D #6D5782
-set $base0E #82576D
-set $base0F #825757
+set_from_resource $base00 i3wm.color0
+set_from_resource $base01 i3wm.color1
+set_from_resource $base02 i3wm.color2
+set_from_resource $base03 i3wm.color3
+set_from_resource $base04 i3wm.color4
+set_from_resource $base05 i3wm.color5
+set_from_resource $base06 i3wm.color6
+set_from_resource $base07 i3wm.color7
+set_from_resource $base08 i3wm.color8
+set_from_resource $base09 i3wm.color9
+set_from_resource $base0A i3wm.color10
+set_from_resource $base0B i3wm.color11
+set_from_resource $base0C i3wm.color12
+set_from_resource $base0D i3wm.color13
+set_from_resource $base0E i3wm.color14
+set_from_resource $base0F i3wm.color15
 
 # Basic bar configuration using the Base16 variables.
 bar {
@@ -148,6 +143,3 @@ mode "resize" {
 # Gaps
 for_window [class=".*"] border pixel 3
 gaps inner 15
-
-# Desktop background
-exec_always --no-startup-id hsetroot -solid "$base03"

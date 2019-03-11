@@ -75,13 +75,13 @@
 (global-set-key (kbd "C-,") 'repeat)
 
 ;; Themes and fonts.
-(use-package base16-theme)
+(use-package xresources-theme)
 (defun select-theme (&optional frame)
   "Set the correct theme for FRAME."
   (interactive)
   (let ((frame (or frame (selected-frame)))
-        (x-theme 'base16-embers)
-        (nw-theme 'wombat))
+        (x-theme 'xresources)
+        (nw-theme 'wombat))  ;; TODO: Find a better terminal theme.
     (select-frame frame)
     (load-theme x-theme t t)
     (load-theme nw-theme t t)

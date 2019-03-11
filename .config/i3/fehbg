@@ -1,0 +1,2 @@
+#!/bin/sh
+feh --bg-fill "$HOME/.config/i3/bg.jpg"
