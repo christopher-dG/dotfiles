@@ -25,8 +25,12 @@ export PATH="$PATH:$HOME/.cargo/bin"
 # Elixir
 export ERL_AFLAGS="-kernel shell_history enabled"
 
+# OCaml
+command -v oppam &> /dev/null && eval $(opam config env)
+export PATH="$PATH:$HOME/.opam/default/bin"
+
 # asdf
-[ -d "$HOME/.asdf" ] && source $HOME/.asdf/asdf.sh
+[ -d "$HOME/.asdf" ] && source "$HOME/.asdf/asdf.sh"
 
 # Private
 [ -f "$HOME/.config/.privaterc" ] && source "$HOME/.config/.privaterc"

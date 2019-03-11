@@ -37,7 +37,7 @@
     (add-to-list 'exec-path path)
     (setenv "PATH" (concat (getenv "PATH") ":" path))))
 (mapc 'add-to-path
-      '("/usr/local/bin" "~/.local/bin" "~/.go/bin" "~/.cargo/bin"))
+      '("/usr/local/bin" "~/.local/bin" "~/.go/bin" "~/.cargo/bin" "~/.opam/default/bin"))
 
 ;; Save backups to a single directory, not the current one.
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
@@ -158,6 +158,7 @@
   :config
   (which-key-mode)
   (setq which-key-idle-delay 0.5)
+  (which-key-enable-god-mode-support)
   :delight)
 
 (use-package autorevert
@@ -167,19 +168,26 @@
 ;; Parenthesis magic.
 (show-paren-mode)
 (use-package smartparens
-  :config (smartparens-global-mode)
+  :config
+  (require 'smartparens-config)
+  (smartparens-global-mode)
   :delight)
 (global-set-key (kbd "C-c w") 'mark-sexp)
 (global-set-key (kbd "C-c u") 'sp-unwrap-sexp)
+(global-set-key (kbd "C-M-f") 'sp-forward-sexp)
+(global-set-key (kbd "C-M-f") 'sp-backward-sexp)
+(global-set-key (kbd "C-M-k") 'sp-kill-sexp)
 
 ;; Autocompletion.
 (use-package company
   :config
   (global-company-mode)
-  (define-key company-active-map (kbd "C-n") #'company-select-next)
-  (define-key company-active-map (kbd "C-p") #'company-select-previous)
-  (define-key company-active-map (kbd "TAB") #'company-complete-common-or-cycle)
+  (define-key company-active-map (kbd "C-n") 'company-select-next)
+  (define-key company-active-map (kbd "C-p") 'company-select-previous)
+  (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
   :custom company-minimum-prefix-length 1)
+(use-package company-math
+  :config (add-to-list 'company-backends 'company-math-symbols-unicode))
 (use-package company-quickhelp
   :config (company-quickhelp-mode))
 (defun tabnine-enable ()
@@ -268,12 +276,15 @@
 (use-package ahk-mode)
 
 ;; Julia.
+(use-package julia-repl)
 (use-package julia-mode
   :config
   (add-hook 'julia-mode-hook 'tabnine-enable)
   (add-hook 'julia-mode-hook
-            (lambda () (local-set-key (kbd "C-C j") 'julia-repl))))
-(use-package julia-repl)
+            (lambda ()
+              (julia-repl-mode)
+              (local-set-key (kbd "C-C j") 'julia-repl))))
+
 
 ;; Python.
 (use-package elpy
@@ -317,6 +328,13 @@
 
 ;; Elisp.
 (add-hook 'emacs-lisp-mode 'tabnine-disable)
+
+;; OCaml.
+(use-package tuareg)
+(use-package merlin)
+(autoload 'merlin-mode "merlin" "Merlin mode" t)
+(add-hook 'tuareg-mode-hook 'merlin-mode)
+(add-hook 'caml-mode-hook 'merlin-mode)
 
 ;; Run as a server.
 (server-start)
