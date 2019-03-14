@@ -1,0 +1,5 @@
+[commands.swipe.three]
+up = "xdotool key control+t"
+down = "xdotool key control+w"
+left = "xdotool key alt+Left"
+right = "xdotool key alt+Right"
