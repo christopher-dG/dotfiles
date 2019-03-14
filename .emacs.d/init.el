@@ -308,7 +308,8 @@
   (setq gofmt-command "goimports")
   (add-hook 'before-save-hook 'gofmt-before-save)
   :custom (tab-width 2))
-(use-package company-go)
+(use-package company-go
+  :config (add-to-list 'company-backends 'company-go))
 (use-package go-eldoc
   :config
   (add-hook 'go-mode-hook 'go-eldoc-setup)
