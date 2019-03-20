@@ -54,5 +54,5 @@ man() {  # Coloured man pages.
   command man "$@"
 }
 home() {
-  ssh -p 8890 "$1@$HOMEIP"
+  ssh "$1@$HOMEIP"
 }

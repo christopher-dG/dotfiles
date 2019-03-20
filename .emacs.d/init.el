@@ -26,6 +26,10 @@
 ;; Hide some minor modes.
 (use-package delight)
 
+;; SSH for tramp.
+(use-package tramp)
+(setq tramp-default-method "ssh")
+
 ;; Put customizations in a separate file.
 (setq custom-file "~/.emacs.d/customize.el")
 
