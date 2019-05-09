@@ -25,8 +25,7 @@ xrdb -merge $HOME/.Xresources
 setxkbmap -option terminate:ctrl_alt_bksp
 command -v dunst && dunst &
 command -v gebaard && gebaard -b
-compton -cbi.95
-wal -i $HOME/.config/i3/bg.jpg
-[ -f $HOME/.Xmodmap ] && xmodmap $HOME/.Xmodmap
+$HOME/.config/i3/fehbg
+xmodmap $HOME/.Xmodmap
 
 exec i3

@@ -1,55 +1,53 @@
-set_from_resource $base00 i3wm.color0
-set_from_resource $base01 i3wm.color1
-set_from_resource $base02 i3wm.color2
-set_from_resource $base03 i3wm.color3
-set_from_resource $base04 i3wm.color4
-set_from_resource $base05 i3wm.color5
-set_from_resource $base06 i3wm.color6
-set_from_resource $base07 i3wm.color7
-set_from_resource $base08 i3wm.color8
-set_from_resource $base09 i3wm.color9
-set_from_resource $base0A i3wm.color10
-set_from_resource $base0B i3wm.color11
-set_from_resource $base0C i3wm.color12
-set_from_resource $base0D i3wm.color13
-set_from_resource $base0E i3wm.color14
-set_from_resource $base0F i3wm.color15
+set_from_resource $nord00 i3wm.color0
+set_from_resource $nord01 i3wm.color1
+set_from_resource $nord02 i3wm.color2
+set_from_resource $nord03 i3wm.color3
+set_from_resource $nord04 i3wm.color4
+set_from_resource $nord05 i3wm.color5
+set_from_resource $nord06 i3wm.color6
+set_from_resource $nord07 i3wm.color7
+set_from_resource $nord08 i3wm.color8
+set_from_resource $nord09 i3wm.color9
+set_from_resource $nord0A i3wm.color10
+set_from_resource $nord0B i3wm.color11
+set_from_resource $nord0C i3wm.color12
+set_from_resource $nord0D i3wm.color13
+set_from_resource $nord0E i3wm.color14
+set_from_resource $nord0F i3wm.color15
 
-# Basic bar configuration using the Base16 variables.
 bar {
     status_command i3blocks -c "$HOME/.config/i3/i3blocks.conf"
     font pango: Inconsolata 10
     separator_symbol |
 
     colors {
-        background $base00
-        separator  $base04
-        statusline $base04
+        background $nord00
+        separator  $nord04
+        statusline $nord04
 
         # State             Border  BG      Text
-        focused_workspace   $base05 $base0D $base00
-        active_workspace    $base05 $base03 $base00
-        inactive_workspace  $base03 $base01 $base05
-        urgent_workspace    $base08 $base08 $base00
-        binding_mode        $base00 $base0A $base00
+        focused_workspace   $nord05 $nord0D $nord00
+        active_workspace    $nord05 $nord03 $nord00
+        inactive_workspace  $nord03 $nord01 $nord05
+        urgent_workspace    $nord08 $nord08 $nord00
+        binding_mode        $nord00 $nord0A $nord00
     }
 }
 
-# Basic color configuration using the Base16 variables for windows and borders.
 # Property Name         Border  BG      Text    Indicator Child Border
-client.focused          $base05 $base0D $base00 $base0D $base0D
-client.focused_inactive $base01 $base01 $base05 $base03 $base01
-client.unfocused        $base01 $base00 $base05 $base01 $base01
-client.urgent           $base08 $base08 $base00 $base08 $base08
-client.placeholder      $base00 $base00 $base05 $base00 $base00
-client.background		$base07
+client.focused          $nord05 $nord0D $nord00 $nord0D $nord0D
+client.focused_inactive $nord01 $nord01 $nord05 $nord03 $nord01
+client.unfocused        $nord01 $nord00 $nord05 $nord01 $nord01
+client.urgent           $nord08 $nord08 $nord00 $nord08 $nord08
+client.placeholder      $nord00 $nord00 $nord05 $nord00 $nord00
+client.background		$nord07
 
 # Misc
 set $mod Mod4
 floating_modifier $mod
 focus_follows_mouse no
 bindsym $mod+Return exec urxvt
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -nb '$base00' -sb '$base01' -sf '$base0D'"
+bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -nb '$nord00' -sb '$nord01' -sf '$nord0D'"
 
 # Restart/exit/close/lock
 bindsym $mod+Shift+r restart

@@ -32,6 +32,7 @@
 
 ;; Put customizations in a separate file.
 (setq custom-file "~/.emacs.d/customize.el")
+(load custom-file)
 
 ;; Add common bin directories to the path, and make it easy to do on the fly.
 (defun add-to-path (&optional path)
@@ -79,29 +80,16 @@
 (global-set-key (kbd "C-,") 'repeat)
 
 ;; Themes and fonts.
-(use-package xresources-theme)
-(defun select-theme (&optional frame)
-  "Set the correct theme for FRAME."
-  (interactive)
-  (let ((frame (or frame (selected-frame)))
-        (x-theme 'xresources)
-        (nw-theme 'wombat))  ;; TODO: Find a better terminal theme.
-    (select-frame frame)
-    (load-theme x-theme t t)
-    (load-theme nw-theme t t)
-    (if (window-system frame)
-        (progn
-          (disable-theme nw-theme)
-          (enable-theme x-theme))
-      (progn
-        (disable-theme x-theme)
-        (enable-theme nw-theme)))))
-;; Some configuration has to wait until we have a window to configure.
-(add-hook 'after-make-frame-functions
-          (lambda (frame)
-            (select-theme frame)
-            (set-frame-font "xos4 terminus")
-            (set-face-attribute 'default nil :height 100)))
+(use-package nord-theme)
+(if (daemonp)
+	  (add-hook 'after-make-frame-functions
+		          (lambda (frame)
+			          (with-selected-frame frame
+                  (load-theme 'nord t)
+                  (set-frame-font "xos4 terminus"))))
+	(progn
+    (load-theme 'nord t)
+    (set-frame-font "xos4 terminus")))
 
 ;; Text size.
 (global-set-key (kbd "C-=") 'text-scale-increase)
@@ -151,12 +139,6 @@
 (use-package powerline
   :config (powerline-default-theme))
 
-;; Startup dashboard.
-(use-package dashboard
-  :config
-  (dashboard-setup-startup-hook)
-  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
-
 ;; Keybinding popups.
 (use-package which-key
   :config
@@ -179,7 +161,7 @@
 (global-set-key (kbd "C-c w") 'mark-sexp)
 (global-set-key (kbd "C-c u") 'sp-unwrap-sexp)
 (global-set-key (kbd "C-M-f") 'sp-forward-sexp)
-(global-set-key (kbd "C-M-f") 'sp-backward-sexp)
+(global-set-key (kbd "C-M-b") 'sp-backward-sexp)
 (global-set-key (kbd "C-M-k") 'sp-kill-sexp)
 
 ;; Autocompletion.
@@ -197,7 +179,7 @@
 (defun tabnine-enable ()
   "Enable TabNine completion in this buffer."
   (interactive)
-  (add-to-list 'company-backends 'company-tabnine)
+  (add-to-list 'company-backends 'company-tabnine t)
   (message "Enabled TabNine"))
 (defun tabnine-disable ()
   "Disable TabNine completion in this buffer."
@@ -219,8 +201,8 @@
 (use-package git-gutter
   :config (global-git-gutter-mode 1)
   :delight)
-(use-package magit-todos
-  :config (magit-todos-mode))
+; (use-package magit-todos
+;   :config (magit-todos-mode))
 
 ;; Multiple cursor magic.
 (use-package multiple-cursors
@@ -281,6 +263,7 @@
 
 ;; Julia.
 (use-package julia-repl)
+(add-hook 'julia-repl-hook (lambda () (display-line-numbers-mode -1)))
 (use-package julia-mode
   :config
   (add-hook 'julia-mode-hook 'tabnine-enable)
@@ -288,7 +271,7 @@
             (lambda ()
               (julia-repl-mode)
               (local-set-key (kbd "C-C j") 'julia-repl))))
-
+(require 'julia-dumbcompleter)
 
 ;; Python.
 (use-package elpy
@@ -299,11 +282,8 @@
   :hook python-mode)
 
 ;; Elixir.
+;; TODO: LS stuff.
 (use-package alchemist)
-(add-hook 'before-save-hook
-          (lambda ()
-            (when (eq major-mode 'elixir-mode)
-              (elixir-format))))
 
 ;; Go.
 (setenv "GOPATH" (file-truename "~/.go"))
@@ -343,3 +323,7 @@
 
 ;; Run as a server.
 (server-start)
+
+(provide 'init)
+
+;;; init.el ends here
