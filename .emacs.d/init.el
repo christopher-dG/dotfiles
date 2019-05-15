@@ -168,6 +168,7 @@
 (use-package company
   :config
   (global-company-mode)
+  (global-set-key (kbd "C-;") 'company-complete)
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
@@ -201,8 +202,8 @@
 (use-package git-gutter
   :config (global-git-gutter-mode 1)
   :delight)
-; (use-package magit-todos
-;   :config (magit-todos-mode))
+(use-package magit-todos
+  :config (magit-todos-mode))
 
 ;; Multiple cursor magic.
 (use-package multiple-cursors
@@ -298,6 +299,18 @@
   :config
   (add-hook 'go-mode-hook 'go-eldoc-setup)
   (add-hook 'go-mode-hook 'tabnine-disable))
+(defun gocode-toggle ()
+  "Toggle the gocode executable between the mod and non-mod versions."
+  (interactive)
+  (customize-set-variable
+   'company-go-gocode-command
+   (if (string= company-go-gocode-command "gocode-mod")
+       "gocode" "gocode-mod"))
+  ;; The gocode fork that works with modules is slow, so disable idle completion.
+  (if (string= company-go-gocode-command "gocode-mod")
+      (customize-set-variable 'company-idle-delay nil)
+    (custom-reevaluate-setting 'company-idle-delay))
+  (message company-go-gocode-command))
 
 ;; Rust.
 (use-package rust-mode
