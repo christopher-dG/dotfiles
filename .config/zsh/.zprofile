@@ -29,6 +29,9 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 command -v oppam &> /dev/null && eval $(opam config env)
 export PATH="$PATH:$HOME/.opam/default/bin"
 
+# Ruby
+export PATH="$PATH:$HOME/.rvm/bin"
+
 # asdf
 [ -d "$HOME/.asdf" ] && source "$HOME/.asdf/asdf.sh"
 
