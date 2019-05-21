@@ -337,9 +337,6 @@
 (add-hook 'tuareg-mode-hook 'merlin-mode)
 (add-hook 'caml-mode-hook 'merlin-mode)
 
-;; Run as a server.
-(server-start)
-
 (provide 'init)
 
 ;;; init.el ends here
