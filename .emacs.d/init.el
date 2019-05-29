@@ -82,14 +82,17 @@
 ;; Themes and fonts.
 (use-package nord-theme)
 (if (daemonp)
-	  (add-hook 'after-make-frame-functions
-		          (lambda (frame)
-			          (with-selected-frame frame
+    (add-hook 'after-make-frame-functions
+	            (lambda (frame)
+		            (with-selected-frame frame
                   (load-theme 'nord t)
                   (set-frame-font "xos4 terminus"))))
-	(progn
+  (progn
     (load-theme 'nord t)
     (set-frame-font "xos4 terminus")))
+
+;; Don't overflow lines in term-mode.
+(add-hook 'term-mode-hook (lambda () (display-line-numbers-mode -1)))
 
 ;; Text size.
 (global-set-key (kbd "C-=") 'text-scale-increase)
