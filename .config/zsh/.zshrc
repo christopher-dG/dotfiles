@@ -44,6 +44,7 @@ gcl() { git clone "git@github.com:christopher-dG/$1.git" $2 }
 alias emacs='emacsclient -t'
 alias julia='julia --project -q'
 alias rs='redshift -PO'
+alias unrs='redshift -PO 6500'
 man() {  # Coloured man pages.
   LESS_TERMCAP_md=$'\e[01;31m' \
   LESS_TERMCAP_me=$'\e[0m' \

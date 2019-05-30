@@ -1,5 +1,5 @@
 [user]
-	 name = Chris de Graaf
+	name = Chris de Graaf
 	email = chrisadegraaf@gmail.com
 [github]
 	user = christopher-dG
@@ -13,3 +13,5 @@
 	clean = git-lfs clean -- %f
 [commit]
 	gpgsign = true
+[credential]
+	helper = cache

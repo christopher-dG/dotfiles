@@ -7,7 +7,6 @@ export GIT_EDITOR="nano"
 export LESSHISTFILE="-"
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"  # Requires package source-highlight.
 export LESS=' -R '
-command -v bat &> /dev/null && export PAGER="bat"
 
 # Python
 PYTHON_DIR="$HOME/.config/python"
@@ -26,7 +25,7 @@ export PATH="$PATH:$HOME/.cargo/bin"
 export ERL_AFLAGS="-kernel shell_history enabled"
 
 # OCaml
-command -v oppam &> /dev/null && eval $(opam config env)
+command -v opam &> /dev/null && eval $(opam config env)
 export PATH="$PATH:$HOME/.opam/default/bin"
 
 # Ruby
