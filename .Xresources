@@ -37,7 +37,7 @@ urxvt*internalBorder: 5
 *.foreground:   nord4
 *.background:   nord0
 *.cursorColor:  nord4
-*fading: 35
+*fading: 10
 *fadeColor: nord3
 
 *.color0: nord1
