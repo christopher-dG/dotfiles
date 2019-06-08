@@ -14,4 +14,4 @@
 [commit]
 	gpgsign = true
 [credential]
-	helper = cache
+	helper = store

@@ -266,8 +266,8 @@
 (use-package ahk-mode)
 
 ;; Julia.
-(use-package julia-repl)
-(add-hook 'julia-repl-hook (lambda () (display-line-numbers-mode -1)))
+; (use-package julia-repl)
+; (add-hook 'julia-repl-hook (lambda () (display-line-numbers-mode -1)))
 (use-package julia-mode
   :config
   (add-hook 'julia-mode-hook 'tabnine-enable)
@@ -275,6 +275,7 @@
             (lambda ()
               (julia-repl-mode)
               (local-set-key (kbd "C-C j") 'julia-repl))))
+(use-package jupyter)
 (require 'julia-dumbcompleter)
 
 ;; Python.
@@ -300,8 +301,8 @@
   :config (add-to-list 'company-backends 'company-go))
 (use-package go-eldoc
   :config
-  (add-hook 'go-mode-hook 'go-eldoc-setup)
-  (add-hook 'go-mode-hook 'tabnine-disable))
+  :hook (go-mode . go-eldoc-setup))
+(add-hook 'go-mode-hook 'tabnine-disable)
 (defun gocode-toggle ()
   "Toggle the gocode executable between the mod and non-mod versions."
   (interactive)
@@ -318,24 +319,28 @@
 ;; Rust.
 (use-package rust-mode
   :config (setq rust-format-on-save t))
-(use-package flycheck-rust)
-(add-hook 'flycheck-mode-hook 'flycheck-rust-setup)
+(use-package flycheck-rust
+  :hook (flycheck-mode . flycheck-rust-setup))
 (use-package cargo
-  :delight cargo-minor-mode)
-(add-hook 'rust-mode-hook 'cargo-minor-mode)
+  :delight cargo-minor-mode
+  :hook (rust-mode . cargo-minor-mode))
 (use-package racer
-  :delight)
-(add-hook 'rust-mode-hook 'racer-mode)
+  :delight
+  :hook (rust-mode-hook . racer-mode))
 
 ;; Elisp.
 (add-hook 'emacs-lisp-mode 'tabnine-disable)
 
 ;; OCaml.
 (use-package tuareg)
-(use-package merlin)
-(autoload 'merlin-mode "merlin" "Merlin mode" t)
-(add-hook 'tuareg-mode-hook 'merlin-mode)
-(add-hook 'caml-mode-hook 'merlin-mode)
+(use-package merlin
+  :hook (tuareg-mode . merlin-mode))
+(use-package utop
+  :custom utop-command "opam config exec -- utop -emacs"
+  :hook (tuareg-mode . utop-minor-mode))
+(push "~/.opam/default/share/emacs/site-lisp" load-path)
+(require 'ocp-indent)
+(require 'dune)
 
 (provide 'init)
 

@@ -26,7 +26,6 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 
 # OCaml
 command -v opam &> /dev/null && eval $(opam config env)
-export PATH="$PATH:$HOME/.opam/default/bin"
 
 # Ruby
 export PATH="$PATH:$HOME/.rvm/bin"
