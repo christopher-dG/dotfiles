@@ -1,9 +1,7 @@
 # General
 export "PATH=$PATH:$HOME/.local/bin"
 export ALTERNATE_EDITOR=""
-export EDITOR="emacsclient -t"
-export VISUAL="emacsclient -c"
-export GIT_EDITOR="nano"
+export EDITOR="emacs -q -nw"
 export LESSHISTFILE="-"
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"  # Requires package source-highlight.
 export LESS=' -R '
