@@ -275,16 +275,14 @@
             (lambda ()
               (julia-repl-mode)
               (local-set-key (kbd "C-C j") 'julia-repl))))
-(use-package jupyter)
 (require 'julia-dumbcompleter)
 
 ;; Python.
 (use-package elpy
-  :config
+  :init
   (elpy-enable)
   (add-hook 'python-mode-hook 'tabnine-disable))
-(use-package company-jedi
-  :hook python-mode)
+(add-hook 'elpy-mode-hook (lambda () (flymake-mode -1)))
 
 ;; Elixir.
 ;; TODO: LS stuff.

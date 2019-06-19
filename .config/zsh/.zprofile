@@ -11,6 +11,7 @@ PYTHON_DIR="$HOME/.config/python"
 export PYTHONSTARTUP="$PYTHON_DIR/pythonrc.py"
 export PYTHONHISTORY="$PYTHON_DIR/history"
 [ -f "$PYTHONHISTORY" ] || touch "$PYTHONHISTORY"
+[ -d "$HOME/.virtualenvs" ] && source virtualenvwrapper.sh
 
 # Go
 export GOPATH="$HOME/.go"
