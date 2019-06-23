@@ -1,3 +1,13 @@
+if [[ "$TERM" = "dumb" ]]; then
+  PS1="> "
+  return
+fi
+
+# Prompt.
+setopt PROMPT_SUBST
+PS1="%(?..%B x %b)%(!.(root) .)%K{4}%m%k %F{2}[%f %F{5}%~%f %F{2}] "
+RPROMPT='$vcs_info_msg_0_'
+
 # Completion.
 autoload -Uz compinit && compinit
 zstyle ":completion:*" matcher-list "m:{a-zA-Z}={A-Za-z}"
@@ -19,11 +29,6 @@ setopt hist_ignore_all_dups
 setopt hist_ignore_space
 unsetopt BANG_HIST
 
-# Prompt.
-setopt PROMPT_SUBST
-PS1="%(?..%B x %b)%(!.(root) .)%K{4}%m%k %F{2}[%f %F{5}%~%f %F{2}] "
-RPROMPT='$vcs_info_msg_0_'
-
 # ls aliases and corrections.
 alias ls="ls --color"
 alias la="ls -a"
@@ -41,7 +46,7 @@ alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %
 gcl() { git clone "git@github.com:christopher-dG/$1.git" $2 }
 
 # Misc.
-alias emacs='emacsclient -t'
+alias emacs='emacs -q -nw'
 alias julia='julia --project -q'
 alias rs='redshift -PO'
 alias unrs='redshift -PO 6500'
