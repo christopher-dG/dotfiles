@@ -13,5 +13,5 @@
 	clean = git-lfs clean -- %f
 [commit]
 	gpgsign = true
-[credential]
-	helper = store
+[core]
+	excludesfile = ~/.config/git/ignore

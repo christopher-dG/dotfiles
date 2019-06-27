@@ -34,6 +34,7 @@
 
 ;; Put customizations in a separate file.
 (setq custom-file "~/.emacs.d/customize.el")
+(shell-command (concat "touch " custom-file))
 (load custom-file)
 
 ;; Add common bin directories to the path, and make it easy to do on the fly.
@@ -44,7 +45,8 @@
     (add-to-list 'exec-path path)
     (setenv "PATH" (concat (getenv "PATH") ":" path))))
 (mapc 'add-to-path
-      '("/usr/local/bin" "~/.local/bin" "~/.go/bin" "~/.cargo/bin" "~/.opam/default/bin"))
+      '("/usr/local/bin" "~/.local/bin" "~/.local/share/go/bin"
+        "~/.local/share/cargo/bin" "~/.local/share/opam/default/bin"))
 
 ;; Save backups to a single directory, not the current one.
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
@@ -203,6 +205,8 @@
 ;; Git integrations.
 (use-package magit
   :bind ("C-c g" . magit-status))
+(setenv "GNUPGHOME" "~/.local/share/gnupg")
+(setq auth-sources '((:source "~/.config/authinfo.gpg")))
 (use-package forge)
 (use-package git-gutter
   :config (global-git-gutter-mode 1)

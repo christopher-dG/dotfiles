@@ -4,33 +4,46 @@ export ALTERNATE_EDITOR=""
 export EDITOR="emacs -q -nw"
 export LESSHISTFILE="-"
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"  # Requires package source-highlight.
-export LESS=' -R '
+export LESS=" -R "
 
-# Python
-PYTHON_DIR="$HOME/.config/python"
-export PYTHONSTARTUP="$PYTHON_DIR/pythonrc.py"
-export PYTHONHISTORY="$PYTHON_DIR/history"
+CONFIG="$HOME/.config"
+SHARE="$HOME/.local/share"
+
+# Cleaning up the home directory.
+export GNUPGHOME="$SHARE/gnupg"
+export DOCKER_CONFIG="$CONFIG/docker"
+AWS="$CONFIG/aws"
+export AWS_CONFIG_FILE="$AWS/config"
+export AWS_SHARED_CREDENTIALS_FILE="$AWS/credentials"
+
+PYTHON="$SHARE/python"
+export PYTHONSTARTUP="$PYTHON/pythonrc"
+export PYTHONHISTORY="$PYTHON/history"
 [ -f "$PYTHONHISTORY" ] || touch "$PYTHONHISTORY"
-[ -d "$HOME/.virtualenvs" ] && source virtualenvwrapper.sh
+export WORKON_HOME="$PYTHON/virtualenvs"
+[ -d "$WORKON_HOME" ] && source virtualenvwrapper.sh  # TODO: Make this work.
 
-# Go
-export GOPATH="$HOME/.go"
+export GOPATH="$SHARE/go"
 export PATH="$PATH:$GOPATH/bin"
 
-# Rust
-export PATH="$PATH:$HOME/.cargo/bin"
+export JULIA_DEPOT_PATH="$SHARE/julia"
+export JULIA_HISTORY="$JULIA_DEPOT_PATH/logs/history"
 
-# Elixir
+# TODO: Why doesn't this work?
+# export irbrc="$SHARE/ruby/irbrc"
+
+export CARGO_HOME="$SHARE/cargo"
+export PATH="$PATH:$CARGO_HOME/bin"
+
 export ERL_AFLAGS="-kernel shell_history enabled"
 
-# OCaml
-command -v opam &> /dev/null && eval $(opam config env)
-
-# Ruby
-export PATH="$PATH:$HOME/.rvm/bin"
+export OPAMROOT="$SHARE/opam"
+export PATH="$PATH:$OPAMROOT/default/bin"
+command -v opam &> /dev/null && eval "$(opam env)"
 
 # asdf
-[ -d "$HOME/.asdf" ] && source "$HOME/.asdf/asdf.sh"
+export ASDF_DATA_DIR="$SHARE/asdf"
+[ -d "/opt/asdf-vm" ] && source "/opt/asdf-vm/asdf.sh"
 
 # Private
-[ -f "$HOME/.config/.privaterc" ] && source "$HOME/.config/.privaterc"
+[ -f "$CONFIG/.privaterc" ] && source "$CONFIG/.privaterc"
