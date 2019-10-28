@@ -22,7 +22,6 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
 fi
 
 xrdb -merge $HOME/.Xresources
-setxkbmap -option terminate:ctrl_alt_bksp
 command -v dunst && dunst &
 command -v gebaard && gebaard -b
 $HOME/.config/i3/fehbg

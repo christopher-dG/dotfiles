@@ -5,6 +5,7 @@
 ;;; Code:
 
 ;; Package init.
+(setq url-user-agent "curl/7.65.1")
 (require 'package)
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -16,11 +17,11 @@
   (package-install 'use-package))
 (require 'use-package)
 (setq use-package-always-ensure t)
-(use-package auto-package-update
-  :config
-  (setq auto-package-update-delete-old-versions t)
-  (setq auto-package-update-hide-results t)
-  (auto-package-update-maybe))
+; (use-package auto-package-update)
+;   :config
+;   (setq auto-package-update-delete-old-versions t)
+;   (setq auto-package-update-hide-results t)
+;   (auto-package-update-maybe))
 (push "~/.emacs.d/lisp" load-path)
 
 ;; Hide some minor modes.
@@ -30,7 +31,7 @@
 (use-package tramp)
 (setq tramp-default-method "ssh")
 ;; TODO: Fix this...
-(setq tramp-shell-prompt-pattern ".*")
+; (setq tramp-shell-prompt-pattern ".*")
 
 ;; Put customizations in a separate file.
 (setq custom-file "~/.emacs.d/customize.el")
@@ -281,7 +282,7 @@
             (lambda ()
               (julia-repl-mode)
               (local-set-key (kbd "C-C j") 'julia-repl))))
-(require 'julia-dumbcompleter)
+; (require 'julia-dumbcompleter)
 
 ;; Python.
 (use-package elpy
@@ -343,8 +344,14 @@
   :custom utop-command "opam config exec -- utop -emacs"
   :hook (tuareg-mode . utop-minor-mode))
 (push "~/.opam/default/share/emacs/site-lisp" load-path)
-(require 'ocp-indent)
-(require 'dune)
+; (require 'ocp-indent)
+; (require 'dune)
+
+;; Common Lisp.
+(use-package slime
+  :config
+  (setq inferior-lisp-program "/usr/bin/sbcl")
+  (setq slime-contribs '(slime-fancy)))
 
 (provide 'init)
 

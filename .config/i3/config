@@ -140,5 +140,5 @@ mode "resize" {
 }
 
 # Gaps
-for_window [class=".*"] border pixel 3
-gaps inner 15
+gaps inner 3
+new_window pixel 3

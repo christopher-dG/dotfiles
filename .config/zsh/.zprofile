@@ -21,7 +21,6 @@ export PYTHONSTARTUP="$PYTHON/pythonrc"
 export PYTHONHISTORY="$PYTHON/history"
 [ -f "$PYTHONHISTORY" ] || touch "$PYTHONHISTORY"
 export WORKON_HOME="$PYTHON/virtualenvs"
-[ -d "$WORKON_HOME" ] && source virtualenvwrapper.sh  # TODO: Make this work.
 
 export GOPATH="$SHARE/go"
 export PATH="$PATH:$GOPATH/bin"
@@ -32,14 +31,7 @@ export JULIA_HISTORY="$JULIA_DEPOT_PATH/logs/history"
 # TODO: Why doesn't this work?
 # export irbrc="$SHARE/ruby/irbrc"
 
-export CARGO_HOME="$SHARE/cargo"
-export PATH="$PATH:$CARGO_HOME/bin"
-
 export ERL_AFLAGS="-kernel shell_history enabled"
-
-export OPAMROOT="$SHARE/opam"
-export PATH="$PATH:$OPAMROOT/default/bin"
-command -v opam &> /dev/null && eval "$(opam env)"
 
 # asdf
 export ASDF_DATA_DIR="$SHARE/asdf"

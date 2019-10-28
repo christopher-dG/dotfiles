@@ -43,7 +43,7 @@ alias gs="git status"
 alias ga="git add"
 alias gch="git checkout"
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-gcl() { git clone "git@github.com:christopher-dG/$1.git" "$2" }
+gcl() { git clone "git@github.com:christopher-dG/$1.git" $2 }
 
 # Misc.
 alias emacs="emacs -q -nw"
@@ -52,6 +52,7 @@ alias sqlite3="sqlite3 -init $HOME/.config/sqlite3/sqliterc"
 alias tmux="tmux -f $HOME/.config/tmux/config"
 alias rs="redshift -PO"
 alias unrs="redshift -PO 6500"
+[ -d "$WORKON_HOME" ] && source virtualenvwrapper_lazy.sh
 man() {  # Coloured man pages.
   LESS_TERMCAP_md=$'\e[01;31m' \
   LESS_TERMCAP_me=$'\e[0m' \
