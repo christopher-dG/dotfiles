@@ -1,11 +1,4 @@
-;;; init.el --- Emacs configuration.
-;;; Commentary:
-;;; Flycheck is a pain.
-
-;;; Code:
-
-;; Package init.
-(setq url-user-agent "curl/7.65.1")
+;; Basic package setup.
 (require 'package)
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -17,21 +10,13 @@
   (package-install 'use-package))
 (require 'use-package)
 (setq use-package-always-ensure t)
-; (use-package auto-package-update)
-;   :config
-;   (setq auto-package-update-delete-old-versions t)
-;   (setq auto-package-update-hide-results t)
-;   (auto-package-update-maybe))
+
+;; Any custom stuff goes in this directory.
 (push "~/.emacs.d/lisp" load-path)
 
-;; Hide some minor modes.
-(use-package delight)
-
-;; SSH for tramp.
+;; Tramp is for editing files on remote systems.
 (use-package tramp)
 (setq tramp-default-method "ssh")
-;; TODO: Fix this...
-; (setq tramp-shell-prompt-pattern ".*")
 
 ;; Put customizations in a separate file.
 (setq custom-file "~/.emacs.d/customize.el")
@@ -70,10 +55,6 @@
 (global-display-line-numbers-mode)
 (column-number-mode)
 
-;; Modal editing.
-(use-package god-mode)
-(global-set-key (kbd "<escape>") 'god-local-mode)
-
 ;; Don't freeze on C-z when not running in a terminal.
 (global-set-key (kbd "C-z")
                 (lambda ()
@@ -84,26 +65,17 @@
 ;; Simpler repeat key.
 (global-set-key (kbd "C-,") 'repeat)
 
-;; Themes and fonts.
+;; Colour theme.
 (use-package nord-theme)
-(if (daemonp)
-    (add-hook 'after-make-frame-functions
-	            (lambda (frame)
-		            (with-selected-frame frame
-                  (load-theme 'nord t)
-                  (set-frame-font "xos4 terminus"))))
-  (progn
-    (load-theme 'nord t)
-    (set-frame-font "xos4 terminus")))
+
+;; Font.
+(set-frame-font "xos4 terminus")
 
 ;; Don't overflow lines in term-mode.
-(add-hook 'term-mode-hook (lambda () (display-line-numbers-mode -1)))
+(defun disable-line-numbers () (display-line-numbers-mode -1))
+(add-hook 'term-mode-hook 'disable-line-numbers)
 
-;; Text size.
-(global-set-key (kbd "C-=") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
-
-;; Require trailing newlines.
+;; Always add trailing newlines.
 (setq require-final-newline t)
 
 ;; Delete trailing whitespace before saving, except in Markdown mode,
@@ -131,48 +103,39 @@
   :config
   (counsel-mode)
   (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) ")
-  :delight)
-;; For some reason, using :bind here makes counsel mode not active at startup.
+  (setq ivy-count-format "(%d/%d) "))
 (global-set-key (kbd "C-s") 'swiper)
 (global-set-key (kbd "C-c r g") 'counsel-rg)
 (global-set-key (kbd "C-x b") 'counsel-ibuffer)
-;; Projectile for project management.
+
+;; Projectile is for project management (finding files, etc.).
 (use-package projectile
   :config (projectile-mode)
-  :bind-keymap ("C-c p" . projectile-command-map)
-  :delight '(:eval (concat " p:" (projectile-project-name))))
+  :bind-keymap ("C-c p" . projectile-command-map))
 
-;; Visual stuff.
-(use-package powerline
-  :config (powerline-default-theme))
-
-;; Keybinding popups.
+;; Show helpful keybinding popups.
 (use-package which-key
   :config
   (which-key-mode)
-  (setq which-key-idle-delay 0.5)
-  (which-key-enable-god-mode-support)
-  :delight)
+  (setq which-key-idle-delay 0.5))
 
+;; Update buffers when their files are updated.
 (use-package autorevert
-  :config (global-auto-revert-mode)
-  :delight auto-revert-mode)
+  :config (global-auto-revert-mode))
 
 ;; Parenthesis magic.
 (show-paren-mode)
 (use-package smartparens
   :config
   (require 'smartparens-config)
-  (smartparens-global-mode)
-  :delight)
+  (smartparens-global-mode))
 (global-set-key (kbd "C-c w") 'mark-sexp)
 (global-set-key (kbd "C-c u") 'sp-unwrap-sexp)
 (global-set-key (kbd "C-M-f") 'sp-forward-sexp)
 (global-set-key (kbd "C-M-b") 'sp-backward-sexp)
 (global-set-key (kbd "C-M-k") 'sp-kill-sexp)
 
-;; Autocompletion.
+;; Company is for autocompletion.
 (use-package company
   :config
   (global-company-mode)
@@ -181,37 +144,17 @@
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
   :custom company-minimum-prefix-length 1)
-(use-package company-math
-  :config (add-to-list 'company-backends 'company-math-symbols-unicode))
 (use-package company-quickhelp
   :config (company-quickhelp-mode))
-(defun tabnine-enable ()
-  "Enable TabNine completion in this buffer."
-  (interactive)
-  (add-to-list 'company-backends 'company-tabnine t)
-  (message "Enabled TabNine"))
-(defun tabnine-disable ()
-  "Disable TabNine completion in this buffer."
-  (interactive)
-  (setq company-backends (remove 'company-tabnine company-backends))
-  (message "Disabled TabNine"))
-(use-package company-tabnine
-  :custom company-tabnine-binaries-folder "~/.emacs.d/tabnine")
 
-;; Linting.
-(use-package flycheck
-  :config (global-flycheck-mode)
-  :delight)
 
 ;; Git integrations.
 (use-package magit
   :bind ("C-c g" . magit-status))
 (setenv "GNUPGHOME" "~/.local/share/gnupg")
 (setq auth-sources '((:source "~/.config/authinfo.gpg")))
-(use-package forge)
 (use-package git-gutter
-  :config (global-git-gutter-mode 1)
-  :delight)
+  :config (global-git-gutter-mode 1))
 (use-package magit-todos
   :config (magit-todos-mode))
 
@@ -221,79 +164,45 @@
          ("C-c m n" . mc/mark-next-like-this)
          ("C-c m e" . mc/edit-lines)))
 
-;; Snippets.
-(use-package yasnippet
-  :config (yas-global-mode 1))
-(use-package yasnippet-snippets)
-
 ;; For jumping to definitions.
 (use-package dumb-jump
   :config (dumb-jump-mode)
   :bind (("C-." . dumb-jump-go)
          ("M-." . dumb-jump-back)))
 
-;; For jumping around a buffer.
-(use-package ace-jump-mode
-  :bind ("C-c SPC" . ace-jump-word-mode))
-
 ;; For jumping between windows.
 (use-package ace-window
   :bind ("C-x o" . ace-window))
 
 ;; Tab width.
-(defvar c-basic-offset)
-(defvar sh-basic-offset)
-(defvar js-indent-level)
 (setq c-basic-offset 2)
 (setq sh-basic-offset 2)
 (setq js-indent-level 2)
 
-;; Emacs anywhere popup configuration.
-(defun popup-handler (_app _title _x _y w h)
-  "Handle popups from Emacs Anywhere (resize to W x H)."
-  (markdown-mode)
-  (local-set-key (kbd "C-c C-c") 'delete-frame)
-  ; TODO: Resize does not work.
-  (set-frame-size (selected-frame) (/ w 5) (/ h 5) t))
-(add-hook 'ea-popup-hook 'popup-handler)
-
-;; Fun stuff.
-(use-package hackernews)
-(global-set-key (kbd "C-c h n") 'hackernews)
-(require 'youtube)
-(global-set-key (kbd "C-c y t") 'yt/search-and-play)
-(global-set-key (kbd "C-c y p") 'yt/playback-toggle)
-(global-set-key (kbd "C-c y q") 'yt/playback-stop)
-
 ;; Config/markup/misc. languages.
-(use-package markdown-mode)
 (use-package dockerfile-mode)
 (use-package yaml-mode)
 (use-package toml-mode)
 (use-package ahk-mode)
 
+;; Language Server frontend.
+(use-package eglot)
+
 ;; Julia.
-; (use-package julia-repl)
-; (add-hook 'julia-repl-hook (lambda () (display-line-numbers-mode -1)))
-(use-package julia-mode
-  :config
-  (add-hook 'julia-mode-hook 'tabnine-enable)
-  (add-hook 'julia-mode-hook
-            (lambda ()
-              (julia-repl-mode)
-              (local-set-key (kbd "C-C j") 'julia-repl))))
-; (require 'julia-dumbcompleter)
+(use-package julia-mode)
+(use-package julia-repl)
+(add-hook 'julia-mode-hook
+          (lambda ()
+            (julia-repl-mode)
+            (local-set-key (kbd "C-C j") 'julia-repl)))
 
 ;; Python.
 (use-package elpy
   :init
-  (elpy-enable)
-  (add-hook 'python-mode-hook 'tabnine-disable))
-(add-hook 'elpy-mode-hook (lambda () (flymake-mode -1)))
+  (elpy-enable))
 
 ;; Elixir.
-;; TODO: LS stuff.
-(use-package alchemist)
+(use-package elixir-mode)
 
 ;; Go.
 (setenv "GOPATH" (file-truename "~/.go"))
@@ -307,7 +216,6 @@
 (use-package go-eldoc
   :config
   :hook (go-mode . go-eldoc-setup))
-(add-hook 'go-mode-hook 'tabnine-disable)
 (defun gocode-toggle ()
   "Toggle the gocode executable between the mod and non-mod versions."
   (interactive)
@@ -321,38 +229,6 @@
     (custom-reevaluate-setting 'company-idle-delay))
   (message company-go-gocode-command))
 
-;; Rust.
-(use-package rust-mode
-  :config (setq rust-format-on-save t))
-(use-package flycheck-rust
-  :hook (flycheck-mode . flycheck-rust-setup))
-(use-package cargo
-  :delight cargo-minor-mode
-  :hook (rust-mode . cargo-minor-mode))
-(use-package racer
-  :delight
-  :hook (rust-mode-hook . racer-mode))
+;; EXPERIMENT SECTION: New languages, weird plugins, etc.
 
-;; Elisp.
-(add-hook 'emacs-lisp-mode 'tabnine-disable)
-
-;; OCaml.
-(use-package tuareg)
-(use-package merlin
-  :hook (tuareg-mode . merlin-mode))
-(use-package utop
-  :custom utop-command "opam config exec -- utop -emacs"
-  :hook (tuareg-mode . utop-minor-mode))
-(push "~/.opam/default/share/emacs/site-lisp" load-path)
-; (require 'ocp-indent)
-; (require 'dune)
-
-;; Common Lisp.
-(use-package slime
-  :config
-  (setq inferior-lisp-program "/usr/bin/sbcl")
-  (setq slime-contribs '(slime-fancy)))
-
-(provide 'init)
-
-;;; init.el ends here
+(use-package idris-mode)
