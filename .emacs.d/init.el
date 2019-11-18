@@ -37,6 +37,9 @@
 ;; Save backups to a single directory, not the current one.
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
 
+;; Disable lock file.
+(setq create-lockfiles nil)
+
 ;; Never use tabs.
 (setq-default indent-tabs-mode nil)
 
@@ -54,6 +57,7 @@
 ;; Line and column numbers.
 (global-display-line-numbers-mode)
 (column-number-mode)
+(global-hl-line-mode)
 
 ;; Don't freeze on C-z when not running in a terminal.
 (global-set-key (kbd "C-z")
@@ -68,11 +72,16 @@
 ;; Colour theme.
 (use-package nord-theme)
 
+;; Don't display some minor modes.
+(use-package delight)
+
 ;; Font.
 (set-frame-font "xos4 terminus")
 
 ;; Don't overflow lines in term-mode.
-(defun disable-line-numbers () (display-line-numbers-mode -1))
+(defun disable-line-numbers ()
+  "Disable line numbers."
+  (display-line-numbers-mode -1))
 (add-hook 'term-mode-hook 'disable-line-numbers)
 
 ;; Always add trailing newlines.
@@ -103,10 +112,20 @@
   :config
   (counsel-mode)
   (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) "))
+  (setq ivy-count-format "(%d/%d) ")
+  :delight)
 (global-set-key (kbd "C-s") 'swiper)
 (global-set-key (kbd "C-c r g") 'counsel-rg)
 (global-set-key (kbd "C-x b") 'counsel-ibuffer)
+
+;; Linting.
+(use-package flycheck
+  :config (global-flycheck-mode)
+  :delight)
+
+;; Text size.
+(global-set-key (kbd "C-=") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
 
 ;; Projectile is for project management (finding files, etc.).
 (use-package projectile
@@ -117,18 +136,20 @@
 (use-package which-key
   :config
   (which-key-mode)
-  (setq which-key-idle-delay 0.5))
+  (setq which-key-idle-delay 0.5)
+  :delight)
 
 ;; Update buffers when their files are updated.
-(use-package autorevert
-  :config (global-auto-revert-mode))
+(use-package autorevert)
+(global-auto-revert-mode)
 
 ;; Parenthesis magic.
 (show-paren-mode)
 (use-package smartparens
   :config
   (require 'smartparens-config)
-  (smartparens-global-mode))
+  (smartparens-global-mode)
+  :delight)
 (global-set-key (kbd "C-c w") 'mark-sexp)
 (global-set-key (kbd "C-c u") 'sp-unwrap-sexp)
 (global-set-key (kbd "C-M-f") 'sp-forward-sexp)
@@ -154,7 +175,8 @@
 (setenv "GNUPGHOME" "~/.local/share/gnupg")
 (setq auth-sources '((:source "~/.config/authinfo.gpg")))
 (use-package git-gutter
-  :config (global-git-gutter-mode 1))
+  :config (global-git-gutter-mode 1)
+  :delight)
 (use-package magit-todos
   :config (magit-todos-mode))
 
@@ -185,9 +207,6 @@
 (use-package toml-mode)
 (use-package ahk-mode)
 
-;; Language Server frontend.
-(use-package eglot)
-
 ;; Julia.
 (use-package julia-mode)
 (use-package julia-repl)
@@ -205,7 +224,7 @@
 (use-package elixir-mode)
 
 ;; Go.
-(setenv "GOPATH" (file-truename "~/.go"))
+(setenv "GOPATH" (file-truename "~/.local/share/go"))
 (use-package go-mode
   :config
   (setq gofmt-command "goimports")
@@ -231,4 +250,21 @@
 
 ;; EXPERIMENT SECTION: New languages, weird plugins, etc.
 
-(use-package idris-mode)
+;; TypeScript and other web stuff.
+(use-package tide
+  :config
+  (add-hook 'typescript-mode-hook
+            (lambda ()
+              (tide-setup)
+              (add-hook 'before-save-hook 'tide-format-before-save))))
+(use-package web-mode
+  :custom
+  (web-mode-markup-indent-offset 2)
+  (web-mode-css-indent-offset 2)
+  (web-mode-code-indent-offset 2))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+(add-hook 'web-mode-hook
+          (lambda ()
+            (when (string-equal "tsx" (file-name-extension buffer-file-name))
+              (setup-tide-mode))))
+(flycheck-add-mode 'typescript-tslint 'web-mode)
