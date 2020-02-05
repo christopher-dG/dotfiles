@@ -15,3 +15,5 @@
 	gpgsign = true
 [core]
 	excludesfile = ~/.config/git/ignore
+[tag]
+	gpgSign = true
