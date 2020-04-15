@@ -1,4 +1,5 @@
 # General
+export MAKEFLAGS="-j$(nproc)"
 export "PATH=$PATH:$HOME/.local/bin"
 export ALTERNATE_EDITOR=""
 export EDITOR="emacs -q -nw"
@@ -27,6 +28,7 @@ export PATH="$PATH:$GOPATH/bin"
 
 export JULIA_DEPOT_PATH="$SHARE/julia"
 export JULIA_HISTORY="$JULIA_DEPOT_PATH/logs/history"
+export JULIA_PROJECT="@."
 
 # TODO: Why doesn't this work?
 # export irbrc="$SHARE/ruby/irbrc"

@@ -117,8 +117,8 @@ bindsym XF86AudioNext exec --no-startup-id baton next
 bindsym XF86AudioLowerVolume exec --no-startup-id blocklet volume 5%-
 bindsym XF86AudioRaiseVolume exec --no-startup-id blocklet volume 5%+
 bindsym XF86AudioMute exec --no-startup-id blocklet volume mute
-bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5
-bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
+bindsym XF86MonBrightnessUp exec --no-startup-id sudo light -A 5
+bindsym XF86MonBrightnessDown exec --no-startup-id sudo light -U 5
 
 # Emacs anywhere
 bindsym $mod+w exec --no-startup-id $HOME/.emacs_anywhere/bin/run

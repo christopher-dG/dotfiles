@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-which xbacklight &> /dev/null || exit
+which light &> /dev/null || exit
 
-printf "backlight: %.0f%%\n" $(xbacklight -get)
+printf "backlight: %.0f%%\n" $(light)

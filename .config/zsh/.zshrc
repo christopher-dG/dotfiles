@@ -47,7 +47,6 @@ gcl() { git clone "git@github.com:christopher-dG/$1.git" $2 }
 
 # Misc.
 alias emacs="emacs -q -nw"
-alias julia="julia --project -q"
 alias sqlite3="sqlite3 -init $HOME/.config/sqlite3/sqliterc"
 alias tmux="tmux -f $HOME/.config/tmux/config"
 alias rs="redshift -PO"

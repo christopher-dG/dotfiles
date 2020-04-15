@@ -18,3 +18,17 @@ end
 macro exs(exs...)
     exs
 end
+
+function TEMPLATE()
+    @eval begin
+        using PkgTemplates
+        Template(
+            dir="~/code",
+            plugins=[
+                Documenter{TravisCI}(),
+                Git(; gpgsign=true, manifest=true, ssh=true),
+                TravisCI(; osx=false, windows=false),
+            ],
+        )
+    end
+end
