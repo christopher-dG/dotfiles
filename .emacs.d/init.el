@@ -23,17 +23,6 @@
 (shell-command (concat "touch " custom-file))
 (load custom-file)
 
-;; Add common bin directories to the path, and make it easy to do on the fly.
-(defun add-to-path (&optional path)
-  "Add a PATH to the exec path."
-  (interactive)
-  (let ((path (file-truename (or path (read-directory-name "Enter a directory: " "~/")))))
-    (add-to-list 'exec-path path)
-    (setenv "PATH" (concat (getenv "PATH") ":" path))))
-(mapc 'add-to-path
-      '("/usr/local/bin" "~/.local/bin" "~/.local/share/go/bin"
-        "~/.local/share/cargo/bin" "~/.local/share/opam/default/bin"))
-
 ;; Save backups to a single directory, not the current one.
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
 
@@ -70,19 +59,25 @@
 (global-set-key (kbd "C-,") 'repeat)
 
 ;; Colour theme.
-(use-package nord-theme)
+(use-package base16-theme
+  :config (load-theme 'base16-ashes t))
 
 ;; Don't display some minor modes.
 (use-package delight)
 
 ;; Font.
 (set-frame-font "xos4 terminus")
+(set-face-attribute 'default nil :height 140)
 
-;; Don't overflow lines in term-mode.
+;; A nicer terminal emulator.
+(use-package vterm)
 (defun disable-line-numbers ()
   "Disable line numbers."
   (display-line-numbers-mode -1))
 (add-hook 'term-mode-hook 'disable-line-numbers)
+(add-hook 'vterm-mode-hook 'disable-line-numbers)
+(add-hook 'vterm-mode-hook
+          (lambda() (set (make-local-variable 'global-hl-line-mode) nil)))
 
 ;; Always add trailing newlines.
 (setq require-final-newline t)
@@ -172,13 +167,14 @@
 ;; Git integrations.
 (use-package magit
   :bind ("C-c g" . magit-status))
-(setenv "GNUPGHOME" "~/.local/share/gnupg")
-(setq auth-sources '((:source "~/.config/authinfo.gpg")))
+(setq auth-sources '((:source "~/.emacs.d/authinfo.gpg")))
 (use-package git-gutter
   :config (global-git-gutter-mode 1)
   :delight)
 (use-package magit-todos
   :config (magit-todos-mode))
+(use-package forge
+  :after magit)
 
 ;; Multiple cursor magic.
 (use-package multiple-cursors
@@ -218,7 +214,9 @@
 ;; Python.
 (use-package elpy
   :init
-  (elpy-enable))
+  (elpy-enable)
+  :config
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules)))
 
 ;; Elixir.
 (use-package elixir-mode)
@@ -233,7 +231,6 @@
 (use-package company-go
   :config (add-to-list 'company-backends 'company-go))
 (use-package go-eldoc
-  :config
   :hook (go-mode . go-eldoc-setup))
 (defun gocode-toggle ()
   "Toggle the gocode executable between the mod and non-mod versions."

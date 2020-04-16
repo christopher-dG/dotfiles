@@ -48,7 +48,7 @@ gcl() { git clone "git@github.com:christopher-dG/$1.git" $2 }
 # Misc.
 alias emacs="emacs -q -nw"
 alias sqlite3="sqlite3 -init $HOME/.config/sqlite3/sqliterc"
-alias tmux="tmux -f $HOME/.config/tmux/config"
+alias tmux="tmux -f $HOME/.config/tmux/tmux.conf"
 alias rs="redshift -PO"
 alias unrs="redshift -PO 6500"
 [ -d "$WORKON_HOME" ] && source virtualenvwrapper_lazy.sh
@@ -60,7 +60,4 @@ man() {  # Coloured man pages.
   LESS_TERMCAP_ue=$'\e[0m' \
   LESS_TERMCAP_us=$'\e[01;32m' \
   command man "$@"
-}
-home() {
-  ssh "$1@$HOMEIP"
 }

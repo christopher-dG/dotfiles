@@ -1,2 +1,3 @@
 *.env
+.dir-locals.el
 .tool-versions
