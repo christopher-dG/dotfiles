@@ -249,22 +249,3 @@
   (message company-go-gocode-command))
 
 ;; EXPERIMENT SECTION: New languages, weird plugins, etc.
-
-;; TypeScript and other web stuff.
-(use-package tide
-  :config
-  (add-hook 'typescript-mode-hook
-            (lambda ()
-              (tide-setup)
-              (add-hook 'before-save-hook 'tide-format-before-save))))
-(use-package web-mode
-  :custom
-  (web-mode-markup-indent-offset 2)
-  (web-mode-css-indent-offset 2)
-  (web-mode-code-indent-offset 2))
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-(add-hook 'web-mode-hook
-          (lambda ()
-            (when (string-equal "tsx" (file-name-extension buffer-file-name))
-              (setup-tide-mode))))
-(flycheck-add-mode 'typescript-tslint 'web-mode)
