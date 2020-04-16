@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-
-b=$1
-shift 1
-exec "$HOME/.config/i3/blocklets/$b" "$@"

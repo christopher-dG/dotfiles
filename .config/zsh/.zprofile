@@ -1,4 +1,5 @@
 # General
+export DISPLAY="$(grep nameserver /etc/resolv.conf | awk '{print $2}'):0"
 export MAKEFLAGS="-j$(nproc)"
 export "PATH=$PATH:$HOME/.local/bin"
 export ALTERNATE_EDITOR=""

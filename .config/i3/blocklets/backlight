@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-which light &> /dev/null || exit
-
-printf "backlight: %.0f%%\n" $(light)
