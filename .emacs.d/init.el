@@ -135,8 +135,8 @@
   :delight)
 
 ;; Update buffers when their files are updated.
-(use-package autorevert)
-(global-auto-revert-mode)
+(use-package autorevert
+  :config (global-auto-revert-mode))
 
 ;; Parenthesis magic.
 (show-paren-mode)
@@ -222,7 +222,6 @@
 (use-package elixir-mode)
 
 ;; Go.
-(setenv "GOPATH" (file-truename "~/.local/share/go"))
 (use-package go-mode
   :config
   (setq gofmt-command "goimports")

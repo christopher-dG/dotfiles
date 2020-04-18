@@ -7,6 +7,10 @@ atreplinit() do repl
     end
 end
 
+module Locals
+
+export @ex, @exs
+
 "Parse and return the given expression."
 macro ex(ex)
     QuoteNode(ex)
@@ -17,12 +21,12 @@ macro exs(exs...)
     exs
 end
 
-make_sysimage(packages=:Revise) = @eval begin
+sysimage(packages=:Revise) = @eval begin
     using PackageCompiler: create_sysimage
-    create_sysimage($packages; replace_default=true)
+    create_sysimage($(QuoteNode(packages)); replace_default=true)
 end
 
-TEMPLATE() = @eval begin
+template() = @eval begin
     using PkgTemplates
     Template(
         dir="~/code",
@@ -33,3 +37,7 @@ TEMPLATE() = @eval begin
         ],
     )
 end
+
+end
+
+using .Locals
