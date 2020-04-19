@@ -23,7 +23,8 @@
 (shell-command (concat "touch " custom-file))
 (load custom-file)
 
-;; Save backups to a single directory, not the current one.
+;; Autosaves to the same file, and save backups to a single directory.
+(auto-save-visited-mode)
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
 
 ;; Disable lock file.
@@ -43,10 +44,10 @@
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
 
-;; Line and column numbers.
-(global-display-line-numbers-mode)
-(column-number-mode)
-(global-hl-line-mode)
+;; Line/column numbers + current line highlighting when programming.
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'prog-mode-hook 'column-number-mode)
+(add-hook 'prog-mode-hook 'global-hl-line-mode)
 
 ;; Don't freeze on C-z when not running in a terminal.
 (global-set-key (kbd "C-z")
@@ -71,13 +72,6 @@
 
 ;; A nicer terminal emulator.
 (use-package vterm)
-(defun disable-line-numbers ()
-  "Disable line numbers."
-  (display-line-numbers-mode -1))
-(add-hook 'term-mode-hook 'disable-line-numbers)
-(add-hook 'vterm-mode-hook 'disable-line-numbers)
-(add-hook 'vterm-mode-hook
-          (lambda() (set (make-local-variable 'global-hl-line-mode) nil)))
 
 ;; Always add trailing newlines.
 (setq require-final-newline t)
@@ -174,7 +168,8 @@
 (use-package magit-todos
   :config (magit-todos-mode))
 (use-package forge
-  :after magit)
+  :after magit
+  :config (forge-toggle-closed-visibility))
 
 ;; Multiple cursor magic.
 (use-package multiple-cursors
@@ -205,18 +200,16 @@
 
 ;; Julia.
 (use-package julia-mode)
-(use-package julia-repl)
-(add-hook 'julia-mode-hook
-          (lambda ()
-            (julia-repl-mode)
-            (local-set-key (kbd "C-C j") 'julia-repl)))
+(use-package jupyter
+  :custom
+  jupyter-repl-prompt-margin-width 0
+  jupyter-eval-use-overlays t
+  :bind ("C-c j" . jupyter-run-repl))
 
 ;; Python.
 (use-package elpy
-  :init
-  (elpy-enable)
-  :config
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules)))
+  :init (elpy-enable)
+  :config (setq elpy-modules (delq 'elpy-module-flymake elpy-modules)))
 
 ;; Elixir.
 (use-package elixir-mode)
@@ -226,7 +219,7 @@
   :config
   (setq gofmt-command "goimports")
   (add-hook 'before-save-hook 'gofmt-before-save)
-  :custom (tab-width 2))
+  :custom tab-width 2)
 (use-package company-go
   :config (add-to-list 'company-backends 'company-go))
 (use-package go-eldoc
