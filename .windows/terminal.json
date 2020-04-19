@@ -30,7 +30,7 @@
                 "guid": "{b5a97cb8-8961-5535-816d-772efe0c6a3f}",
                 "hidden": false,
                 "name": "Emacs",
-                "commandline": "wsl.exe genie -c emacs --chdir=$HOME"
+                "commandline": "wsl.exe genie -c emacs --fullscreen --chdir=$HOME"
             }
         ]
     },
