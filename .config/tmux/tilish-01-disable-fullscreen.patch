@@ -1,0 +1,13 @@
+diff --git a/tilish.tmux b/tilish.tmux
+index 41ba43d..d138966 100755
+--- a/tilish.tmux
++++ b/tilish.tmux
+@@ -146,7 +146,7 @@ bind_layout "${mod}s" 'main-horizontal'
+ bind_layout "${mod}S" 'even-vertical'
+ bind_layout "${mod}v" 'main-vertical'
+ bind_layout "${mod}V" 'even-horizontal'
+-bind_layout "${mod}f" 'fullscreen'
++# bind_layout "${mod}f" 'fullscreen'
+ bind_layout "${mod}t" 'tiled'
+ 
+ # Refresh the current layout (e.g. after deleting a pane).
