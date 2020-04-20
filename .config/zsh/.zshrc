@@ -45,6 +45,9 @@ alias gch="git checkout"
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 gcl() { git clone "git@github.com:christopher-dG/$1.git" $2 }
 
+export PINENTRY_USER_DATA="curses"
+export GPG_TTY="$(tty)"
+
 # Misc.
 alias emacs="emacs -q -nw"
 alias sqlite3="sqlite3 -init $HOME/.config/sqlite3/sqliterc"
