@@ -157,7 +157,6 @@
 (use-package company-quickhelp
   :config (company-quickhelp-mode))
 
-
 ;; Git integrations.
 (use-package magit
   :bind ("C-c g" . magit-status))
