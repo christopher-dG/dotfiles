@@ -6,15 +6,17 @@
     "$schema": "https://aka.ms/terminal-profiles-schema",
 
     "defaultProfile": "{a5a97cb8-8961-5535-816d-772efe0c6a3f}",
+    "launchMode": "maximized",
 
     "profiles":
     {
         "defaults":
         {
-            "colorScheme": "base16-ashes",
             "cursorShape": "filledBox",
+            "colorScheme": "base16-ashes",
             "fontFace": "Terminus (TTF) for Windows",
-            "fontSize": 14
+            "fontSize": 14,
+            "scrollbarState": "hidden"
         },
         "list":
         [

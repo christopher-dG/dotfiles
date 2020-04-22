@@ -199,11 +199,13 @@
 
 ;; Julia.
 (use-package julia-mode)
+(use-package julia-repl)
+(add-hook 'julia-mode-hook
+          (lambda ()
+            (julia-repl-mode)
+            (local-set-key (kbd "C-C j") 'julia-repl)))
 (use-package jupyter
-  :custom
-  jupyter-repl-prompt-margin-width 0
-  jupyter-eval-use-overlays t
-  :bind ("C-c j" . jupyter-run-repl))
+  :custom jupyter-eval-use-overlays t)
 
 ;; Python.
 (use-package elpy
