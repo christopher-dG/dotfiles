@@ -10,6 +10,9 @@
   (package-install 'use-package))
 (require 'use-package)
 (setq use-package-always-ensure t)
+(use-package auto-package-update
+  :custom  auto-package-update-delete-old-versions t
+  :config (auto-package-update-maybe))
 
 ;; Colour theme.
 (use-package base16-theme
@@ -123,9 +126,8 @@
 
 ;; Show helpful keybinding popups.
 (use-package which-key
-  :config
-  (which-key-mode)
-  (setq which-key-idle-delay 0.5)
+  :custom which-key-idle-delay 0.5
+  :config (which-key-mode)
   :delight)
 
 ;; Update buffers when their files are updated.
@@ -149,10 +151,12 @@
 (use-package company
   :config
   (global-company-mode)
-  (global-set-key (kbd "C-;") 'company-complete)
-  (define-key company-active-map (kbd "C-n") 'company-select-next)
-  (define-key company-active-map (kbd "C-p") 'company-select-previous)
-  (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
+  :bind
+  (("C-;" . company-complete)
+   :map company-active-map
+   ("C-n" . company-select-next)
+   ("C-p" . company-select-previous)
+   ("TAB" . company-complete-common-or-cycle))
   :custom company-minimum-prefix-length 1)
 (use-package company-quickhelp
   :config (company-quickhelp-mode))
@@ -200,12 +204,13 @@
 ;; Julia.
 (use-package julia-mode)
 (use-package julia-snail
-  :hook (julia-mode . julia-snail-mode)
+  :hook
+  (julia-mode . julia-snail-mode)
   :bind
-  (:map julia-snail-mode-map
+  ((:map julia-snail-mode-map
         ("C-c C-j" . julia-snail))
-  (:map julia-snail-repl-mode-map
-        ("C-c C-j" . julia-snail-repl-go-back)))
+   (:map julia-snail-repl-mode-map
+         ("C-c C-j" . julia-snail-repl-go-back))))
 
 ;; Python.
 (use-package elpy
@@ -237,5 +242,3 @@
       (customize-set-variable 'company-idle-delay nil)
     (custom-reevaluate-setting 'company-idle-delay))
   (message company-go-gocode-command))
-
-;; EXPERIMENT SECTION: New languages, weird plugins, etc.
