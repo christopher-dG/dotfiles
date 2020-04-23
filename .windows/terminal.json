@@ -1,7 +1,3 @@
-
-// To view the default settings, hold "alt" while clicking on the "Settings" button.
-// For documentation on these settings, see: https://aka.ms/terminal-documentation
-
 {
     "$schema": "https://aka.ms/terminal-profiles-schema",
 
@@ -12,8 +8,8 @@
     {
         "defaults":
         {
-            "cursorShape": "filledBox",
             "colorScheme": "base16-ashes",
+            "cursorShape": "filledBox",
             "fontFace": "Terminus (TTF) for Windows",
             "fontSize": 14,
             "scrollbarState": "hidden"
@@ -27,12 +23,6 @@
                 "source": "Windows.Terminal.Wsl",
                 "commandline": "wsl.exe genie -c tmux -f ~/.config/tmux/tmux.conf",
                 "startingDirectory": "//wsl$/Arch/home/degraafc"
-            },
-            {
-                "guid": "{b5a97cb8-8961-5535-816d-772efe0c6a3f}",
-                "hidden": false,
-                "name": "Emacs",
-                "commandline": "wsl.exe genie -c emacs --fullscreen --chdir=$HOME"
             }
         ]
     },
@@ -63,6 +53,8 @@
     ],
 
     "keybindings": [
-        { "command": "unset", "keys": "alt+enter" }
+        { "command": "unset", "keys": "alt+enter" },
+        { "command": "unset", "keys": "ctrl+c" },
+        { "command": "unset", "keys": "ctrl+v" }
     ]
 }

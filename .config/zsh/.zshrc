@@ -50,6 +50,7 @@ export GPG_TTY="$(tty)"
 
 # Misc.
 alias emacs="emacs -q -nw"
+alias emacs-gtk="tmux new-session -c $HOME -d -s emacs emacs --fullscreen"
 alias sqlite3="sqlite3 -init $HOME/.config/sqlite3/sqliterc"
 alias tmux="tmux -f $HOME/.config/tmux/tmux.conf"
 alias rs="redshift -PO"
