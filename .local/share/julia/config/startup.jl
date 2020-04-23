@@ -2,8 +2,8 @@ atreplinit() do repl
     try
         @eval using Revise: Revise
         @async Revise.wait_steal_repl_backend()
-    catch
-        @warn "Couldn't start Revise"
+    catch err
+        @warn "Couldn't start Revise" ex=(err, catch_backtrace())
     end
 end
 

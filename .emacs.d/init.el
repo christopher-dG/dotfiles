@@ -11,6 +11,15 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+;; Colour theme.
+(use-package base16-theme
+  :config (load-theme 'base16-ashes t))
+
+;; Minimal UI: No bars.
+(menu-bar-mode 0)
+(tool-bar-mode 0)
+(scroll-bar-mode 0)
+
 ;; Any custom stuff goes in this directory.
 (push "~/.emacs.d/lisp" load-path)
 
@@ -39,11 +48,6 @@
 ;; Kill/yank using the X clipboard.
 (setq save-interprogram-paste-before-kill t)
 
-;; Minimal UI: No bars.
-(menu-bar-mode 0)
-(tool-bar-mode 0)
-(scroll-bar-mode 0)
-
 ;; Line/column numbers + current line highlighting when programming.
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'column-number-mode)
@@ -58,10 +62,6 @@
 
 ;; Simpler repeat key.
 (global-set-key (kbd "C-,") 'repeat)
-
-;; Colour theme.
-(use-package base16-theme
-  :config (load-theme 'base16-ashes t))
 
 ;; Don't display some minor modes.
 (use-package delight)
@@ -199,13 +199,13 @@
 
 ;; Julia.
 (use-package julia-mode)
-(use-package julia-repl)
-(add-hook 'julia-mode-hook
-          (lambda ()
-            (julia-repl-mode)
-            (local-set-key (kbd "C-C j") 'julia-repl)))
-(use-package jupyter
-  :custom jupyter-eval-use-overlays t)
+(use-package julia-snail
+  :hook (julia-mode . julia-snail-mode)
+  :bind
+  (:map julia-snail-mode-map
+        ("C-c C-j" . julia-snail))
+  (:map julia-snail-repl-mode-map
+        ("C-c C-j" . julia-snail-repl-go-back)))
 
 ;; Python.
 (use-package elpy
