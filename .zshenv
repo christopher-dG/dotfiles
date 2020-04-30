@@ -12,6 +12,7 @@ export LESSHISTFILE="-"
 
 # Cleaning up the home directory.
 export GNUPGHOME="$SHARE/gnupg"
+export PSQL_HISTORY="$SHARE/postgresql/history"
 export DOCKER_CONFIG="$CONFIG/docker"
 AWS="$CONFIG/aws"
 export AWS_CONFIG_FILE="$AWS/config"

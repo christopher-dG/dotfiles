@@ -10,9 +10,6 @@
   (package-install 'use-package))
 (require 'use-package)
 (setq use-package-always-ensure t)
-(use-package auto-package-update
-  :custom  auto-package-update-delete-old-versions t
-  :config (auto-package-update-maybe))
 
 ;; Colour theme.
 (use-package base16-theme
@@ -23,12 +20,17 @@
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
 
+;; Update packages now and then.
+(use-package auto-package-update
+  :custom  auto-package-update-delete-old-versions t
+  :config (auto-package-update-maybe))
+
 ;; Any custom stuff goes in this directory.
 (push "~/.emacs.d/lisp" load-path)
 
 ;; Tramp is for editing files on remote systems.
-(use-package tramp)
-(setq tramp-default-method "ssh")
+(use-package tramp
+  :custom tramp-default-method "ssh")
 
 ;; Put customizations in a separate file.
 (setq custom-file "~/.emacs.d/customize.el")
@@ -70,7 +72,7 @@
 (use-package delight)
 
 ;; Font.
-(set-frame-font "xos4 terminus")
+(set-frame-font "Monoid")
 (set-face-attribute 'default nil :height 140)
 
 ;; A nicer terminal emulator.
@@ -160,6 +162,9 @@
   :custom company-minimum-prefix-length 1)
 (use-package company-quickhelp
   :config (company-quickhelp-mode))
+(use-package company-tabnine
+  :custom company-tabnine-binaries-folder "~/.emacs.d/tabnine"
+  :config (add-to-list 'company-backends #'company-tabnine))
 
 ;; Git integrations.
 (use-package magit
@@ -203,14 +208,19 @@
 
 ;; Julia.
 (use-package julia-mode)
-(use-package julia-snail
-  :hook
-  (julia-mode . julia-snail-mode)
+(use-package julia-repl
+  :hook (julia-mode . julia-repl-mode)
   :bind
-  ((:map julia-snail-mode-map
-        ("C-c C-j" . julia-snail))
-   (:map julia-snail-repl-mode-map
-         ("C-c C-j" . julia-snail-repl-go-back))))
+  ((:map julia-repl-mode-map
+         ("C-c C-j" . julia-repl))))
+;; (use-package julia-snail
+;;   :hook
+;;   (julia-mode . julia-snail-mode)
+;;   :bind
+;;   ((:map julia-snail-mode-map
+;;         ("C-c C-j" . julia-snail))
+;;    (:map julia-snail-repl-mode-map
+;;          ("C-c C-j" . julia-snail-repl-go-back))))
 
 ;; Python.
 (use-package elpy
