@@ -124,7 +124,8 @@
 ;; Projectile is for project management (finding files, etc.).
 (use-package projectile
   :config (projectile-mode)
-  :bind-keymap ("C-c p" . projectile-command-map))
+  :bind-keymap ("C-c p" . projectile-command-map)
+  :delight)
 
 ;; Show helpful keybinding popups.
 (use-package which-key
@@ -159,12 +160,10 @@
    ("C-n" . company-select-next)
    ("C-p" . company-select-previous)
    ("TAB" . company-complete-common-or-cycle))
-  :custom company-minimum-prefix-length 1)
+  :custom company-minimum-prefix-length 1
+  :delight)
 (use-package company-quickhelp
   :config (company-quickhelp-mode))
-(use-package company-tabnine
-  :custom company-tabnine-binaries-folder "~/.emacs.d/tabnine"
-  :config (add-to-list 'company-backends #'company-tabnine))
 
 ;; Git integrations.
 (use-package magit
@@ -199,6 +198,7 @@
 (setq c-basic-offset 2)
 (setq sh-basic-offset 2)
 (setq js-indent-level 2)
+(setq-default tab-width 2)
 
 ;; Config/markup/misc. languages.
 (use-package dockerfile-mode)
@@ -206,49 +206,41 @@
 (use-package toml-mode)
 (use-package ahk-mode)
 
-;; Julia.
+;; Programming languages.
 (use-package julia-mode)
 (use-package julia-repl
   :hook (julia-mode . julia-repl-mode)
   :bind
   ((:map julia-repl-mode-map
          ("C-c C-j" . julia-repl))))
-;; (use-package julia-snail
-;;   :hook
-;;   (julia-mode . julia-snail-mode)
-;;   :bind
-;;   ((:map julia-snail-mode-map
-;;         ("C-c C-j" . julia-snail))
-;;    (:map julia-snail-repl-mode-map
-;;          ("C-c C-j" . julia-snail-repl-go-back))))
-
-;; Python.
-(use-package elpy
-  :init (elpy-enable)
-  :config (setq elpy-modules (delq 'elpy-module-flymake elpy-modules)))
-
-;; Elixir.
 (use-package elixir-mode)
+(use-package go-mode)
+(use-package blacken
+  :hook (python-mode . blacken-mode)
+  :delight)
 
-;; Go.
-(use-package go-mode
+;; Language server.
+(use-package lsp-mode
+  :commands lsp
+  :custom lsp-keymap-prefix "C-c l"
+  :hook
+  (elixir-mode . lsp)
+  (go-mode . lsp)
+  (julia-mode . lsp)
+  (python-mode . lsp)
+  (ruby-mode . lsp)
+  :init (add-to-list 'exec-path "~/.emacs.d/elixir-ls/release")
   :config
-  (setq gofmt-command "goimports")
-  (add-hook 'before-save-hook 'gofmt-before-save)
-  :custom tab-width 2)
-(use-package company-go
-  :config (add-to-list 'company-backends 'company-go))
-(use-package go-eldoc
-  :hook (go-mode . go-eldoc-setup))
-(defun gocode-toggle ()
-  "Toggle the gocode executable between the mod and non-mod versions."
-  (interactive)
-  (customize-set-variable
-   'company-go-gocode-command
-   (if (string= company-go-gocode-command "gocode-mod")
-       "gocode" "gocode-mod"))
-  ;; The gocode fork that works with modules is slow, so disable idle completion.
-  (if (string= company-go-gocode-command "gocode-mod")
-      (customize-set-variable 'company-idle-delay nil)
-    (custom-reevaluate-setting 'company-idle-delay))
-  (message company-go-gocode-command))
+  (add-hook 'lsp-mode-hook
+            (lambda ()
+              (lsp-enable-which-key-integration)
+              (add-hook 'before-save-hook 'lsp-format-buffer)
+              (add-hook 'before-save-hook 'lsp-organize-imports))))
+(use-package lsp-ui)
+(use-package lsp-ivy)
+(use-package company-lsp)
+(use-package lsp-julia
+  :custom
+  lsp-julia-command (concat (string-trim (shell-command-to-string "asdf where julia 1.3.1")) "/julia/bin/julia"))
+(use-package lsp-python-ms
+  :config (require 'lsp-python-ms))

@@ -8,7 +8,6 @@ export MAKEFLAGS="-j$(nproc)"
 export PATH="$PATH:$HOME/.local/bin"
 export ALTERNATE_EDITOR=""
 export EDITOR="emacs -q -nw"
-export LESSHISTFILE="-"
 
 # Cleaning up the home directory.
 export GNUPGHOME="$SHARE/gnupg"
@@ -17,6 +16,8 @@ export DOCKER_CONFIG="$CONFIG/docker"
 AWS="$CONFIG/aws"
 export AWS_CONFIG_FILE="$AWS/config"
 export AWS_SHARED_CREDENTIALS_FILE="$AWS/credentials"
+export LESSHISTFILE="-"
+export ASDF_DATA_DIR="$SHARE/asdf"
 
 PYTHON="$SHARE/python"
 export PYTHONSTARTUP="$PYTHON/pythonrc"
@@ -26,6 +27,7 @@ export WORKON_HOME="$PYTHON/virtualenvs"
 
 export GOPATH="$SHARE/go"
 export PATH="$PATH:$GOPATH/bin"
+export GO111MODULE="on"
 
 export JULIA_DEPOT_PATH="$SHARE/julia"
 export JULIA_HISTORY="$JULIA_DEPOT_PATH/logs/history"
@@ -39,8 +41,5 @@ export JUPYTER_CONFIG_DIR="$CONFIG/jupyter"
 # export irbrc="$SHARE/ruby/irbrc"
 
 export ERL_AFLAGS="-kernel shell_history enabled"
-
-export ASDF_DATA_DIR="$SHARE/asdf"
-[ -d "/opt/asdf-vm" ] && source "/opt/asdf-vm/asdf.sh"
 
 [ -f "$CONFIG/.privaterc" ] && source "$CONFIG/.privaterc"
