@@ -49,12 +49,8 @@ export PINENTRY_USER_DATA="curses"
 export GPG_TTY="$(tty)"
 
 # Misc.
-alias emacs="emacs -q -nw"
-alias emacs-gtk="tmux new-session -c $HOME -d -s emacs emacs --fullscreen"
+alias emacs-gtk="tmux new-session -c $HOME -d -s emacs emacs -fs -l ~/.config/emacs/init.el"
 alias sqlite3="sqlite3 -init $HOME/.config/sqlite3/sqliterc"
-alias tmux="tmux -f $HOME/.config/tmux/tmux.conf"
-alias rs="redshift -PO"
-alias unrs="redshift -PO 6500"
 [ -d "$WORKON_HOME" ] && source virtualenvwrapper_lazy.sh
 [ -d "/opt/asdf-vm" ] && source "/opt/asdf-vm/asdf.sh"
 man() {  # Coloured man pages.

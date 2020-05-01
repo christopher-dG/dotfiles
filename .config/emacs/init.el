@@ -1,7 +1,9 @@
+(setq user-emacs-directory "~/.config/emacs")
+
 ;; Basic package setup.
 (require 'package)
 (setq package-archives
-      '(("gnu" . "https://elpa.gnu.org/packages/")
+        '(("gnu" . "https://elpa.gnu.org/packages/")
         ("marmalade" . "https://marmalade-repo.org/packages/")
         ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
@@ -26,20 +28,20 @@
   :config (auto-package-update-maybe))
 
 ;; Any custom stuff goes in this directory.
-(push "~/.emacs.d/lisp" load-path)
+(push "~/.config/emacs/lisp" load-path)
 
 ;; Tramp is for editing files on remote systems.
 (use-package tramp
   :custom tramp-default-method "ssh")
 
 ;; Put customizations in a separate file.
-(setq custom-file "~/.emacs.d/customize.el")
-(shell-command (concat "touch " custom-file))
-(load custom-file)
+(setq custom-file "~/.config/emacs/customize.el")
+(when (file-exists-p custom-file) (load custom-file))
 
 ;; Autosaves to the same file, and save backups to a single directory.
 (auto-save-visited-mode)
-(setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
+(setq auto-save-list-file-prefix nil)
+(setq backup-directory-alist `(("." . "~/.config/emacs/backups")))
 
 ;; Disable lock file.
 (setq create-lockfiles nil)
@@ -168,7 +170,7 @@
 ;; Git integrations.
 (use-package magit
   :bind ("C-c g" . magit-status))
-(setq auth-sources '((:source "~/.emacs.d/authinfo.gpg")))
+(setq auth-sources '((:source "~/.config/emacs/authinfo.gpg")))
 (use-package git-gutter
   :config (global-git-gutter-mode 1)
   :delight)
@@ -229,13 +231,14 @@
   (julia-mode . lsp)
   (python-mode . lsp)
   (ruby-mode . lsp)
-  :init (add-to-list 'exec-path "~/.emacs.d/elixir-ls/release")
+  :init (add-to-list 'exec-path "~/.config/emacs/elixir-ls/release")
   :config
-  (add-hook 'lsp-mode-hook
-            (lambda ()
-              (lsp-enable-which-key-integration)
-              (add-hook 'before-save-hook 'lsp-format-buffer)
-              (add-hook 'before-save-hook 'lsp-organize-imports))))
+  (add-hook 'lsp-mode-hook 'lsp-enable-which-key-integration))
+(add-hook 'before-save-hook (lambda ()
+                              (when lsp-mode
+                                (progn
+                                  (lsp-format-buffer)
+                                  (lsp-organize-imports)))))
 (use-package lsp-ui)
 (use-package lsp-ivy)
 (use-package company-lsp)
@@ -244,3 +247,6 @@
   lsp-julia-command (concat (string-trim (shell-command-to-string "asdf where julia 1.3.1")) "/julia/bin/julia"))
 (use-package lsp-python-ms
   :config (require 'lsp-python-ms))
+
+;; Something keeps creating this directory.
+(delete-directory "~/.emacs.d")
