@@ -1,4 +1,4 @@
-(setq user-emacs-directory "~/.config/emacs")
+(setq user-emacs-directory "~/.local/share/emacs")
 
 ;; Basic package setup.
 (require 'package)
@@ -28,20 +28,20 @@
   :config (auto-package-update-maybe))
 
 ;; Any custom stuff goes in this directory.
-(push "~/.config/emacs/lisp" load-path)
+(push "~/.local/share/emacs/lisp" load-path)
 
 ;; Tramp is for editing files on remote systems.
 (use-package tramp
   :custom tramp-default-method "ssh")
 
 ;; Put customizations in a separate file.
-(setq custom-file "~/.config/emacs/customize.el")
+(setq custom-file "~/.local/share/emacs/customize.el")
 (when (file-exists-p custom-file) (load custom-file))
 
 ;; Autosaves to the same file, and save backups to a single directory.
 (auto-save-visited-mode)
 (setq auto-save-list-file-prefix nil)
-(setq backup-directory-alist `(("." . "~/.config/emacs/backups")))
+(setq backup-directory-alist `(("." . "~/.local/share/emacs/backups")))
 
 ;; Disable lock file.
 (setq create-lockfiles nil)
@@ -118,6 +118,10 @@
 (use-package flycheck
   :config (global-flycheck-mode)
   :delight)
+(add-hook 'flymake-mode-hook
+          (lambda ()
+            (setq-local flymake-mode-hook nil)
+            (flymake-mode -1)))
 
 ;; Text size.
 (global-set-key (kbd "C-=") 'text-scale-increase)
@@ -170,7 +174,7 @@
 ;; Git integrations.
 (use-package magit
   :bind ("C-c g" . magit-status))
-(setq auth-sources '((:source "~/.config/emacs/authinfo.gpg")))
+(setq auth-sources '((:source "~/.local/share/emacs/authinfo.gpg")))
 (use-package git-gutter
   :config (global-git-gutter-mode 1)
   :delight)
@@ -189,8 +193,9 @@
 ;; For jumping to definitions.
 (use-package dumb-jump
   :config (dumb-jump-mode)
-  :bind (("C-." . dumb-jump-go)
-         ("M-." . dumb-jump-back)))
+  :bind (:map dumb-jump-mode-map
+              ("C-." . dumb-jump-go)
+              ("M-." . dumb-jump-back)))
 
 ;; For jumping between windows.
 (use-package ace-window
@@ -202,6 +207,10 @@
 (setq js-indent-level 2)
 (setq-default tab-width 2)
 
+;; Documentation popups.
+(use-package eldoc
+  :delight)
+
 ;; Config/markup/misc. languages.
 (use-package dockerfile-mode)
 (use-package yaml-mode)
@@ -209,44 +218,33 @@
 (use-package ahk-mode)
 
 ;; Programming languages.
-(use-package julia-mode)
+(use-package julia-mode
+  :config (add-hook 'julia-mode-hook (lambda () (eldoc-mode -1))))
 (use-package julia-repl
   :hook (julia-mode . julia-repl-mode)
-  :bind
-  ((:map julia-repl-mode-map
-         ("C-c C-j" . julia-repl))))
-(use-package elixir-mode)
-(use-package go-mode)
-(use-package blacken
-  :hook (python-mode . blacken-mode)
-  :delight)
+  :bind (:map julia-repl-mode-map
+              ("C-c C-j" . julia-repl)))
 
-;; Language server.
-(use-package lsp-mode
-  :commands lsp
-  :custom lsp-keymap-prefix "C-c l"
-  :hook
-  (elixir-mode . lsp)
-  (go-mode . lsp)
-  (julia-mode . lsp)
-  (python-mode . lsp)
-  (ruby-mode . lsp)
-  :init (add-to-list 'exec-path "~/.config/emacs/elixir-ls/release")
+(setq python-indent-guess-indent-offset-verbose nil)
+(use-package elixir-mode)
+(use-package go-mode
+  :custom gofmt-command "goimports"
   :config
-  (add-hook 'lsp-mode-hook 'lsp-enable-which-key-integration))
-(add-hook 'before-save-hook (lambda ()
-                              (when lsp-mode
-                                (progn
-                                  (lsp-format-buffer)
-                                  (lsp-organize-imports)))))
-(use-package lsp-ui)
-(use-package lsp-ivy)
-(use-package company-lsp)
-(use-package lsp-julia
-  :custom
-  lsp-julia-command (concat (string-trim (shell-command-to-string "asdf where julia 1.3.1")) "/julia/bin/julia"))
-(use-package lsp-python-ms
-  :config (require 'lsp-python-ms))
+  (add-hook 'before-save-hook 'gofmt-before-save) nil t)
+
+;; Language server protocol.
+(use-package eglot
+  :bind (:map eglot-mode-map
+              ("C-c e f" . eglot-format)
+              ("C-c e r" . eglot-rename))
+  :config
+  (add-to-list 'eglot-server-programs `(elixir-mode . ("lsp" "elixir")))
+  (add-to-list 'eglot-server-programs `(python-mode . ("lsp" "python")))
+  (add-hook 'before-save-hook
+            (lambda () (when (eglot-managed-p) (eglot-format-buffer))))
+  :hook ((elixir-mode go-mode julia-mode python-mode ruby-mode) . eglot-ensure))
+(use-package eglot-jl
+  :config (eglot-jl-init))
 
 ;; Something keeps creating this directory.
 (delete-directory "~/.emacs.d")

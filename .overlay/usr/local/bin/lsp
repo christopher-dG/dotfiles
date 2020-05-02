@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+
+case "$1" in
+  "elixir")
+    exls="$HOME/.config/emacs/elixir-ls"
+
+    if [[ ! -d "$exls" ]]; then
+      git clone https://github.com/elixir-lsp/elixir-ls --branch v0.3.3 --depth 1 "$exls"
+      cd "$exls"
+      mix deps.get
+      mix elixir_ls.release
+    fi
+
+    "$exls/release/language_server.sh"
+    ;;
+
+  "python")
+    venv="$HOME/.config/emacs/pyls"
+
+    if [[ ! -d "$venv" ]]; then
+      python -m venv "$venv"
+      source "$venv/bin/activate"
+      pip install "python-language-server[flake8,rope]" pyls-black pyls-mypy
+    fi
+
+    source "$venv/bin/activate"
+    pyls
+    ;;
+esac
