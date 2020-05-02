@@ -213,6 +213,7 @@
 
 ;; For jumping between windows.
 (use-package ace-window
+  :custom aw-scope 'frame
   :bind ("C-x o" . ace-window))
 
 ;; Tab width.
