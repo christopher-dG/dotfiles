@@ -1,4 +1,7 @@
+;; Store Emacs data here.
 (setq user-emacs-directory "~/.local/share/emacs")
+(setq package-user-dir "~/.local/share/emacs/packages")
+(setq custom-file "~/.config/emacs/customize.el")
 
 ;; Basic package setup.
 (require 'package)
@@ -13,14 +16,25 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-;; Colour theme.
-(use-package base16-theme
-  :config (load-theme 'base16-ashes t))
+;; Load the customization file after packages have been loaded.
+(when (file-exists-p custom-file) (load custom-file))
 
-;; Minimal UI: No bars.
-(menu-bar-mode 0)
-(tool-bar-mode 0)
-(scroll-bar-mode 0)
+;; Colour theme.
+(use-package base16-theme)
+
+(defun load-ui ()
+  "Load UI stuff."
+  (load-theme 'base16-ashes t)
+  (menu-bar-mode 0)
+  (tool-bar-mode 0)
+  (scroll-bar-mode 0)
+  (set-frame-font "Monoid")
+  (set-face-attribute 'default nil :height 140))
+(if (daemonp)
+    (add-hook 'after-make-frame-functions
+              (lambda (frame)
+                (with-selected-frame frame (load-ui))))
+  (load-ui))
 
 ;; Update packages now and then.
 (use-package auto-package-update
@@ -33,10 +47,6 @@
 ;; Tramp is for editing files on remote systems.
 (use-package tramp
   :custom tramp-default-method "ssh")
-
-;; Put customizations in a separate file.
-(setq custom-file "~/.local/share/emacs/customize.el")
-(when (file-exists-p custom-file) (load custom-file))
 
 ;; Autosaves to the same file, and save backups to a single directory.
 (auto-save-visited-mode)
@@ -72,10 +82,6 @@
 
 ;; Don't display some minor modes.
 (use-package delight)
-
-;; Font.
-(set-frame-font "Monoid")
-(set-face-attribute 'default nil :height 140)
 
 ;; A nicer terminal emulator.
 (use-package vterm)
@@ -183,6 +189,14 @@
 (use-package forge
   :after magit
   :config (forge-toggle-closed-visibility))
+(custom-set-faces
+ '(magit-diff-added ((((type tty)) (:foreground "green"))))
+ '(magit-diff-added-highlight ((((type tty)) (:foreground "LimeGreen"))))
+ '(magit-diff-context-highlight ((((type tty)) (:foreground "default"))))
+ '(magit-diff-file-heading ((((type tty)) nil)))
+ '(magit-diff-removed ((((type tty)) (:foreground "red"))))
+ '(magit-diff-removed-highlight ((((type tty)) (:foreground "IndianRed"))))
+ '(magit-section-highlight ((((type tty)) nil))))
 
 ;; Multiple cursor magic.
 (use-package multiple-cursors
@@ -244,6 +258,7 @@
             (lambda () (when (eglot-managed-p) (eglot-format-buffer))))
   :hook ((elixir-mode go-mode julia-mode python-mode ruby-mode) . eglot-ensure))
 (use-package eglot-jl
+  :custom eglot-jl-julia-flags (list "-J" (expand-file-name "~/.local/share/emacs/lsp-jl.so"))
   :config (eglot-jl-init))
 
 ;; Something keeps creating this directory.

@@ -49,7 +49,8 @@ export PINENTRY_USER_DATA="curses"
 export GPG_TTY="$(tty)"
 
 # Misc.
-alias emacs-gtk="tmux new-session -c $HOME -d -s emacs emacs -fs -l ~/.config/emacs/init.el"
+alias emacs="$EDITOR"
+alias emacs-fs="emacsclient -ncF '((fullscreen . fullboth))'"
 alias sqlite3="sqlite3 -init $HOME/.config/sqlite3/sqliterc"
 [ -d "$WORKON_HOME" ] && source virtualenvwrapper_lazy.sh
 [ -d "/opt/asdf-vm" ] && source "/opt/asdf-vm/asdf.sh"
