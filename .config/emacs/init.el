@@ -2,11 +2,12 @@
 (setq user-emacs-directory "~/.local/share/emacs")
 (setq package-user-dir "~/.local/share/emacs/packages")
 (setq custom-file "~/.config/emacs/customize.el")
+(push "~/.local/share/emacs/lisp" load-path)
 
 ;; Basic package setup.
 (require 'package)
 (setq package-archives
-        '(("gnu" . "https://elpa.gnu.org/packages/")
+      '(("gnu" . "https://elpa.gnu.org/packages/")
         ("marmalade" . "https://marmalade-repo.org/packages/")
         ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
@@ -40,9 +41,6 @@
 (use-package auto-package-update
   :custom  auto-package-update-delete-old-versions t
   :config (auto-package-update-maybe))
-
-;; Any custom stuff goes in this directory.
-(push "~/.local/share/emacs/lisp" load-path)
 
 ;; Tramp is for editing files on remote systems.
 (use-package tramp
@@ -155,23 +153,24 @@
   :config
   (require 'smartparens-config)
   (smartparens-global-mode)
+  :bind
+  ("C-c w" . mark-sexp)
+  ("C-c u" . sp-unwrap-sexp)
+  ("C-M-f" . sp-forward-sexp)
+  ("C-M-b" . sp-backward-sexp)
+  ("C-M-k" . sp-kill-sexp)
   :delight)
-(global-set-key (kbd "C-c w") 'mark-sexp)
-(global-set-key (kbd "C-c u") 'sp-unwrap-sexp)
-(global-set-key (kbd "C-M-f") 'sp-forward-sexp)
-(global-set-key (kbd "C-M-b") 'sp-backward-sexp)
-(global-set-key (kbd "C-M-k") 'sp-kill-sexp)
 
 ;; Company is for autocompletion.
 (use-package company
   :config
   (global-company-mode)
   :bind
-  (("C-;" . company-complete)
-   :map company-active-map
-   ("C-n" . company-select-next)
-   ("C-p" . company-select-previous)
-   ("TAB" . company-complete-common-or-cycle))
+  ("C-;" . company-complete)
+  (:map company-active-map
+        ("C-n" . company-select-next)
+        ("C-p" . company-select-previous)
+        ("TAB" . company-complete-common-or-cycle))
   :custom company-minimum-prefix-length 1
   :delight)
 (use-package company-quickhelp
