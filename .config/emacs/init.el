@@ -1,8 +1,4 @@
-;; Store Emacs data here.
-(setq user-emacs-directory "~/.local/share/emacs")
-(setq package-user-dir "~/.local/share/emacs/packages")
 (setq custom-file "~/.config/emacs/customize.el")
-(push "~/.local/share/emacs/lisp" load-path)
 
 ;; Basic package setup.
 (require 'package)
@@ -10,7 +6,6 @@
       '(("gnu" . "https://elpa.gnu.org/packages/")
         ("marmalade" . "https://marmalade-repo.org/packages/")
         ("melpa" . "https://melpa.org/packages/")))
-(package-initialize)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -49,7 +44,7 @@
 ;; Autosaves to the same file, and save backups to a single directory.
 (auto-save-visited-mode)
 (setq auto-save-list-file-prefix nil)
-(setq backup-directory-alist `(("." . "~/.local/share/emacs/backups")))
+(setq backup-directory-alist `(("." . "~/.config/emacs/backups")))
 
 ;; Disable lock file.
 (setq create-lockfiles nil)
@@ -179,7 +174,7 @@
 ;; Git integrations.
 (use-package magit
   :bind ("C-c g" . magit-status))
-(setq auth-sources '((:source "~/.local/share/emacs/authinfo.gpg")))
+(setq auth-sources '((:source "~/.config/emacs/authinfo.gpg")))
 (use-package git-gutter
   :config (global-git-gutter-mode 1)
   :delight)
@@ -250,7 +245,10 @@
 (use-package eglot
   :bind (:map eglot-mode-map
               ("C-c e f" . eglot-format)
-              ("C-c e r" . eglot-rename))
+              ("C-c e r" . eglot-rename)
+              ("C-c e d" . eglot-find-declaration)
+              ("C-c e i" . eglot-find-implementation)
+              ("C-c e t" . eglot-find-typeDefinition))
   :config
   (add-to-list 'eglot-server-programs `(elixir-mode . ("lsp" "elixir")))
   (add-to-list 'eglot-server-programs `(python-mode . ("lsp" "python")))
@@ -258,8 +256,5 @@
             (lambda () (when (eglot-managed-p) (eglot-format-buffer))))
   :hook ((elixir-mode go-mode julia-mode python-mode ruby-mode) . eglot-ensure))
 (use-package eglot-jl
-  :custom eglot-jl-julia-flags (list "-J" (expand-file-name "~/.local/share/emacs/lsp-jl.so"))
+  :custom eglot-jl-julia-flags (list "-J" (expand-file-name "~/.config/emacs/lsp-jl.so"))
   :config (eglot-jl-init))
-
-;; Something keeps creating this directory.
-(delete-directory "~/.emacs.d")
