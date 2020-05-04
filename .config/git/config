@@ -1,19 +1,30 @@
-[user]
-	name = Chris de Graaf
-	email = chrisadegraaf@gmail.com
-[github]
-	user = christopher-dG
+[advice]
+	addignoredfile = false
 [alias]
+  a = add
+  c = commit
+  ch = checkout
+  cl = clone
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  p = push origin
+  s = status
 	assume-unchanged = update-index --assume-unchanged
 	assume-changed = update-index --no-assume-unchanged
+[commit]
+	gpgsign = true
+[core]
+	excludesfile = ~/.config/git/ignore
 [filter "lfs"]
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
-[commit]
-	gpgsign = true
-[core]
-	excludesfile = ~/.config/git/ignore
+[gitlab]
+	user = christopher-dG
+[github]
+	user = christopher-dG
 [tag]
-	gpgSign = true
+	gpgsign = true
+[user]
+	name = Chris de Graaf
+	email = chrisadegraaf@gmail.com

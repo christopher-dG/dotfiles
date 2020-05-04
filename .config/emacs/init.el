@@ -18,6 +18,18 @@
 ;; Colour theme.
 (use-package base16-theme)
 
+;; Parenthesis magic.
+(use-package smartparens
+  :config
+  (require 'smartparens-config)
+  :bind
+  ("C-c w" . mark-sexp)
+  ("C-c u" . sp-unwrap-sexp)
+  ("C-M-f" . sp-forward-sexp)
+  ("C-M-b" . sp-backward-sexp)
+  ("C-M-k" . sp-kill-sexp)
+  :delight)
+
 (defun load-ui ()
   "Load UI stuff."
   (load-theme 'base16-ashes t)
@@ -25,7 +37,9 @@
   (tool-bar-mode 0)
   (scroll-bar-mode 0)
   (set-frame-font "Monoid")
-  (set-face-attribute 'default nil :height 140))
+  (set-face-attribute 'default nil :height 140)
+  (smartparens-global-mode)
+  (show-paren-mode))
 (if (daemonp)
     (add-hook 'after-make-frame-functions
               (lambda (frame)
@@ -40,6 +54,9 @@
 ;; Tramp is for editing files on remote systems.
 (use-package tramp
   :custom tramp-default-method "ssh")
+
+(use-package direnv
+  :config (direnv-mode))
 
 ;; Autosaves to the same file, and save backups to a single directory.
 (auto-save-visited-mode)
@@ -142,20 +159,6 @@
 (use-package autorevert
   :config (global-auto-revert-mode))
 
-;; Parenthesis magic.
-(show-paren-mode)
-(use-package smartparens
-  :config
-  (require 'smartparens-config)
-  (smartparens-global-mode)
-  :bind
-  ("C-c w" . mark-sexp)
-  ("C-c u" . sp-unwrap-sexp)
-  ("C-M-f" . sp-forward-sexp)
-  ("C-M-b" . sp-backward-sexp)
-  ("C-M-k" . sp-kill-sexp)
-  :delight)
-
 ;; Company is for autocompletion.
 (use-package company
   :config
@@ -227,13 +230,11 @@
 (use-package ahk-mode)
 
 ;; Programming languages.
-(use-package julia-mode
-  :config (add-hook 'julia-mode-hook (lambda () (eldoc-mode -1))))
+(use-package julia-mode)
 (use-package julia-repl
   :hook (julia-mode . julia-repl-mode)
   :bind (:map julia-repl-mode-map
               ("C-c C-j" . julia-repl)))
-
 (setq python-indent-guess-indent-offset-verbose nil)
 (use-package elixir-mode)
 (use-package go-mode
@@ -250,8 +251,20 @@
               ("C-c e i" . eglot-find-implementation)
               ("C-c e t" . eglot-find-typeDefinition))
   :config
-  (add-to-list 'eglot-server-programs `(elixir-mode . ("lsp" "elixir")))
-  (add-to-list 'eglot-server-programs `(python-mode . ("lsp" "python")))
+  (add-to-list 'eglot-server-programs
+               `(elixir-mode . ("lsp" "elixir")))
+  (add-to-list 'eglot-server-programs
+               `(python-mode . (lambda (_) (list "lsp" "python" (buffer-file-name)))))
+  (setq-default eglot-workspace-configuration
+                '((:pyls . ((:configurationSources . ["flake8"])
+                            (:plugins .
+                                      ((:flake8 . ((:enabled . t)
+                                                   (:exclude . "*.pyi")))
+                                       (:pyls_mypy . ((:enabled . t)
+                                                      (:live_mode . nil)
+                                                      (:strict . t)))))))
+                  (:gopls . ((:usePlaceholders . t)
+                             (:completeUnimported . t)))))
   (add-hook 'before-save-hook
             (lambda () (when (eglot-managed-p) (eglot-format-buffer))))
   :hook ((elixir-mode go-mode julia-mode python-mode ruby-mode) . eglot-ensure))

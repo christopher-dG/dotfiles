@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+set -e
+
 emacs="$HOME/.config/emacs"
 
 case "$1" in
@@ -17,15 +19,26 @@ case "$1" in
     ;;
 
   "python")
+    # Find a virtualenv for the project, or use a global one.
+    cur="$2"
     venv="$emacs/pyls"
+    while [[ "$cur" != "/" && "$cur" != "." ]]; do
+      if [[ -f "$cur/venv/pyvenv.cfg" ]]; then
+        venv="$cur/venv"
+        break
+      fi
+      cur="$(dirname $cur)"
+    done
 
-    if [[ ! -d "$venv" ]]; then
-      python -m venv "$venv"
-      source "$venv/bin/activate"
+    # Create the virtualenv if it doesn't exist, and activate it.
+    [[ -d "$venv" ]] || python -m venv "$venv"
+    source "$venv/bin/activate"
+
+    # Install the language server if it's not already installed.
+    if [[ ! -f "$venv/bin/pyls" ]]; then
       pip install "python-language-server[flake8,rope]" pyls-black pyls-mypy
     fi
 
-    source "$venv/bin/activate"
     pyls
     ;;
 esac

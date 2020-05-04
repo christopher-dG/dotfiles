@@ -36,13 +36,6 @@ alias ll="ls -l"
 alias sl="ls"
 alias cd..="cd .."
 
-# Git helpers.
-alias gc="git commit -m"
-alias gp="git push origin"
-alias gs="git status"
-alias ga="git add"
-alias gch="git checkout"
-alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 gcl() { git clone "git@github.com:christopher-dG/$1.git" $2 }
 
 export PINENTRY_USER_DATA="curses"
@@ -52,8 +45,8 @@ export GPG_TTY="$(tty)"
 alias emacs="$EDITOR"
 alias emacs-fs="emacsclient -ncF '((fullscreen . fullboth))'"
 alias sqlite3="sqlite3 -init $HOME/.config/sqlite3/sqliterc"
-[ -d "$WORKON_HOME" ] && source virtualenvwrapper_lazy.sh
 [ -d "/opt/asdf-vm" ] && source "/opt/asdf-vm/asdf.sh"
+hash direnv 2> /dev/null && eval "$(direnv hook zsh)"
 man() {  # Coloured man pages.
   LESS_TERMCAP_md=$'\e[01;31m' \
   LESS_TERMCAP_me=$'\e[0m' \
