@@ -1,5 +1,31 @@
 atreplinit() do repl
     try
+        @eval begin
+            using OhMyREPL: OhMyREPL, Crayon
+            using OhMyREPL.Passes: SyntaxHighlighter
+            OhMyREPL.enable_pass!("RainbowBrackets", false)
+            let cs = SyntaxHighlighter.ColorScheme()
+                SyntaxHighlighter.symbol!(cs, Crayon(; foreground=0xc7c795))
+                SyntaxHighlighter.comment!(cs, Crayon(; foreground=0x747c84))
+                SyntaxHighlighter.string!(cs, Crayon(; foreground=0x95c7ae))
+                SyntaxHighlighter.string!(cs, Crayon(; foreground=0x95c7ae))
+                SyntaxHighlighter.call!(cs, Crayon(; foreground=0xdfe2e5))
+                SyntaxHighlighter.op!(cs, Crayon(; foreground=0xdfe2e5))
+                SyntaxHighlighter.keyword!(cs, Crayon(; foreground=0xc795ae))
+                SyntaxHighlighter.function_def!(cs, Crayon(; foreground=0xae95c7))
+                SyntaxHighlighter.argdef!(cs, Crayon(; foreground=0xaec795))
+                SyntaxHighlighter.macro!(cs, Crayon(; foreground=0xae95c7))
+                SyntaxHighlighter.number!(cs, Crayon(; foreground=0xdfe2e5))
+                SyntaxHighlighter.text!(cs, Crayon(; foreground=0xdfe2e5))
+                SyntaxHighlighter.add!("base16-ashes", cs)
+                OhMyREPL.colorscheme!("base16-ashes")
+            end
+        end
+    catch err
+        @warn "Couldn't start OhMyREPL" ex=(err, catch_backtrace())
+    end
+
+    try
         @eval using Revise: Revise
         @async Revise.wait_steal_repl_backend()
     catch err
@@ -21,9 +47,17 @@ macro exs(exs...)
     exs
 end
 
-sysimage(packages=:Revise) = @eval begin
+sysimage(packages=[:OhMyREPL, :Revise]) = @eval begin
     using PackageCompiler: create_sysimage
-    create_sysimage($(QuoteNode(packages)); replace_default=true)
+    kwargs = Dict{Symbol, Any}(:replace_default => true)
+    file = joinpath(ENV["JULIA_DEPOT_PATH"], "config", "precompile.jl")
+    if isfile(file)
+        kwargs[:precompile_statements_file] = file
+        @info "Using existing precompile file"
+    else
+        @warn "No precompile file found, consider generating one"
+    end
+    create_sysimage($(QuoteNode(packages)); kwargs...)
 end
 
 template() = @eval begin
