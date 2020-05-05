@@ -36,7 +36,7 @@ case "$1" in
 
     # Install the language server if it's not already installed.
     if [[ ! -f "$venv/bin/pyls" ]]; then
-      pip install "python-language-server[flake8,rope]" pyls-black pyls-mypy
+      pip install "python-language-server[flake8,rope]" pyls-black pyls-mypy future
     fi
 
     pyls

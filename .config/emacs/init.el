@@ -58,13 +58,10 @@
 (use-package direnv
   :config (direnv-mode))
 
-;; Autosaves to the same file, and save backups to a single directory.
-(auto-save-visited-mode)
-(setq auto-save-list-file-prefix nil)
-(setq backup-directory-alist `(("." . "~/.config/emacs/backups")))
-
-;; Disable lock file.
-(setq create-lockfiles nil)
+;; Disable autosaving, backups, and lock files.
+(setq auto-save-default nil
+      make-backup-files nil
+      create-lockfiles nil)
 
 ;; Never use tabs.
 (setq-default indent-tabs-mode nil)
@@ -121,14 +118,18 @@
 
 ;; Navigation/completion.
 (use-package counsel
+  :custom
+  ivy-use-virtual-buffers t
+  ivy-count-format "(%d/%d) "
   :config
   (counsel-mode)
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) ")
+  :bind
+  ("C-s" . swiper)
+  ("C-r" . swiper-backward)
+  ("C-x b" . counsel-ibuffer)
+  ("C-x C-f" . counsel-find-file)
+  ("C-c r g" . counsel-rg)
   :delight)
-(global-set-key (kbd "C-s") 'swiper)
-(global-set-key (kbd "C-c r g") 'counsel-rg)
-(global-set-key (kbd "C-x b") 'counsel-ibuffer)
 
 ;; Linting.
 (use-package flycheck
@@ -266,8 +267,7 @@
                   (:gopls . ((:usePlaceholders . t)
                              (:completeUnimported . t)))))
   (add-hook 'before-save-hook
-            (lambda () (when (eglot-managed-p) (eglot-format-buffer))))
-  :hook ((elixir-mode go-mode julia-mode python-mode ruby-mode) . eglot-ensure))
+            (lambda () (when (eglot-managed-p) (eglot-format-buffer)))))
 (use-package eglot-jl
   :custom eglot-jl-julia-flags (list "-J" (expand-file-name "~/.config/emacs/lsp-jl.so"))
   :config (eglot-jl-init))
