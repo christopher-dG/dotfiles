@@ -1,6 +1,8 @@
-if [[ "$TERM" = "dumb" ]]; then
+if [[ "$TERM" == "dumb" ]]; then
   PS1="> "
   return
+elif [[ "$TERM" != "screen" ]]; then
+  exec tmux -f ~/.config/tmux/tmux.conf
 fi
 
 # Prompt.

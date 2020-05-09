@@ -53,7 +53,13 @@
 
 ;; Tramp is for editing files on remote systems.
 (use-package tramp
-  :custom tramp-default-method "ssh")
+  :custom
+  tramp-completion-reread-directory-timeout nil
+  tramp-default-method "ssh")
+(setq remote-file-name-inhibit-cache nil
+      vc-ignore-dir-regexp (format "\\(%s\\)\\|\\(%s\\)"
+                                   vc-ignore-dir-regexp
+                                   tramp-file-name-regexp))
 
 (use-package direnv
   :config (direnv-mode))
@@ -146,6 +152,7 @@
 
 ;; Projectile is for project management (finding files, etc.).
 (use-package projectile
+  :custom projectile-mode-line "Projectile"
   :config (projectile-mode)
   :bind-keymap ("C-c p" . projectile-command-map)
   :delight)

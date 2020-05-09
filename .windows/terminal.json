@@ -21,7 +21,7 @@
                 "hidden": false,
                 "name": "Arch",
                 "source": "Windows.Terminal.Wsl",
-                "commandline": "wsl.exe genie -c tmux -f ~/.config/tmux/tmux.conf",
+                "commandline": "wsl.exe genie -s",
                 "startingDirectory": "//wsl$/Arch/home/degraafc"
             }
         ]
