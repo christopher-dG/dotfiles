@@ -47,7 +47,7 @@ macro exs(exs...)
     exs
 end
 
-sysimage(packages=[:OhMyREPL, :Revise]) = @eval begin
+sysimage(packages=[:Debugger, :OhMyREPL, :Revise]) = @eval begin
     using PackageCompiler: create_sysimage
     kwargs = Dict{Symbol, Any}(:replace_default => true)
     file = joinpath(ENV["JULIA_DEPOT_PATH"], "config", "precompile.jl")
@@ -66,7 +66,7 @@ template() = @eval begin
         dir="~/code",
         plugins=[
             Documenter{TravisCI}(),
-            Git(; gpgsign=true, manifest=true, ssh=true),
+            Git(; gpgsign=true, ssh=true),
             TravisCI(; osx=false, windows=false),
         ],
     )

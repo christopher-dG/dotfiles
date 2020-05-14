@@ -8,7 +8,6 @@ fi
 # Prompt.
 setopt PROMPT_SUBST
 PS1="%(?..%B x %b)%(!.(root) .)%K{4}%m%k %F{2}[%f %F{5}%~%f %F{2}] "
-RPROMPT='$vcs_info_msg_0_'
 
 # Completion.
 autoload -Uz compinit && compinit

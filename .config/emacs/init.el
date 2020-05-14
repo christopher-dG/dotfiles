@@ -244,6 +244,7 @@
   :bind (:map julia-repl-mode-map
               ("C-c C-j" . julia-repl)))
 (setq python-indent-guess-indent-offset-verbose nil)
+(use-package poetry)
 (use-package elixir-mode)
 (use-package go-mode
   :custom gofmt-command "goimports"
