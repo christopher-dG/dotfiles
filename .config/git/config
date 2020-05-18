@@ -27,4 +27,4 @@
 	gpgsign = true
 [user]
 	name = Chris de Graaf
-	email = chrisadegraaf@gmail.com
+	email = me@cdg.dev
