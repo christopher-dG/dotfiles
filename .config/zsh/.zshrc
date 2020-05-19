@@ -6,8 +6,12 @@ elif [[ "$TERM" != "screen" ]]; then
 fi
 
 # Prompt.
+host="$(hostname)"
+while [[ "$host" == *-wsl-wsl ]]; do
+    host="${host%-wsl}"
+done
 setopt PROMPT_SUBST
-PS1="%(?..%B x %b)%(!.(root) .)%K{4}%m%k %F{2}[%f %F{5}%~%f %F{2}] "
+PS1="%(?..%B x %b)%(!.(root) .)%K{4}$host%k %F{2}[%f %F{5}%~%f %F{2}] "
 
 # Completion.
 autoload -Uz compinit && compinit
