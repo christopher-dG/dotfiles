@@ -275,7 +275,8 @@
                   (:gopls . ((:usePlaceholders . t)
                              (:completeUnimported . t)))))
   (add-hook 'before-save-hook
-            (lambda () (when (eglot-managed-p) (eglot-format-buffer)))))
+            (lambda () (when (and (eglot-managed-p) (not (eq major-mode 'julia-mode)))
+                         (eglot-format-buffer)))))
 (use-package eglot-jl
   :custom eglot-jl-julia-flags (list "-J" (expand-file-name "~/.config/emacs/lsp-jl.so"))
   :config (eglot-jl-init))
