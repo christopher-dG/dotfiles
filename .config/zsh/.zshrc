@@ -48,6 +48,7 @@ export GPG_TTY="$(tty)"
 
 # Misc.
 alias emacs="$EDITOR"
+alias emacs-win="emacsclient -nc"
 alias emacs-fs="emacsclient -ncF '((fullscreen . fullboth))'"
 alias sqlite3="sqlite3 -init $HOME/.config/sqlite3/sqliterc"
 [ -d "/opt/asdf-vm" ] && source "/opt/asdf-vm/asdf.sh"

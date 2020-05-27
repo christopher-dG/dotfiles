@@ -20,6 +20,11 @@ atreplinit() do repl
                 SyntaxHighlighter.add!("base16-ashes", cs)
                 OhMyREPL.colorscheme!("base16-ashes")
             end
+            @async begin
+                # OhMyREPL.jl#166
+                sleep(1)
+                OhMyREPL.Prompt.insert_keybindings()
+            end
         end
     catch err
         @warn "Couldn't start OhMyREPL" ex=(err, catch_backtrace())
@@ -62,10 +67,17 @@ end
 
 template() = @eval begin
     using PkgTemplates
+    PkgTemplates.badges(::Documenter{TravisCI}) = [PkgTemplates.Badge(
+        "Docs",
+        "https://img.shields.io/badge/docs-stable-blue.svg",
+        "https://docs.cdg.dev/{{{PKG}}}.jl",
+    )]
+    PkgTemplates.user_view(::TravisCI, ::Template, ::AbstractString) =
+        Dict("VERSIONS" => ["1.0", "1", "nightly"])
     Template(
         dir="~/code",
         plugins=[
-            Documenter{TravisCI}(),
+            Documenter{TravisCI}(; canonical_url=(t, pkg) -> "https://docs.cdg.dev/$pkg.jl"),
             Git(; gpgsign=true, ssh=true),
             TravisCI(; osx=false, windows=false),
         ],
