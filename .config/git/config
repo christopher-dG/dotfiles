@@ -28,3 +28,5 @@
 [user]
 	name = Chris de Graaf
 	email = me@cdg.dev
+[pull]
+	rebase = true

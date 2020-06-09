@@ -121,6 +121,7 @@
   (mapc 'kill-buffer (buffer-list))
   (delete-other-windows))
 (global-set-key (kbd "C-x K") 'kill-all-buffers)
+(global-set-key (kbd "C-c f s") 'toggle-frame-fullscreen)
 
 ;; Navigation/completion.
 (use-package counsel

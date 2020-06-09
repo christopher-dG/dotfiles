@@ -74,14 +74,11 @@ template() = @eval begin
     )]
     PkgTemplates.user_view(::TravisCI, ::Template, ::AbstractString) =
         Dict("VERSIONS" => ["1.0", "1", "nightly"])
-    Template(
-        dir="~/code",
-        plugins=[
-            Documenter{TravisCI}(; canonical_url=(t, pkg) -> "https://docs.cdg.dev/$pkg.jl"),
-            Git(; gpgsign=true, ssh=true),
-            TravisCI(; osx=false, windows=false),
-        ],
-    )
+    Template(; plugins=[
+        Documenter{TravisCI}(; canonical_url=(t, pkg) -> "https://docs.cdg.dev/$pkg.jl"),
+        Git(; gpgsign=true, ssh=true),
+        TravisCI(; osx=false, windows=false),
+    ])
 end
 
 end
