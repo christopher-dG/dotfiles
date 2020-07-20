@@ -67,17 +67,17 @@ end
 
 template() = @eval begin
     using PkgTemplates
-    PkgTemplates.badges(::Documenter{TravisCI}) = [PkgTemplates.Badge(
+    PkgTemplates.badges(::Documenter{GitHubActions}) = [PkgTemplates.Badge(
         "Docs",
         "https://img.shields.io/badge/docs-stable-blue.svg",
         "https://docs.cdg.dev/{{{PKG}}}.jl",
     )]
-    PkgTemplates.user_view(::TravisCI, ::Template, ::AbstractString) =
+    PkgTemplates.user_view(::GitHubActions, ::Template, ::AbstractString) =
         Dict("VERSIONS" => ["1.0", "1", "nightly"])
     Template(; plugins=[
-        Documenter{TravisCI}(; canonical_url=(t, pkg) -> "https://docs.cdg.dev/$pkg.jl"),
+        Documenter{GitHubActions}(; canonical_url=(t, pkg) -> "https://docs.cdg.dev/$pkg.jl"),
         Git(; gpgsign=true, ssh=true),
-        TravisCI(; osx=false, windows=false),
+        GitHubActions(; osx=false, windows=false),
     ])
 end
 

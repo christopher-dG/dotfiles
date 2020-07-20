@@ -243,7 +243,7 @@
 (use-package julia-repl
   :load-path "lisp/julia-repl"
   :hook (julia-mode . julia-repl-mode)
-  :config (setq julia-repl-terminal-backend (make-julia-repl--buffer-vterm))
+  :config (julia-repl-set-terminal-backend 'vterm)
   :bind (:map julia-repl-mode-map
               ("C-c C-j" . julia-repl)))
 (setq python-indent-guess-indent-offset-verbose nil)
