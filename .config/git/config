@@ -30,3 +30,5 @@
 	email = me@cdg.dev
 [pull]
 	rebase = true
+[init]
+	defaultBranch = main
