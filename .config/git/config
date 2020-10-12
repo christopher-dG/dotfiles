@@ -1,5 +1,5 @@
 [advice]
-	addignoredfile = false
+  addignoredfile = false
 [alias]
   a = add
   c = commit
@@ -8,27 +8,27 @@
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
   p = push -u origin
   s = status
-	assume-unchanged = update-index --assume-unchanged
-	assume-changed = update-index --no-assume-unchanged
+  assume-unchanged = update-index --assume-unchanged
+  assume-changed = update-index --no-assume-unchanged
 [commit]
-	gpgsign = true
+  gpgsign = true
 [core]
-	excludesfile = ~/.config/git/ignore
+  excludesfile = ~/.config/git/ignore
 [filter "lfs"]
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f
 [gitlab]
-	user = christopher-dG
+  user = christopher-dG
 [github]
-	user = christopher-dG
+  user = christopher-dG
 [tag]
-	gpgsign = true
+  gpgsign = true
 [user]
-	name = Chris de Graaf
-	email = me@cdg.dev
+  name = Chris de Graaf
+  email = me@cdg.dev
 [pull]
-	rebase = true
+  rebase = true
 [init]
-	defaultBranch = main
+  defaultBranch = main
