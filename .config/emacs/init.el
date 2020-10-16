@@ -4,7 +4,7 @@
 (require 'package)
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
-        ("marmalade" . "https://marmalade-repo.org/packages/")
+        ;; ("marmalade" . "https://marmalade-repo.org/packages/")
         ("melpa" . "https://melpa.org/packages/")))
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -255,6 +255,7 @@
   (add-hook 'before-save-hook 'gofmt-before-save) nil t)
 
 ;; Language server protocol.
+(use-package project)
 (use-package eglot
   :bind (:map eglot-mode-map
               ("C-c e f" . eglot-format)

@@ -52,7 +52,9 @@ macro exs(exs...)
     exs
 end
 
-sysimage(packages=[:Debugger, :OhMyREPL, :Revise]) = @eval begin
+const DEFAULT_PACKAGES = [:BenchmarkTools, :Debugger, :OhMyREPL, :Revise]
+
+sysimage(packages=DEFAULT_PACKAGES) = @eval begin
     using PackageCompiler: create_sysimage
     kwargs = Dict{Symbol, Any}(:replace_default => true)
     file = joinpath(ENV["JULIA_DEPOT_PATH"], "config", "precompile.jl")
