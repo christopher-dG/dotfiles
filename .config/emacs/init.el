@@ -64,10 +64,11 @@
 (use-package direnv
   :config (direnv-mode))
 
-;; Disable autosaving, backups, and lock files.
+;; Disable autosaving, backups, lock files, and bell.
 (setq auto-save-default nil
       make-backup-files nil
-      create-lockfiles nil)
+      create-lockfiles nil
+      ring-bell-function 'ignore)
 
 ;; Never use tabs.
 (setq-default indent-tabs-mode nil)
