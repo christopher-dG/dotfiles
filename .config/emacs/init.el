@@ -4,7 +4,6 @@
 (require 'package)
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
-        ;; ("marmalade" . "https://marmalade-repo.org/packages/")
         ("melpa" . "https://melpa.org/packages/")))
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -212,11 +211,8 @@
          ("C-c m e" . mc/edit-lines)))
 
 ;; For jumping to definitions.
-(use-package dumb-jump
-  :config (dumb-jump-mode)
-  :bind (:map dumb-jump-mode-map
-              ("C-." . dumb-jump-go)
-              ("M-." . dumb-jump-back)))
+(use-package dumb-jump)
+(add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
 
 ;; For jumping between windows.
 (use-package ace-window
