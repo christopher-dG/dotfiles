@@ -252,32 +252,16 @@
   (add-hook 'before-save-hook 'gofmt-before-save) nil t)
 
 ;; Language server protocol.
-(use-package project)
-(use-package eglot
-  :bind (:map eglot-mode-map
-              ("C-c e f" . eglot-format)
-              ("C-c e r" . eglot-rename)
-              ("C-c e d" . eglot-find-declaration)
-              ("C-c e i" . eglot-find-implementation)
-              ("C-c e t" . eglot-find-typeDefinition))
-  :config
-  (add-to-list 'eglot-server-programs
-               `(elixir-mode . ("lsp" "elixir")))
-  (add-to-list 'eglot-server-programs
-               `(python-mode . (lambda (_) (list "lsp" "python" (buffer-file-name)))))
-  (setq-default eglot-workspace-configuration
-                '((:pyls . ((:configurationSources . ["flake8"])
-                            (:plugins .
-                                      ((:flake8 . ((:enabled . t)
-                                                   (:exclude . "*.pyi")))
-                                       (:pyls_mypy . ((:enabled . t)
-                                                      (:live_mode . nil)
-                                                      (:strict . t)))))))
-                  (:gopls . ((:usePlaceholders . t)
-                             (:completeUnimported . t)))))
-  (add-hook 'before-save-hook
-            (lambda () (when (and (eglot-managed-p) (not (eq major-mode 'julia-mode)))
-                         (eglot-format-buffer)))))
-(use-package eglot-jl
-  :custom eglot-jl-julia-flags (list "-J" (expand-file-name "~/.config/emacs/lsp-jl.so"))
-  :config (eglot-jl-init))
+
+(setq lsp-keymap-prefix "C-c C-l")
+(use-package lsp-mode
+  :custom
+  lsp-clients-elixir-server-executable "elixir-ls"
+  lsp-pyls-configuration-sources ["flake8"]
+  :hook (lsp-mode . lsp-enable-which-key-integration))
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+(use-package lsp-julia
+  :custom
+  lsp-julia-default-environment "~/.local/share/julia/environments/v1.5"
+  lsp-julia-symbol-server-store-path "~/.local/share/julia/symbolstorev2-lsp-julia")
