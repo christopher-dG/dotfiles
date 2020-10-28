@@ -36,11 +36,22 @@ atreplinit() do repl
     catch err
         @warn "Couldn't start Revise" ex=(err, catch_backtrace())
     end
+
+    # @async begin
+    #     sleep(1)
+    #     @eval using .Locals
+    #     Locals._init_pry()
+    # end
 end
 
 module Locals
 
-export @ex, @exs
+export @ex, @exs, @pry
+
+using REPL: AbstractREPL, respond
+
+const DEFAULT_PACKAGES = [:BenchmarkTools, :Debugger, :OhMyREPL, :Revise]
+const PRY_MODULE = Ref{Module}()
 
 "Parse and return the given expression."
 macro ex(ex)
@@ -52,7 +63,19 @@ macro exs(exs...)
     exs
 end
 
-const DEFAULT_PACKAGES = [:BenchmarkTools, :Debugger, :OhMyREPL, :Revise]
+"Set the current module."
+macro pry(mod)
+    quote
+        try
+            isdefined(Main, $(QuoteNode(mod))) || @eval using $mod
+        catch err
+            @error "ahhh" ex=(err, catch_backtrace())
+        end
+        PRY_MODULE[] = $(esc(mod))
+        _julia_mode().prompt = "$($(esc(mod)))> "
+        nothing
+    end
+end
 
 sysimage(packages=DEFAULT_PACKAGES) = @eval begin
     using PackageCompiler: create_sysimage
@@ -83,6 +106,21 @@ template() = @eval begin
     ])
 end
 
+function _init_pry()
+    mode = _julia_mode()
+    mode.on_done = respond(_parser, Base.active_repl, mode)
+    @pry Main
 end
 
-using .Locals
+_julia_mode() = first(Base.active_repl.interface.modes)
+
+function _parser(input)
+    ex = Meta.parse(input)
+    if ex isa Expr && ex.head === :quote
+        ex
+    else
+        Expr(:call, Expr(:., PRY_MODULE[], QuoteNode(:eval)), ex)
+    end
+end
+
+end
