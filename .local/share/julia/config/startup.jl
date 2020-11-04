@@ -3,6 +3,8 @@ atreplinit() do repl
         @eval begin
             using OhMyREPL: OhMyREPL, Crayon
             using OhMyREPL.Passes: SyntaxHighlighter
+            OhMyREPL.enable_autocomplete_brackets(false)
+            OhMyREPL.enable_fzf(false)
             OhMyREPL.enable_pass!("RainbowBrackets", false)
             let cs = SyntaxHighlighter.ColorScheme()
                 SyntaxHighlighter.symbol!(cs, Crayon(; foreground=0xc7c795))
