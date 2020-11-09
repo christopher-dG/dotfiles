@@ -1,1 +1,2 @@
-AuthenticationMethods publickey
+PubkeyAuthentication yes
+PasswordAuthentication no

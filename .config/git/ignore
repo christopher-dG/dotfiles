@@ -1,4 +1,5 @@
 *.env
+.actrc
 .dir-locals.el
 .envrc
 .tool-versions
