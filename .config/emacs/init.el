@@ -250,6 +250,7 @@
   :custom gofmt-command "goimports"
   :config
   (add-hook 'before-save-hook 'gofmt-before-save) nil t)
+(use-package dune)
 (use-package tuareg)
 (use-package merlin
   :hook (tuareg-mode . merlin-mode))
@@ -258,6 +259,9 @@
   :bind (:map utop-minor-mode-map
               ("C-c C-e" . utop-eval-phrase))
   :hook (tuareg-mode . utop-minor-mode))
+(add-hook 'tuareg-mode-hook
+          (lambda () (setq-local compile-command "dune runtest"
+                                 compilation-read-command nil)))
 (dolist (var (car (read-from-string (shell-command-to-string "opam env --sexp"))))
   (setenv (car var) (cadr var)))
 (setq exec-path (split-string (getenv "PATH") path-separator))
