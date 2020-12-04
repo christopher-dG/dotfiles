@@ -250,10 +250,20 @@
   :custom gofmt-command "goimports"
   :config
   (add-hook 'before-save-hook 'gofmt-before-save) nil t)
+(use-package tuareg)
+(use-package merlin
+  :hook (tuareg-mode . merlin-mode))
+(use-package utop
+  :custom  utop-command "opam exec -- dune utop . -- -emacs"
+  :bind (:map utop-minor-mode-map
+              ("C-c C-e" . utop-eval-phrase))
+  :hook (tuareg-mode . utop-minor-mode))
+(dolist (var (car (read-from-string (shell-command-to-string "opam env --sexp"))))
+  (setenv (car var) (cadr var)))
+(setq exec-path (split-string (getenv "PATH") path-separator))
 
 ;; Language server protocol.
-
-(setq lsp-keymap-prefix "C-c C-l")
+(setq lsp-keymap-prefix "C-c l")
 (use-package lsp-mode
   :custom
   lsp-clients-elixir-server-executable "elixir-ls"

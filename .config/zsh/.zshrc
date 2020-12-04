@@ -53,6 +53,7 @@ alias emacs-fs="emacsclient -ncF '((fullscreen . fullboth))'"
 alias sqlite3="sqlite3 -init $HOME/.config/sqlite3/sqliterc"
 [ -d "/opt/asdf-vm" ] && source "/opt/asdf-vm/asdf.sh"
 hash direnv 2> /dev/null && eval "$(direnv hook zsh)"
+hash opam 2> /dev/null && eval "$(opam env)"
 man() {  # Coloured man pages.
   LESS_TERMCAP_md=$'\e[01;31m' \
   LESS_TERMCAP_me=$'\e[0m' \
