@@ -1,3 +1,5 @@
+using Revise
+
 atreplinit() do repl
     try
         @eval begin
@@ -30,13 +32,6 @@ atreplinit() do repl
         end
     catch err
         @warn "Couldn't start OhMyREPL" ex=(err, catch_backtrace())
-    end
-
-    try
-        @eval using Revise: Revise
-        @async Revise.wait_steal_repl_backend()
-    catch err
-        @warn "Couldn't start Revise" ex=(err, catch_backtrace())
     end
 
     # @async begin

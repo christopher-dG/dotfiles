@@ -1,3 +1,4 @@
+
 (setq custom-file "~/.config/emacs/customize.el")
 
 ;; Basic package setup.
@@ -46,9 +47,9 @@
   (load-ui))
 
 ;; Update packages now and then.
-(use-package auto-package-update
-  :custom  auto-package-update-delete-old-versions t
-  :config (auto-package-update-maybe))
+;; (use-package auto-package-update
+;;   :custom  auto-package-update-delete-old-versions t
+;;   :config (auto-package-update-maybe))
 
 ;; Tramp is for editing files on remote systems.
 (use-package tramp
@@ -76,7 +77,7 @@
 (global-set-key (kbd "M-z") 'zap-up-to-char)
 
 ;; Kill/yank using the X clipboard.
-(setq save-interprogram-paste-before-kill t)
+(setq save-interprogram-paste-before-kill nil)
 
 ;; Line/column numbers + current line highlighting when programming.
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -234,6 +235,9 @@
 (use-package yaml-mode)
 (use-package toml-mode)
 (use-package ahk-mode)
+(use-package terraform-mode
+  :hook (terraform-mode . terraform-format-on-save-mode))
+
 
 ;; Programming languages.
 (use-package julia-mode)
@@ -251,6 +255,8 @@
   :config
   (add-hook 'before-save-hook 'gofmt-before-save) nil t)
 (use-package dune)
+(use-package ocamlformat
+  :custom ocamlformat-show-errors nil)
 (use-package tuareg)
 (use-package merlin
   :hook (tuareg-mode . merlin-mode))
@@ -259,9 +265,10 @@
   :bind (:map utop-minor-mode-map
               ("C-c C-e" . utop-eval-phrase))
   :hook (tuareg-mode . utop-minor-mode))
-(add-hook 'tuareg-mode-hook
-          (lambda () (setq-local compile-command "dune runtest"
-                                 compilation-read-command nil)))
+(add-hook 'tuareg-mode-hook (lambda ()
+                              (setq-local compile-command "dune runtest"
+                                          compilation-read-command nil)
+                              (add-hook 'before-save-hook 'ocamlformat-before-save)))
 (dolist (var (car (read-from-string (shell-command-to-string "opam env --sexp"))))
   (setenv (car var) (cadr var)))
 (setq exec-path (split-string (getenv "PATH") path-separator))

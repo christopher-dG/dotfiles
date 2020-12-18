@@ -1,3 +1,6 @@
 [read-line]
 C-n: history-next
 C-p: history-prev
+left: complete-bar-prev
+right: complete-bar-next
+down: complete-bar
