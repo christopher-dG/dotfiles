@@ -1,15 +1,9 @@
 if [[ "$TERM" == "dumb" ]]; then
   PS1="> "
   return
-elif [[ "$TERM" != "screen" ]]; then
-  exec tmux -f ~/.config/tmux/tmux.conf
 fi
 
 # Prompt.
-host="$(hostname)"
-while [[ "$host" == *-wsl-wsl ]]; do
-    host="${host%-wsl}"
-done
 setopt PROMPT_SUBST
 PS1="%(?..%B x %b)%(!.(root) .)%K{4}$host%k %F{2}[%f %F{5}%~%f %F{2}] "
 
@@ -47,9 +41,6 @@ export PINENTRY_USER_DATA="curses"
 export GPG_TTY="$(tty)"
 
 # Misc.
-alias emacs="$EDITOR"
-alias emacs-win="emacsclient -nc"
-alias emacs-fs="emacsclient -ncF '((fullscreen . fullboth))'"
 alias sqlite3="sqlite3 -init $HOME/.config/sqlite3/sqliterc"
 [ -d "/opt/asdf-vm" ] && source "/opt/asdf-vm/asdf.sh"
 hash direnv 2> /dev/null && eval "$(direnv hook zsh)"

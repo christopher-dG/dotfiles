@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+case "$1" in
+  toggle-output)
+    sink="$(pacmd list-sinks | grep index: | grep -v '*' | cut -d: -f2)"
+    pacmd set-default-sink "$sink"
+    ;;
+esac

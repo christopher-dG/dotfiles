@@ -1,0 +1,124 @@
+window:
+  padding:
+    x: 3
+    y: 3
+  dynamic_padding: false
+  dynamic_title: true
+scrolling:
+  history: 100000
+  multiplier: 10
+font:
+  normal:
+    family: terminus (ttf)
+  size: 18
+colors:
+  primary:
+    background: '0x1c2023'
+    foreground: '0xc7ccd1'
+  cursor:
+    text: '0x1c2023'
+    cursor: '0xc7ccd1'
+  normal:
+    black:   '0x1c2023'
+    red:     '0xc7ae95'
+    green:   '0x95c7ae'
+    yellow:  '0xaec795'
+    blue:    '0xae95c7'
+    magenta: '0xc795ae'
+    cyan:    '0x95aec7'
+    white:   '0xc7ccd1'
+  bright:
+    black:   '0x747c84'
+    red:     '0xc7c795'
+    green:   '0x393f45'
+    yellow:  '0x565e65'
+    blue:    '0xadb3ba'
+    magenta: '0xdfe2e5'
+    cyan:    '0xc79595'
+    white:   '0xf3f4f5'
+  search:
+    matches:
+      background: '0x95c7ae'
+    focused_match:
+      background: '0xae95c7'
+    bar:
+      background: '0x95c7ae'
+draw_bold_text_with_bright_colors: false
+mouse:
+  hide_when_typing: true
+key_bindings:
+  - key: W
+    mods: Alt
+    action: Copy
+  - key: Y
+    mods: Control
+    action: Paste
+  - key: P
+    mods: Control
+    mode: Vi
+    action: Up
+  - key: N
+    mods: Control
+    mode: Vi
+    action: Down
+  - key: B
+    mods: Control
+    mode: Vi
+    action: Left
+  - key: F
+    mods: Control
+    mode: Vi
+    action: Right
+  - key: Space
+    mods: Control
+    mode: Vi
+    action: ToggleSemanticSelection
+  - key: A
+    mods: Control
+    mode: Vi
+    action: First
+  - key: E
+    mods: Control
+    mode: Vi
+    action: Last
+  - key: B
+    mods: Alt
+    mode: Vi
+    action: WordLeft
+  - key: F
+    mods: Alt
+    mode: Vi
+    action: WordRight
+  - key: Comma
+    mods: Alt|Shift
+    mode: Vi
+    action: ScrollToTop
+  - key: Period
+    mods: Alt|Shift
+    mode: Vi
+    action: ScrollToBottom
+  - key: V
+    mode: Alt
+    mode: Vi
+    action: ScrollPageUp
+  - key: V
+    mode: Control
+    mode: Vi
+    action: ScrollPageDown
+  - key: S
+    mods: Control
+    mode: Vi
+    action: SearchForward
+  - key: R
+    mods: Control
+    mode: Vi
+    action: SearchBackward
+  - key: Key0
+    mods: Control
+    action: ResetFontSize
+  - key: Plus
+    mods: Control
+    action: IncreaseFontSize
+  - key: Minus
+    mods: Control
+    action: DecreaseFontSize

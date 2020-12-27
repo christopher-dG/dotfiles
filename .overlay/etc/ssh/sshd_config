@@ -1,2 +1,2 @@
-PubkeyAuthentication yes
 PasswordAuthentication no
+PubkeyAuthentication yes

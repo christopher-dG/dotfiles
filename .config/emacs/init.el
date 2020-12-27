@@ -1,4 +1,3 @@
-
 (setq custom-file "~/.config/emacs/customize.el")
 
 ;; Basic package setup.
@@ -36,8 +35,8 @@
   (menu-bar-mode 0)
   (tool-bar-mode 0)
   (scroll-bar-mode 0)
-  (set-frame-font "Monoid")
-  (set-face-attribute 'default nil :height 140)
+  (set-frame-font "terminus (ttf)")
+  (set-face-attribute 'default nil :height 180)
   (smartparens-global-mode)
   (show-paren-mode))
 (if (daemonp)
@@ -164,10 +163,6 @@
   :custom which-key-idle-delay 0.5
   :config (which-key-mode)
   :delight)
-
-;; Update buffers when their files are updated.
-(use-package autorevert
-  :config (global-auto-revert-mode))
 
 ;; Company is for autocompletion.
 (use-package company

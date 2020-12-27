@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-
-if [[ "$PINENTRY_USER_DATA" == "curses" ]]; then
-  program="pinentry-curses"
-else
-  program="pinentry-gtk-2"
-fi
-
-exec "$program" "$@"

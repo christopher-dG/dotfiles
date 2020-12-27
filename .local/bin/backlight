@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+ddc() {
+  sudo ddccontrol "$@" 2> /dev/null
+}
+
+dir="$HOME/.local/share/ddccontrol"
+mkdir -p "$dir"
+
+
+if [[ -f "$dir/device" ]]; then
+  dev="$(cat $dir/device)"
+else
+  dev="dev:$(ddc -p | grep Device: | cut -d: -f3)"
+  echo "$dev" > "$dir/device"
+fi
+
+if [[ -f "$dir/control" ]]; then
+  ctrl="$(cat $dir/control)"
+else
+  ctrl="$(ddc $dev -d | grep Brightness] | cut -d' ' -f2 | cut -d: -f1)"
+  echo "$ctrl" > "$dir/control"
+fi
+
+case "$1" in
+  get)
+    if [[ -f "$dir/brightness" ]]; then
+      cat "$dir/brightness"
+    else
+      ddc "$dev" -r "$ctrl" | grep Brightness | cut -d/ -f2 | tee "$dir/brightness"
+    fi
+    ;;
+  up)
+    current="$($0 get)"
+    new="$(expr $current + 5 | tee $dir/brightness)"
+    ddc "$dev" -r "$ctrl" -w "$new"
+    ;;
+  down)
+    current="$($0 get)"
+    new="$(expr $current - 5 | tee $dir/brightness)"
+    ddc "$dev" -r "$ctrl" -w "$new"
+    ;;
+esac

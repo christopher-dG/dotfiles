@@ -1,6 +1,0 @@
-[Unit]
-Description=Free up host memory
-
-[Service]
-Type=oneshot
-ExecStart=sh -c 'echo 3 > /proc/sys/vm/drop_caches'

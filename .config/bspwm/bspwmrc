@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+pgrep -x sxhkd || sxhkd &
+pgrep -x polybar || polybar default &
+pgrep -x dunst || dunst &
+feh --no-fehbg --bg-fill "$HOME/.local/share/backgrounds/bg.jpg"
+
+bspc monitor --reset-desktops 1 2 3 4 5 6 7 8 9 10
+
+bspc config border_width 3
+bspc config window_gap 5
+bspc config split_ratio 0.52
+
+bspc rule --add Alacritty desktop='^1' follow=on
+bspc rule --add firefox desktop='^2' follow=on
+bspc rule --add Emacs desktop='^3' state=tiled follow=on
+bspc rule --add discord desktop='^4' state=floating follow=on
+bspc rule --add Slack desktop='^4' state=floating follow=on
+bspc rule --add Steam desktop='^4' state=floating follow=on
+bspc rule --add Spotify desktop='^4' state=floating follow=on
