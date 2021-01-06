@@ -10,7 +10,7 @@ scrolling:
 font:
   normal:
     family: terminus (ttf)
-  size: 18
+  size: 16
 colors:
   primary:
     background: '0x1c2023'

@@ -30,14 +30,13 @@ case "$1" in
       ddc "$dev" -r "$ctrl" | grep Brightness | cut -d/ -f2 | tee "$dir/brightness"
     fi
     ;;
-  up)
+  up|down)
     current="$($0 get)"
-    new="$(expr $current + 5 | tee $dir/brightness)"
-    ddc "$dev" -r "$ctrl" -w "$new"
-    ;;
-  down)
-    current="$($0 get)"
-    new="$(expr $current - 5 | tee $dir/brightness)"
+    case "$1" in
+      up) op=+;;
+      down) op=-;;
+    esac
+    new="$(python -c "print(max(0, min($current $op 5, 100)))" | tee $dir/brightness)"
     ddc "$dev" -r "$ctrl" -w "$new"
     ;;
 esac

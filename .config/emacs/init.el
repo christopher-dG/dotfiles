@@ -36,7 +36,7 @@
   (tool-bar-mode 0)
   (scroll-bar-mode 0)
   (set-frame-font "terminus (ttf)")
-  (set-face-attribute 'default nil :height 180)
+  (set-face-attribute 'default nil :height 160)
   (smartparens-global-mode)
   (show-paren-mode))
 (if (daemonp)
