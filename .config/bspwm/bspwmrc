@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 pgrep -x sxhkd || sxhkd &
+pgrep -x picom || picom &
 pgrep -x polybar || polybar default &
 pgrep -x dunst || dunst &
 feh --no-fehbg --bg-fill "$HOME/.local/share/backgrounds/bg.jpg"
