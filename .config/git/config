@@ -34,3 +34,5 @@
   defaultBranch = main
 [fetch]
 	pruneTags = true
+[rerere]
+	enabled = true

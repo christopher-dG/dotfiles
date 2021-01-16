@@ -38,10 +38,10 @@ alias cd..="cd .."
 
 gcl() { git clone "git@github.com:christopher-dG/$1.git" $2 }
 
-export PINENTRY_USER_DATA="curses"
-export GPG_TTY="$(tty)"
+[[ -f "$HOME/.config/private.env" ]] && source "$HOME/.config/private.env"
 
 # Misc.
+export GPG_TTY="$(tty)"
 alias sqlite3="sqlite3 -init $HOME/.config/sqlite3/sqliterc"
 [ -d "/opt/asdf-vm" ] && source "/opt/asdf-vm/asdf.sh"
 hash direnv 2> /dev/null && eval "$(direnv hook zsh)"

@@ -23,13 +23,17 @@ case "$1" in
     case "$(playerctl --player $player status)" in
       Playing|Paused)
         case "$player" in
-          firefox.*) player_name="Firefox" ;;
-          spotify) player_name="Spotify" ;;
-          *) "$player" ;;
+          spotify|spotifyd|ncspot) player_name="Spotify" ;;
+          mps-youtube.instance*) player_name="YouTube" ;;
+          firefox.instance*) player_name="Firefox" ;;
+          *) player_name="$player" ;;
         esac
         artist="$(playerctl --player $player metadata artist)"
         title="$(playerctl --player $player metadata title)"
         echo "$player_name: $artist - $title"
+        ;;
+      Stopped)
+        echo "Nothing playing"
         ;;
     esac
     ;;
