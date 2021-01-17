@@ -237,7 +237,6 @@
 ;; Programming languages.
 (use-package julia-mode)
 (use-package julia-repl
-  :load-path "lisp/julia-repl"
   :hook (julia-mode . julia-repl-mode)
   :config (julia-repl-set-terminal-backend 'vterm)
   :bind (:map julia-repl-mode-map
