@@ -2,19 +2,23 @@
 region = us-east-1
 
 [profile beacon]
+region = us-east-2
 mfa_serial = arn:aws:iam::185776040155:mfa/cdegraaf
 
 [profile beacon-admin]
+region = us-east-2
 mfa_serial = arn:aws:iam::185776040155:mfa/cdegraaf
 role_arn = arn:aws:iam::185776040155:role/admin
 source_profile = beacon
 
 [profile portal-admin]
+region = us-east-2
 role_arn = arn:aws:iam::185776040155:role/portal-admin
 mfa_serial = arn:aws:iam::185776040155:mfa/cdegraaf
 source_profile = beacon
 
 [profile infra-automation]
+region = us-east-2
 role_arn = arn:aws:iam::185776040155:role/infra-automation 
 mfa_serial = arn:aws:iam::185776040155:mfa/cdegraaf
 role_session_name = infra-local-cdegraaf
