@@ -4,48 +4,23 @@ dir="$HOME/.local/share/audio"
 mkdir -p "$dir"
 
 case "$1" in
-  get-player)
-    if [[ -f "$dir/player" ]]; then
-      cat "$dir/player"
-    else
-      players="$(playerctl --list-all 2> /dev/null)"
-      [[ "$players" == "" ]] && exit 1
-      echo "$players" | head -n1 | tee "$dir/player"
-    fi
-    ;;
   now-playing)
-    player="$($0 get-player)"
+    status="$(baton status 2> /dev/null)"
     if [[ "$?" -ne 0 ]]; then
-      rm -f "$dir/player"
-      echo "Nothing playing"
+      echo
       exit
     fi
-    case "$(playerctl --player $player status)" in
-      Playing|Paused)
-        case "$player" in
-          spotify|spotifyd|ncspot) player_name="Spotify" ;;
-          mps-youtube.instance*) player_name="YouTube" ;;
-          firefox.instance*) player_name="Firefox" ;;
-          *) player_name="$player" ;;
-        esac
-        artist="$(playerctl --player $player metadata artist)"
-        title="$(playerctl --player $player metadata title)"
-        echo "$player_name: $artist - $title"
-        ;;
-      Stopped)
-        echo "Nothing playing"
-        ;;
-    esac
-    ;;
-  play-pause|next|previous)
-    playerctl --player "$($0 get-player)" "$1"
-    ;;
-  toggle-player)
-    player="$($0 get-player)"
-    other="$(playerctl --list-all | grep -v $player)"
-    if [[ "$other" != "" ]]; then
-      echo "$other" > "$dir/player"
+    [[ "$status" = "Couldn't"* ]] && echo && exit
+    state="$(echo "$status" | grep State: | cut -d' ' -f2)"
+    title="$(echo "$status" | grep Track: | cut -d' ' -f2-)"
+    artist="$(echo "$status" | grep Artist: | cut -d' ' -f2-)"
+    if [[ "$state" = "Paused" ]]; then
+      paused=" (p)"
     fi
+    echo "$artist - $title$paused"
+    ;;
+  pause|next|prev)
+    baton "$1"
     ;;
   toggle-output)
     sink="$(pacmd list-sinks | grep index: | grep -v '*' | cut -d: -f2)"

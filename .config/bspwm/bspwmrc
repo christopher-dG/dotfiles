@@ -5,6 +5,7 @@ pgrep -x picom || picom &
 pgrep -x polybar || polybar default &
 pgrep -x dunst || dunst &
 feh --no-fehbg --bg-fill "$HOME/.local/share/backgrounds/bg.jpg"
+xsetroot -cursor_name left_ptr
 
 bspc monitor --reset-desktops 1 2 3 4 5 6 7 8 9 10
 

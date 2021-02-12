@@ -22,8 +22,8 @@ font-0 = terminus (ttf):pixelsize=16
 font-1 = source han sans sc
 font-2 = noto color emoji:scale=8
 modules-left = bspwm
-modules-center = playerctl
-modules-right = backlight pulseaudio date keyboard
+modules-center = spotify
+modules-right = backlight pulseaudio date
 tray-position = right
 tray-padding = 1
 wm-restack = bspwm
@@ -56,13 +56,12 @@ label-volume = VOL %percentage%%
 label-muted = VOL muted
 click-middle = audio toggle-output
 
-[module/playerctl]
+[module/spotify]
 type = custom/script
 exec = audio now-playing
 interval = 5
-click-left = audio play-pause
+click-left = audio pause
 click-right = audio next
-click-middle = audio toggle-player
 
 [module/backlight]
 type = custom/script
