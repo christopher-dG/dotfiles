@@ -2,34 +2,34 @@ using Revise
 
 atreplinit() do repl
     try
-        @eval begin
-            using OhMyREPL: OhMyREPL, Crayon
-            using OhMyREPL.Passes: SyntaxHighlighter
-            OhMyREPL.enable_autocomplete_brackets(false)
-            OhMyREPL.enable_fzf(false)
-            OhMyREPL.enable_pass!("RainbowBrackets", false)
-            let cs = SyntaxHighlighter.ColorScheme()
-                SyntaxHighlighter.symbol!(cs, Crayon(; foreground=0xc7c795))
-                SyntaxHighlighter.comment!(cs, Crayon(; foreground=0x747c84))
-                SyntaxHighlighter.string!(cs, Crayon(; foreground=0x95c7ae))
-                SyntaxHighlighter.string!(cs, Crayon(; foreground=0x95c7ae))
-                SyntaxHighlighter.call!(cs, Crayon(; foreground=0xdfe2e5))
-                SyntaxHighlighter.op!(cs, Crayon(; foreground=0xdfe2e5))
-                SyntaxHighlighter.keyword!(cs, Crayon(; foreground=0xc795ae))
-                SyntaxHighlighter.function_def!(cs, Crayon(; foreground=0xae95c7))
-                SyntaxHighlighter.argdef!(cs, Crayon(; foreground=0xaec795))
-                SyntaxHighlighter.macro!(cs, Crayon(; foreground=0xae95c7))
-                SyntaxHighlighter.number!(cs, Crayon(; foreground=0xdfe2e5))
-                SyntaxHighlighter.text!(cs, Crayon(; foreground=0xdfe2e5))
-                SyntaxHighlighter.add!("base16-ashes", cs)
-                OhMyREPL.colorscheme!("base16-ashes")
-            end
-            @async begin
-                # OhMyREPL.jl#166
-                sleep(1)
-                OhMyREPL.Prompt.insert_keybindings()
-            end
-        end
+        # @eval begin
+        #     using OhMyREPL: OhMyREPL, Crayon
+        #     using OhMyREPL.Passes: SyntaxHighlighter
+        #     OhMyREPL.enable_autocomplete_brackets(false)
+        #     OhMyREPL.enable_fzf(false)
+        #     OhMyREPL.enable_pass!("RainbowBrackets", false)
+        #     let cs = SyntaxHighlighter.ColorScheme()
+        #         SyntaxHighlighter.symbol!(cs, Crayon(; foreground=0xc7c795))
+        #         SyntaxHighlighter.comment!(cs, Crayon(; foreground=0x747c84))
+        #         SyntaxHighlighter.string!(cs, Crayon(; foreground=0x95c7ae))
+        #         SyntaxHighlighter.string!(cs, Crayon(; foreground=0x95c7ae))
+        #         SyntaxHighlighter.call!(cs, Crayon(; foreground=0xdfe2e5))
+        #         SyntaxHighlighter.op!(cs, Crayon(; foreground=0xdfe2e5))
+        #         SyntaxHighlighter.keyword!(cs, Crayon(; foreground=0xc795ae))
+        #         SyntaxHighlighter.function_def!(cs, Crayon(; foreground=0xae95c7))
+        #         SyntaxHighlighter.argdef!(cs, Crayon(; foreground=0xaec795))
+        #         SyntaxHighlighter.macro!(cs, Crayon(; foreground=0xae95c7))
+        #         SyntaxHighlighter.number!(cs, Crayon(; foreground=0xdfe2e5))
+        #         SyntaxHighlighter.text!(cs, Crayon(; foreground=0xdfe2e5))
+        #         SyntaxHighlighter.add!("base16-ashes", cs)
+        #         OhMyREPL.colorscheme!("base16-ashes")
+        #     end
+        #     @async begin
+        #         # OhMyREPL.jl#166
+        #         sleep(1)
+        #         OhMyREPL.Prompt.insert_keybindings()
+        #     end
+        # end
     catch err
         @warn "Couldn't start OhMyREPL" ex=(err, catch_backtrace())
     end

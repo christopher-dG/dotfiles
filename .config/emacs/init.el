@@ -31,7 +31,7 @@
 
 (defun load-ui ()
   "Load UI stuff."
-  (load-theme 'base16-ashes t)
+  (load-theme 'base16-solarized-light t)
   (menu-bar-mode 0)
   (tool-bar-mode 0)
   (scroll-bar-mode 0)
@@ -51,14 +51,15 @@
 ;;   :config (auto-package-update-maybe))
 
 ;; Tramp is for editing files on remote systems.
-(use-package tramp
-  :custom
-  tramp-completion-reread-directory-timeout nil
-  tramp-default-method "ssh")
-(setq remote-file-name-inhibit-cache nil
-      vc-ignore-dir-regexp (format "\\(%s\\)\\|\\(%s\\)"
-                                   vc-ignore-dir-regexp
-                                   tramp-file-name-regexp))
+(use-package tramp)
+(setq
+ tramp-completion-reread-directory-timeout nil
+ tramp-default-method "ssh"
+ tramp-use-ssh-controlmaster-options nil
+ remote-file-name-inhibit-cache nil
+ vc-ignore-dir-regexp (format "\\(%s\\)\\|\\(%s\\)"
+                              vc-ignore-dir-regexp
+                              tramp-file-name-regexp))
 
 (use-package direnv
   :config (direnv-mode))
@@ -151,12 +152,12 @@
 (global-set-key (kbd "C-=") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 
-;; Projectile is for project management (finding files, etc.).
-(use-package projectile
-  :custom projectile-mode-line "Projectile"
-  :config (projectile-mode)
-  :bind-keymap ("C-c p" . projectile-command-map)
-  :delight)
+;; ;; Projectile is for project management (finding files, etc.).
+;; (use-package projectile
+;;   :custom projectile-mode-line "Projectile"
+;;   :config (projectile-mode)
+;;   :bind-keymap ("C-c p" . projectile-command-map)
+;;   :delight)
 
 ;; Show helpful keybinding popups.
 (use-package which-key
@@ -236,6 +237,7 @@
 
 ;; Programming languages.
 (use-package julia-mode)
+(use-package vterm)
 (use-package julia-repl
   :hook (julia-mode . julia-repl-mode)
   :config (julia-repl-set-terminal-backend 'vterm)
@@ -267,16 +269,16 @@
   (setenv (car var) (cadr var)))
 (setq exec-path (split-string (getenv "PATH") path-separator))
 
-;; Language server protocol.
-(setq lsp-keymap-prefix "C-c l")
-(use-package lsp-mode
-  :custom
-  lsp-clients-elixir-server-executable "elixir-ls"
-  lsp-pyls-configuration-sources ["flake8"]
-  :hook (lsp-mode . lsp-enable-which-key-integration))
-(use-package lsp-ui :commands lsp-ui-mode)
-(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-(use-package lsp-julia
-  :custom
-  lsp-julia-default-environment "~/.local/share/julia/environments/v1.5"
-  lsp-julia-symbol-server-store-path "~/.local/share/julia/symbolstorev2-lsp-julia")
+;; ;; Language server protocol.
+;; (setq lsp-keymap-prefix "C-c l")
+;; (use-package lsp-mode
+;;   :custom
+;;   lsp-clients-elixir-server-executable "elixir-ls"
+;;   lsp-pyls-configuration-sources ["flake8"]
+;;   :hook (lsp-mode . lsp-enable-which-key-integration))
+;; (use-package lsp-ui :commands lsp-ui-mode)
+;; (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+;; (use-package lsp-julia
+;;   :custom
+;;   lsp-julia-default-environment "~/.local/share/julia/environments/v1.5"
+;;   lsp-julia-symbol-server-store-path "~/.local/share/julia/symbolstorev2-lsp-julia")

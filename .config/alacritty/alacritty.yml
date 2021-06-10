@@ -12,38 +12,45 @@ font:
     family: terminus (ttf)
   size: 16
 colors:
+  # Default colors
   primary:
-    background: '0x1c2023'
-    foreground: '0xc7ccd1'
+    background: '0xfdf6e3'
+    foreground: '0x586e75'
+
+  # Colors the cursor will use if `custom_cursor_colors` is true
   cursor:
-    text: '0x1c2023'
-    cursor: '0xc7ccd1'
+    text: '0xfdf6e3'
+    cursor: '0x586e75'
+
+  # Normal colors
   normal:
-    black:   '0x1c2023'
-    red:     '0xc7ae95'
-    green:   '0x95c7ae'
-    yellow:  '0xaec795'
-    blue:    '0xae95c7'
-    magenta: '0xc795ae'
-    cyan:    '0x95aec7'
-    white:   '0xc7ccd1'
+    black:   '0xfdf6e3'
+    red:     '0xdc322f'
+    green:   '0x859900'
+    yellow:  '0xb58900'
+    blue:    '0x268bd2'
+    magenta: '0x6c71c4'
+    cyan:    '0x2aa198'
+    white:   '0x586e75'
+
+  # Bright colors
   bright:
-    black:   '0x747c84'
-    red:     '0xc7c795'
-    green:   '0x393f45'
-    yellow:  '0x565e65'
-    blue:    '0xadb3ba'
-    magenta: '0xdfe2e5'
-    cyan:    '0xc79595'
-    white:   '0xf3f4f5'
-  search:
-    matches:
-      background: '0x95c7ae'
-    focused_match:
-      background: '0xae95c7'
-    bar:
-      background: '0x95c7ae'
-draw_bold_text_with_bright_colors: false
+    black:   '0x839496'
+    red:     '0xdc322f'
+    green:   '0x859900'
+    yellow:  '0xb58900'
+    blue:    '0x268bd2'
+    magenta: '0x6c71c4'
+    cyan:    '0x2aa198'
+    white:   '0x002b36'
+
+  indexed_colors:
+    - { index: 16, color: '0xcb4b16' }
+    - { index: 17, color: '0xd33682' }
+    - { index: 18, color: '0xeee8d5' }
+    - { index: 19, color: '0x93a1a1' }
+    - { index: 20, color: '0x657b83' }
+    - { index: 21, color: '0x073642' }
 mouse:
   hide_when_typing: true
 key_bindings:
