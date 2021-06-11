@@ -30,7 +30,7 @@ setopt hist_ignore_space
 unsetopt BANG_HIST
 
 # ls aliases and corrections.
-alias ls="ls --color"
+alias ls="ls -G"
 alias la="ls -a"
 alias ll="ls -l"
 alias sl="ls"

@@ -4,7 +4,6 @@ region = us-east-1
 [profile beacon]
 region = us-east-2
 mfa_serial = arn:aws:iam::185776040155:mfa/cdegraaf
-duration_seconds = 43200
 
 [profile infra-automation]
 region = us-east-2

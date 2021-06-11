@@ -35,7 +35,7 @@
   (menu-bar-mode 0)
   (tool-bar-mode 0)
   (scroll-bar-mode 0)
-  (set-frame-font "terminus (ttf)")
+  ;; (set-frame-font "Terminus")
   (set-face-attribute 'default nil :height 200)
   (smartparens-global-mode)
   (show-paren-mode))
@@ -152,12 +152,12 @@
 (global-set-key (kbd "C-=") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 
-;; ;; Projectile is for project management (finding files, etc.).
-;; (use-package projectile
-;;   :custom projectile-mode-line "Projectile"
-;;   :config (projectile-mode)
-;;   :bind-keymap ("C-c p" . projectile-command-map)
-;;   :delight)
+;; Projectile is for project management (finding files, etc.).
+(use-package projectile
+  :custom projectile-mode-line "Projectile"
+  :config (projectile-mode)
+  :bind-keymap ("C-c p" . projectile-command-map)
+  :delight)
 
 ;; Show helpful keybinding popups.
 (use-package which-key
@@ -192,14 +192,6 @@
 (use-package forge
   :after magit
   :config (forge-toggle-closed-visibility))
-(custom-set-faces
- '(magit-diff-added ((((type tty)) (:foreground "green"))))
- '(magit-diff-added-highlight ((((type tty)) (:foreground "LimeGreen"))))
- '(magit-diff-context-highlight ((((type tty)) (:foreground "default"))))
- '(magit-diff-file-heading ((((type tty)) nil)))
- '(magit-diff-removed ((((type tty)) (:foreground "red"))))
- '(magit-diff-removed-highlight ((((type tty)) (:foreground "IndianRed"))))
- '(magit-section-highlight ((((type tty)) nil))))
 
 ;; Multiple cursor magic.
 (use-package multiple-cursors
@@ -230,55 +222,19 @@
 (use-package dockerfile-mode)
 (use-package yaml-mode)
 (use-package toml-mode)
-(use-package ahk-mode)
 (use-package terraform-mode
   :hook (terraform-mode . terraform-format-on-save-mode))
 
 
 ;; Programming languages.
 (use-package julia-mode)
-(use-package vterm)
 (use-package julia-repl
   :hook (julia-mode . julia-repl-mode)
   :config (julia-repl-set-terminal-backend 'vterm)
   :bind (:map julia-repl-mode-map
               ("C-c C-j" . julia-repl)))
-(setq python-indent-guess-indent-offset-verbose nil)
-(use-package poetry)
 (use-package elixir-mode)
 (use-package go-mode
   :custom gofmt-command "goimports"
   :config
   (add-hook 'before-save-hook 'gofmt-before-save) nil t)
-(use-package dune)
-(use-package ocamlformat
-  :custom ocamlformat-show-errors nil)
-(use-package tuareg)
-(use-package merlin
-  :hook (tuareg-mode . merlin-mode))
-(use-package utop
-  :custom  utop-command "opam exec -- dune utop . -- -emacs"
-  :bind (:map utop-minor-mode-map
-              ("C-c C-e" . utop-eval-phrase))
-  :hook (tuareg-mode . utop-minor-mode))
-(add-hook 'tuareg-mode-hook (lambda ()
-                              (setq-local compile-command "dune runtest"
-                                          compilation-read-command nil)
-                              (add-hook 'before-save-hook 'ocamlformat-before-save)))
-(dolist (var (car (read-from-string (shell-command-to-string "opam env --sexp"))))
-  (setenv (car var) (cadr var)))
-(setq exec-path (split-string (getenv "PATH") path-separator))
-
-;; ;; Language server protocol.
-;; (setq lsp-keymap-prefix "C-c l")
-;; (use-package lsp-mode
-;;   :custom
-;;   lsp-clients-elixir-server-executable "elixir-ls"
-;;   lsp-pyls-configuration-sources ["flake8"]
-;;   :hook (lsp-mode . lsp-enable-which-key-integration))
-;; (use-package lsp-ui :commands lsp-ui-mode)
-;; (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-;; (use-package lsp-julia
-;;   :custom
-;;   lsp-julia-default-environment "~/.local/share/julia/environments/v1.5"
-;;   lsp-julia-symbol-server-store-path "~/.local/share/julia/symbolstorev2-lsp-julia")
