@@ -1,0 +1,1 @@
+/opt/homebrew/opt/emacs-mac/Emacs.app

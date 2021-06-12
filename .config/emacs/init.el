@@ -14,6 +14,10 @@
 ;; Load the customization file after packages have been loaded.
 (when (file-exists-p custom-file) (load custom-file))
 
+;; https://github.com/railwaycat/homebrew-emacsmacport/issues/191
+(setq mac-option-modifier 'meta)
+(setq mac-command-modifier 'super)
+
 ;; Colour theme.
 (use-package base16-theme)
 
@@ -35,8 +39,7 @@
   (menu-bar-mode 0)
   (tool-bar-mode 0)
   (scroll-bar-mode 0)
-  ;; (set-frame-font "Terminus")
-  (set-face-attribute 'default nil :height 200)
+  (set-face-attribute 'default nil :height 120)
   (smartparens-global-mode)
   (show-paren-mode))
 (if (daemonp)

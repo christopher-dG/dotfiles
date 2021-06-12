@@ -1,0 +1,36 @@
+#!/usr/bin/env sh
+
+# Globals
+yabai -m config window_topmost on  # Does not work without SA
+yabai -m config active_window_border_color 0xaa268bd2  # Does not work without SA
+yabai -m config insert_feedback_color 0xaa268bd2
+
+# Layouts
+yabai -m config layout bsp
+yabai -m space 4 --layout stack
+
+# Gaps/padding
+for x in window_gap top_padding bottom_padding left_padding right_padding; do
+  yabai -m config "$x" 10
+done
+
+# Desktop rules
+yabai -m rule --add app=iTerm2 space=^1  # ^N does not work without SA
+yabai -m rule --add app=Firefox space=^2
+yabai -m rule --add app=Emacs space=^3
+yabai -m rule --add app="(Discord|Slack|Spotify)" space=^4
+yabai -m rule --add app!="(1Password 7|Discord|Emacs|Firefox|iTerm2|Slack|Spotify|Spotlight|System Preferences)" space=^5
+yabai -m rule --add app="(1Password 7|System Preferences)" manage=off
+
+# Emacs doesn't focus automatically for some reason.
+# TODO: it seems like $YABAI_SPACE_ID should be 3.
+yabai -m signal --add event=space_changed action="[ \$YABAI_SPACE_ID = 6 ] && osascript -e 'tell application \"Emacs\" to activate'"
+
+# Auto-focus doesn't work without SA.
+keycode() {
+  echo "osascript -e 'tell application \"System Events\" to key code $1 using {option down}'"
+}
+yabai -m signal --add event=application_launched app=iTerm2 action="$(keycode 18)"
+yabai -m signal --add event=application_launched app=Firefox action="$(keycode 19)"
+yabai -m signal --add event=application_launched app="(Discord|Slack|Spotify)" action="$(keycode 21)"
+yabai -m signal --add event=application_launched app!="(Discord|Emacs|Firefox|iTerm2|Slack|Spotify|Spotlight|System Preferences)" action="$(keycode 29)"
