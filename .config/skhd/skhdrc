@@ -12,33 +12,33 @@ alt - k    : yabai -m window --focus south
 alt - l    : yabai -m window --focus north
 alt - 0x29 [
   *        : yabai -m window --focus east || yabai -m window --focus stack.next
-  "Emacs"  ~  # M-;
+  "Emacs"  ~  # M-; (if this gets annoying, I should re-bind `comment-dwim`)
 ]
-
-# Swap windows
-alt + ctrl - j    : yabai -m window --swap west
-alt + ctrl - k    : yabai -m window --swap south
-alt + ctrl - l    : yabai -m window --swap north
-alt + ctrl - 0x29 [
-  *               : yabai -m window --swap east
-  "Emacs"         ~  # M-:
-]
-
-# Move windows to spaces and focus that space
-alt + shift - 1 [
-  *             : yabai -m window --space 1 && osascript -e 'tell application "System Events" to key code 18 using {option down}'
-  "Emacs"       ~  # M-!
-]
-alt + shift - 2 : yabai -m window --space 2 && osascript -e 'tell application "System Events" to key code 19 using {option down}'
-alt + shift - 3 : yabai -m window --space 3 && osascript -e 'tell application "System Events" to key code 20 using {option down}'
-alt + shift - 4 : yabai -m window --space 4 && osascript -e 'tell application "System Events" to key code 21 using {option down}'
-alt + shift - 0 : yabai -m window --space 5 && osascript -e 'tell application "System Events" to key code 29 using {option down}'
 
 # Float, fullscreen, close, and balance windows
 alt + shift - space : yabai -m window --toggle float
 alt + shift - f     : yabai -m window --toggle native-fullscreen
 alt + shift - q     : yabai -m window --close
 alt + shift - b     : yabai -m space --balance
+
+# Swap windows
+:: swp
+alt - s ; swp
+swp < j    : yabai -m window --swap west; skhd -k escape
+swp < k    : yabai -m window --swap south; skhd -k escape
+swp < l    : yabai -m window --swap north; skhd -k escape
+swp < 0x29 : yabai -m window --swap east; skhd -k escape
+swp < escape ; default
+
+# Move windows to spaces and focus that space
+:: mv
+alt - m ; mv
+mv < 1 : yabai -m window --space 1 && osascript -e 'tell application "System Events" to key code 18 using {option down}'; skhd -k escape
+mv < 2 : yabai -m window --space 2 && osascript -e 'tell application "System Events" to key code 19 using {option down}'; skhd -k escape
+mv < 3 : yabai -m window --space 3 && osascript -e 'tell application "System Events" to key code 20 using {option down}'; skhd -k escape
+mv < 4 : yabai -m window --space 4 && osascript -e 'tell application "System Events" to key code 21 using {option down}'; skhd -k escape
+mv < 0 : yabai -m window --space 5 && osascript -e 'tell application "System Events" to key code 29 using {option down}'; skhd -k escape
+mv < escape ; default
 
 # Resize windows
 :: rs

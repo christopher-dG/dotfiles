@@ -39,7 +39,7 @@
   (menu-bar-mode 0)
   (tool-bar-mode 0)
   (scroll-bar-mode 0)
-  (set-face-attribute 'default nil :height 120)
+  (set-face-attribute 'default nil :height 160)
   (smartparens-global-mode)
   (show-paren-mode))
 (if (daemonp)
