@@ -33,4 +33,4 @@ keycode() {
 yabai -m signal --add event=application_launched app=iTerm2 action="$(keycode 18)"
 yabai -m signal --add event=application_launched app=Firefox action="$(keycode 19)"
 yabai -m signal --add event=application_launched app="(Discord|Slack|Spotify)" action="$(keycode 21)"
-yabai -m signal --add event=application_launched app!="(Discord|Emacs|Firefox|iTerm2|pinentry-mac|Slack|Spotify|Spotlight|System Preferences)" action="$(keycode 29)"
+yabai -m signal --add event=application_launched app!="(Discord|Emacs|Firefox|iTerm2|pinentry-mac|Slack|Spotify|Spotlight|System.*)" action="$(keycode 29)"

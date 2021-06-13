@@ -24,11 +24,25 @@ alt + shift - b     : yabai -m space --balance
 # Swap windows
 :: swp
 alt - s ; swp
-swp < j    : yabai -m window --swap west; skhd -k escape
+swp < j    : yabai -m window --swap west ; skhd -k escape
 swp < k    : yabai -m window --swap south; skhd -k escape
 swp < l    : yabai -m window --swap north; skhd -k escape
-swp < 0x29 : yabai -m window --swap east; skhd -k escape
+swp < 0x29 : yabai -m window --swap east ; skhd -k escape
 swp < escape ; default
+
+# Warp windows (split another window and move into that space)
+:: wrp
+alt - w [
+  # I'm not sure why I can't do '* ; wrp'
+  *       : skhd -k "alt + shift + ctrl - w"
+  "Emacs" ~
+]
+alt + shift + ctrl - w ; wrp
+wrp < j    : yabai -m window --warp west ; skhd -k escape
+wrp < k    : yabai -m window --warp south; skhd -k escape
+wrp < l    : yabai -m window --warp north; skhd -k escape
+wrp < 0x29 : yabai -m window --warp east ; skhd -k escape
+wrp < escape ; default
 
 # Move windows to spaces and focus that space
 :: mv
