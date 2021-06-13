@@ -2,6 +2,9 @@
 # Note: osascript 18-21,29 is 1-4,0
 # Note: Because the SA does not work on M1 yet, focus-space shortcuts are defined in the normal MacOS settings (option-{1-5})
 
+# Launch terminal window
+alt - return : osascript -e 'tell application "iTerm2" to create window with default profile' && osascript -e 'tell application "System Events" to key code 18 using {option down}'
+
 # Focus windows
 alt - h    : yabai -m window --focus first  # Useful for getting off of an unmanaged window
 alt - j    : yabai -m window --focus west || yabai -m window --focus stack.prev
@@ -52,7 +55,7 @@ rs < alt -r   ; default
 rs < ctrl - c ; default
 rs < escape   ; default
 
-# Set split direction
+# Set insert direction
 :: ins
 alt - i ; ins
 ins < j    : yabai -m window --insert west ; skhd -k escape

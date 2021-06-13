@@ -35,7 +35,7 @@
 
 (defun load-ui ()
   "Load UI stuff."
-  (load-theme 'base16-solarized-light t)
+  (load-theme 'base16-solarized-dark t)
   (menu-bar-mode 0)
   (tool-bar-mode 0)
   (scroll-bar-mode 0)
@@ -170,10 +170,8 @@
 
 ;; Company is for autocompletion.
 (use-package company
-  :config
-  (global-company-mode)
-  :bind
-  ("C-;" . company-complete)
+  :config (global-company-mode)
+  :bind ("C-;" . company-complete)
   (:map company-active-map
         ("C-n" . company-select-next)
         ("C-p" . company-select-previous)
@@ -185,13 +183,16 @@
 
 ;; Git integrations.
 (use-package magit
-  :bind ("C-c g" . magit-status))
+  :bind (("C-c g" . magit-status)
+         ;; M-{1-4} are already used by the WM.
+         ("s-1" . magit-section-show-level-1-all)
+         ("s-2" . magit-section-show-level-2-all)
+         ("s-3" . magit-section-show-level-3-all)
+         ("s-4" . magit-section-show-level-4-all)))
 (setq auth-sources '((:source "~/.config/emacs/authinfo.gpg")))
 (use-package git-gutter
   :config (global-git-gutter-mode 1)
   :delight)
-(use-package magit-todos
-  :config (magit-todos-mode))
 (use-package forge
   :after magit
   :config (forge-toggle-closed-visibility))
