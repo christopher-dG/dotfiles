@@ -204,6 +204,11 @@
   :after magit
   :config (forge-toggle-closed-visibility))
 
+;; Prompt for GPG key password in the minibuffer.
+(use-package pinentry)
+(setq epg-pinentry-mode 'loopback)
+(pinentry-start)
+
 ;; Multiple cursor magic.
 (use-package multiple-cursors
   :bind (("C-c m a" . mc/mark-all-like-this)
