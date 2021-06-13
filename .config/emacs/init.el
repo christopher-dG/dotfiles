@@ -35,7 +35,7 @@
 
 (defun load-ui ()
   "Load UI stuff."
-  (load-theme 'base16-solarized-dark t)
+  (load-theme 'base16-solarized-light t)
   (menu-bar-mode 0)
   (tool-bar-mode 0)
   (scroll-bar-mode 0)
@@ -47,6 +47,13 @@
               (lambda (frame)
                 (with-selected-frame frame (load-ui))))
   (load-ui))
+
+(defun toggle-theme ()
+  "Toggle the theme from light to dark or vice versa."
+  (interactive)
+  (if (eq (car custom-enabled-themes) 'base16-solarized-light)
+      (load-theme 'base16-solarized-dark t)
+    (load-theme 'base16-solarized-light t)))
 
 ;; Update packages now and then.
 ;; (use-package auto-package-update
