@@ -18,9 +18,10 @@ done
 yabai -m rule --add app=iTerm2 space=^1  # ^N does not work without SA
 yabai -m rule --add app=Firefox space=^2
 yabai -m rule --add app=Emacs space=^3
-yabai -m rule --add app="(Discord|Slack|Spotify)" space=^4
-yabai -m rule --add app!="(1Password 7|Discord|Emacs|Firefox|iTerm2|Slack|Spotify|Spotlight|System Preferences)" space=^5
-yabai -m rule --add app="(1Password 7|pinentry-mac|System Preferences)" manage=off
+yabai -m rule --add app="(Calendar|Discord|Mail|Slack|Spotify)" space=^4
+yabai -m rule --add app!="(1Password 7|Calendar|Discord|Emacs|Firefox|iTerm2|Mail|Slack|Spotify|Spotlight|System Preferences)" space=^5
+yabai -m rule --add app=Mail title="New Message" manage=off grid=5:5:1:1:2:2
+yabai -m rule --add app="(1Password 7|System Preferences)" manage=off
 
 # Emacs doesn't focus automatically for some reason.
 # TODO: it seems like $YABAI_SPACE_ID should be 3.
@@ -32,5 +33,5 @@ keycode() {
 }
 yabai -m signal --add event=application_launched app=iTerm2 action="$(keycode 18)"
 yabai -m signal --add event=application_launched app=Firefox action="$(keycode 19)"
-yabai -m signal --add event=application_launched app="(Discord|Slack|Spotify)" action="$(keycode 21)"
-yabai -m signal --add event=application_launched app!="(Discord|Emacs|Firefox|iTerm2|pinentry-mac|Slack|Spotify|Spotlight|System.*)" action="$(keycode 29)"
+yabai -m signal --add event=application_launched app="(Discord|Mail|Slack|Spotify)" action="$(keycode 21)"
+yabai -m signal --add event=application_launched app!="(Discord|Emacs|Firefox|iTerm2|Mail|Slack|Spotify|Spotlight|System|Agent|Helper|Keychain Circle Notification|TextInputSwitcher)" action="echo \$YABAI_PROCESS_ID >> /Users/cdg/procs.txt; $(keycode 29)"

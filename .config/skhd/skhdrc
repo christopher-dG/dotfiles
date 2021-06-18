@@ -6,7 +6,7 @@
 alt - return : osascript -e 'tell application "iTerm2" to create window with default profile' && osascript -e 'tell application "System Events" to key code 18 using {option down}'
 
 # Focus windows
-alt - h    : yabai -m window --focus first  # Useful for getting off of an unmanaged window
+alt - h    : yabai -m window --focus first || yabai -m window --focus stack.first  # Useful for getting off of an unmanaged window
 alt - j    : yabai -m window --focus west || yabai -m window --focus stack.prev
 alt - k    : yabai -m window --focus south
 alt - l    : yabai -m window --focus north
