@@ -11,7 +11,7 @@ async def main(conn):
                 shade = "Dark"
             else:
                 shade = "Light"
-            preset = await iterm2.ColorPreset.async_get(conn, f"Solarized {shade}")
+            preset = await iterm2.ColorPreset.async_get(conn, f"Gruvbox {shade}")
             for partial in await iterm2.PartialProfile.async_query(conn):
                 profile = await partial.async_get_full_profile()
                 await profile.async_set_color_preset(preset)
